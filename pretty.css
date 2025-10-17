@@ -1,0 +1,39 @@
+:root {
+    --pulsespeed: 0.5s;
+}
+
+songprogress {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--barwidth);
+    background: linear-gradient(90deg,
+        navy,
+        blue,
+        darkslategrey);
+    position: fixed;
+    z-index: 999;
+    animation: progressglow
+}
+
+@keyframes progressglow {
+    
+}
+
+hpbar::after {
+    animation: pulse var(--pulsespeed) ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translateY(-50%) scale(1);
+        filter: brightness(0.9);
+    }
+    10% {
+        transform: translateY(-50%) scale(1.15);
+        filter: brightness(1.4);
+    }
+    25% {
+        filter: brightness(1)
+    }
+}
