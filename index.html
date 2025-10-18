@@ -1,40 +1,41 @@
 <html>
-<head>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="pretty.css">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pretty.css" />
     <title>Rhythm Game</title>
-</head>
+    <meta name="author" content="sadgrl_07" />
+  </head>
 
-<body>
-<songprogress></songprogress>
-<column>
-    <sidecolumn></sidecolumn>
-    <notecontainer>
+  <body>
+    <songprogress></songprogress>
+    <column>
+      <sidecolumn></sidecolumn>
+      <notecontainer>
         <gutter>
-            <tick></tick>
-            <tick></tick>
-            <tick></tick>
-            <tick></tick>
-            <tick></tick>
-            <tick></tick>
+          <tick><track id="lane1" /></tick>
+          <tick><track id="lane2" /></tick>
+          <tick><track id="lane3" /></tick>
+          <tick><track id="lane4" /></tick>
+          <tick><track id="lane5" /></tick>
+          <tick><track id="lane6" /></tick>
         </gutter>
         <hitline></hitline>
-    </notecontainer>
-    <sidecolumn style="padding-top: var(--barwidth)">
-        <songname>
-            among us drip by Ohio - 67:69
-        </songname>
-        <div id="infobox";>
-            <div style="display: flex; align-items: center; flex-direction: column">
-                <lettergrade>A</lettergrade>
-                <accuracy>99.95%</accuracy>
-            </div>
-            <scorebar></scorebar>
+      </notecontainer>
+      <sidecolumn style="padding-top: var(--barwidth)">
+        <songname> among us drip by Ohio - 67:69 </songname>
+        <div id="infobox" ;>
+          <div id="scorebox">
+            <lettergrade>A</lettergrade>
+            <accuracy>99.95%</accuracy>
+          </div>
+          <scorebar></scorebar>
         </div>
-    </sidecolumn>
-</column>
-<overlay>
-    <hpbar></hpbar>
-</overlay>
-</body>
+      </sidecolumn>
+    </column>
+    <overlay>
+      <hpbar></hpbar>
+    </overlay>
+  </body>
 </html>
+
+<script src="song.js"></script>

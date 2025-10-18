@@ -13,7 +13,19 @@ body {
     text-align: justify;
     margin: 0;
     font-size: 18px;
-    font: monospaced;
+    font-family: 'Times New Roman', monospace;
+    overflow: hidden;
+}
+
+note {
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: wheat;
+    height: var(--tickheight);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 column {
@@ -36,16 +48,26 @@ sidecolumn {
 lettergrade {
     font-size: 150;
     font-weight: bold;
-    line-height: 0;
+    width: fit-content;
+    height: 150px;
+    position: relative;
+}
+
+lettergrade::after {
+    font-size: 70px;
+    content: '+';
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 scorebar {
     display: block;
-    height: 120px;
+    height: calc(150px + 1lh);
     width: calc(var(--barwidth)*1.5);
     background-color: blueviolet;
-    margin-left: 10px;
-    top: 50%;
+    margin-left: 20px;
+    bottom: 0;
 }
 
 songname {
@@ -60,11 +82,19 @@ songname {
     transform: translateY(-50%);
     display: flex;
     align-items: center;
+    height: fit-content;
+}
+
+#scorebox {
+    display: flex;
+    align-items: center;
+    flex-direction: column
 }
 
 accuracy {
     display: block;
     text-align: center;
+    height: 1lh;
 }
 
 notecontainer {
@@ -102,11 +132,11 @@ tick {
     position: relative;
 }
 
-tick::after {
+track {
     content: '';
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(var(--bottompadding));
     bottom: 0;
     width: 2px;
     height: 100vh;
@@ -117,7 +147,6 @@ tick::after {
 songprogress {
     top: 0;
     left: 0;
-    width: 100%;
     height: var(--barwidth);
     background-color: blue;
     position: fixed;
@@ -128,7 +157,7 @@ overlay {
     width: 100%;
     height: var(--bottompadding);
     position: fixed;
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(2px); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -140,22 +169,20 @@ hpbar {
     border: 2px solid blue;
     width: 80%;
     position: relative;
+    display: flex;
 }
 
 hpbar::after {
     content: '';
     display: block;
     position: absolute;
-    left: -1px;
-    top: 50%;
-    transform: translate(-50%, -50%);
     aspect-ratio: 1 / 1;
     height: var(--heartsize);
+    left: calc(var(--heartsize) / -2);
+    top: calc(calc(calc(var(--heartsize) - var(--hpwidth)) / 2) * -1);
     background: #FF5252;
-    clip-path: polygon(
-        50% 15%,
-        61% 6%, 75% 0%, 89% 6%, 95% 20%,
-        95% 35%, 50% 85%,
-        5% 35%, 5% 20%, 11% 6%, 25% 0%, 39% 6%
-    );
+    clip-path: polygon(50% 15%,
+            61% 6%, 75% 0%, 89% 6%, 95% 20%,
+            95% 35%, 50% 85%,
+            5% 35%, 5% 20%, 11% 6%, 25% 0%, 39% 6%);
 }
