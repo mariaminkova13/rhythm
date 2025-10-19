@@ -1,14 +1,14 @@
 :root {
-    --pulsespeed: 0.5s;
+    --pulsespeed: 1.5s;
 }
 
 tick {
-    opacity: 0.5;
+    opacity: 0.7;
     transition: opacity 0.1s ease, background-color 0.1s ease;
 }
 
 tick[aria-pressed="true"] {
-    opacity: 0.9;
+    opacity: 0.95;
     background-color: brown;
 }
 
@@ -19,7 +19,7 @@ songprogress {
     z-index: 999;
 }
 
-hpbar::after {
+hpbar::before {
     animation: pulse var(--pulsespeed) ease-in-out infinite;
 }
 
