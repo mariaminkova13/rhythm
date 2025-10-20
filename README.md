@@ -1,3 +1,5 @@
+>This is still in early stages on development.
+
 a simple rhythm game.
 SDFJKL or 123456 to press notes.
 Hold or double-press spacebar to pause.
