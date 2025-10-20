@@ -1,3 +1,5 @@
+>This is still in early stages on development.
+
 a simple rhythm game.
 SDFJKL or 123456 to press notes.
 Hold or double-press spacebar to pause.
@@ -7,3 +9,4 @@ Hold or double-press spacebar to pause.
 - [Body Font](https://caffinate.itch.io/abaddon)
 - https://emhuo.itch.io/raccoonserif-pixel-font
 - [Heading Font (AtariGames by Kieran)](https://nimblebeastscollective.itch.io/nb-pixel-font-bundle)
+- [Greek Font](https://grixel.gr/#)
