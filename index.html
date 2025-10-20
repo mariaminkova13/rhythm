@@ -7,6 +7,19 @@
   </head>
 
   <body>
+    <vignette></vignette>
+    <pausemodal>
+      <h1>𝄞 Game Paused ♪</h1>
+      <div style="display: flex; flex-direction: column">
+        <button id="resumeButton">Resume :D</button>
+        <button id="quitButton">Quit :<</button>
+      </div>
+    </pausemodal>
+    <deathmsg>
+      <h1>Game Over!</h1>
+      <button>Try Again</button>
+      <button>Maybe Later</button>
+    </deathmsg>
     <songprogress></songprogress>
     <column>
       <sidecolumn></sidecolumn>
@@ -23,11 +36,12 @@
       </notecontainer>
       <sidecolumn style="padding-top: var(--barwidth)">
         <songname> among us drip by Ohio - 67:69 </songname>
-        <div id="infobox" ;>
+        <div id="infobox">
           <div id="scorebox">
             <lettergrade>A</lettergrade>
             <accuracy>99.95%</accuracy>
           </div>
+          <plusminus>-</plusminus>
           <scorebar></scorebar>
         </div>
       </sidecolumn>
@@ -38,4 +52,5 @@
   </body>
 </html>
 
-<script src="song.js"></script>
+<script type="module" src="song.js"></script>
+<script type="module" src="modals.js"></script>

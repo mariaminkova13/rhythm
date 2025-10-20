@@ -1,0 +1,10 @@
+make the tick::afters less defined while under overlay
+make the overlay blur notes but not lines
+make the ticks in front of tracks but behind hitline
+make relaxed mode hide hpbar and badmiss comments
+make tracks visibly behind semi transparent ticks
+align sidecolumn elements
+
+fix UTF encoding
+
+after the last note of the song is hit activates checkForFC

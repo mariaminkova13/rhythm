@@ -1,20 +1,27 @@
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
-    --tickheight: calc(var(--barwidth) * 1.8);
+    --tickheight: calc(var(--barwidth) * 1.5);
     --tickgap: 20px;
     --hpwidth: calc(var(--barwidth) * 2.5);
-    --heartsize: calc(var(--hpwidth) + 20px)
+    --heartsize: calc(var(--hpwidth) + 20px);
+    --cursor: none;
+    --pausemodalvisibility: hidden;
+    --deathmsgvisibility: hidden;
+    --fontsize: 18px;
+    --accentcolor: purple;
+    --bgcolor: gray;
 }
 
 body {
-    background-color: gray;
+    background-color: var(--bgcolor);
     align-items: center;
     text-align: justify;
     margin: 0;
-    font-size: 18px;
+    font-size: var(--fontsize);
     font-family: 'Times New Roman', monospace;
     overflow: hidden;
+    cursor: var(--cursor);
 }
 
 note {
@@ -22,10 +29,16 @@ note {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     background-color: wheat;
-    height: var(--tickheight);
+    height: calc(var(--tickheight) * 0.8);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 10;
+}
+
+note[aria-active=false] {
+    opacity: 0.2;
+    background-color: none;
 }
 
 column {
@@ -46,27 +59,30 @@ sidecolumn {
 }
 
 lettergrade {
-    font-size: 150;
+    font-size: calc(var(--fontsize) * 10);
     font-weight: bold;
-    width: fit-content;
+    width: 1ch;
     height: 150px;
     position: relative;
+    text-align: center;
 }
 
-lettergrade::after {
+plusminus {
     font-size: 70px;
     content: '+';
     position: absolute;
     top: 0;
     right: 0;
+    transform: translateX(-1ch);
+    font-family: var(--headfont);
 }
 
 scorebar {
     display: block;
     height: calc(150px + 1lh);
-    width: calc(var(--barwidth)*1.5);
+    width: calc(var(--barwidth) * 2);
     background-color: blueviolet;
-    margin-left: 20px;
+    margin-left: calc(var(--barwidth) * 3);
     bottom: 0;
 }
 
@@ -98,10 +114,9 @@ accuracy {
 }
 
 notecontainer {
-    flex: 1.2;
+    flex: 0.8;
     display: flex;
     position: relative;
-    z-index: -1;
 }
 
 hitline {
@@ -110,6 +125,7 @@ hitline {
     background-color: black;
     width: 100%;
     position: absolute;
+    z-index: 60;
 }
 
 gutter {
@@ -128,19 +144,21 @@ gutter {
 tick {
     height: var(--tickheight);
     flex: 1;
-    background-color: rgba(255, 192, 203, 0.5);
+    background-color: rgba(255, 192, 203, 1);
     position: relative;
+    z-index: -2;
 }
 
 track {
-    content: '';
     position: absolute;
     left: 50%;
     transform: translateX(-50%) translateY(var(--bottompadding));
-    bottom: 0;
+    bottom: var(--bottompadding);
     width: 2px;
     height: 100vh;
-    background-color: purple;
+    background-color: var(--accentcolor);
+    opacity: 0.7;
+    z-index: -3;
 }
 
 songprogress {
@@ -149,17 +167,9 @@ songprogress {
     height: var(--barwidth);
     background-color: blue;
     position: fixed;
-}
-
-overlay {
-    bottom: 0;
-    width: 100%;
-    height: var(--bottompadding);
-    position: fixed;
-    /* backdrop-filter: blur(2px); */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    opacity: 0.5;
+    z-index: 999;
+    width: 90%;
 }
 
 hpbar {
@@ -169,6 +179,7 @@ hpbar {
     width: 80%;
     position: relative;
     display: flex;
+    z-index: 2;
 }
 
 hpbar::after {
@@ -178,6 +189,7 @@ hpbar::after {
     left: 0;
     background-color: forestgreen;
     width: var(--hp);
+    max-width: 100%;
 }
 
 hpbar::before {
@@ -187,7 +199,7 @@ hpbar::before {
     aspect-ratio: 1 / 1;
     height: var(--heartsize);
     left: calc(var(--heartsize) / -2);
-    z-index: 1;
+    z-index: 3;
     top: calc(calc(calc(var(--heartsize) - var(--hpwidth)) / 2) * -1);
     background: #FF5252;
     clip-path: polygon(50% 15%,
@@ -196,17 +208,57 @@ hpbar::before {
             5% 35%, 5% 20%, 11% 6%, 25% 0%, 39% 6%);
 }
 
-pausemodal {
-    display: block;
-    height: 70%;
-    aspect-ratio: 4 / 3;
-    background-color: magenta;
+pausemodal,
+deathmsg {
+    height: 50%;
+    width: 50%;
+    background-color: wheat;
     top: 50%;
     left: 50%;
     position: fixed;
     transform: translate(-50%, -50%);
+    visibility: var(--pausemodalvisibility);
+    padding: 10ch;
+    z-index: 69;
+    display: flex;
+    flex-direction: column;
+    outline: 5px solid var(--accentcolor);
+    outline-offset: -10px;
+    border: 3px solid var(--accentcolor);
 }
 
-pausemodal::before {
+deathmsg {
+    visibility: var(--deathmsgvisibility);
+}
 
+blurring, vignette {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+blurring {
+    backdrop-filter: blur(8px);
+    z-index: 68;
+}
+
+vignette {
+    box-shadow: darkslategray 0px 0px 60px 10px inset;
+    z-index: 67;
+}
+
+hitcomment {
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    height: 1lh;
+    font-size: 40px;
+    z-index: 10;
+    margin-top: 2lh;
 }

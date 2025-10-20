@@ -1,5 +1,49 @@
+@font-face {
+    font-family: "Raccoon";
+    src: url('fonts/RaccoonSerif-Mini.otf');
+}
+
+@font-face {
+    font-family: "Abaddon";
+    src: url('fonts/Abaddon Light.ttf');
+}
+
+@font-face {
+    font-family: "Peaberry";
+    src: url('fonts/PeaberryMono.ttf');
+}
+
+@font-face {
+    font-family: "AtariGames";
+    src: url('fonts/AtariGames.ttf');
+}
+
 :root {
     --pulsespeed: 1.5s;
+    --bodyfont: Abaddon;
+    --headfont: AtariGames;
+}
+
+body {
+    font-family: var(--bodyfont);
+}
+
+button {
+    width: 20ch;
+    font-family: var(--bodyfont);
+    margin: 0 auto;
+    font-size: calc(var(--fontsize) * 2);
+}
+
+lettergrade {
+    font-family: var(--headfont);
+    font-weight: lighter;
+}
+
+h1 {
+    font-family: var(--headfont);
+    text-align: center;
+    font-size: calc(var(--fontsize) * 3);
 }
 
 tick {
@@ -12,11 +56,9 @@ tick[aria-pressed="true"] {
     background-color: brown;
 }
 
-songprogress {
-    width: 90%;
-    height: var(--barwidth);
-    opacity: 0.5;
-    z-index: 999;
+hpbar::after {
+    transition: width 0.2s ease;
+    opacity: 1;
 }
 
 hpbar::before {
@@ -39,4 +81,16 @@ hpbar::before {
     25% {
         filter: brightness(1)
     }
+}
+
+overlay {
+    bottom: 0;
+    width: 100%;
+    height: var(--bottompadding);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    backdrop-filter: blur(5px);
 }
