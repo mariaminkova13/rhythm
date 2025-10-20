@@ -6,7 +6,7 @@ Hold or double-press spacebar to pause.
 
 # Asset Sources:
 - [Sound Effects](https://www.echosoundworks.com/eswanalogsnares)
-- [Body Font](https://caffinate.itch.io/abaddon)
+- [Body Font (Abaddon)](https://caffinate.itch.io/abaddon)
 - https://emhuo.itch.io/raccoonserif-pixel-font
 - [Heading Font (AtariGames by Kieran)](https://nimblebeastscollective.itch.io/nb-pixel-font-bundle)
-- [Greek Font](https://grixel.gr/#)
+- [Greek Font (Acme 9 Regular Bold)](https://grixel.gr/#)
