@@ -51,6 +51,6 @@ except OSError as e:
         print(f"\nError: {e}")
     sys.exit(1)
 
-# To start it again when you need it: Open a terminal in your project folder and run:
 # python -m http.server 8000
-# Then visit http://localhost:8000 in your browser. No code files needed - it's just a temporary server to get around the CORS restrictions when developing locally with ES6 modules!
+# Then visit http://localhost:8000
+# python server.py

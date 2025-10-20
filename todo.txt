@@ -8,3 +8,5 @@ align sidecolumn elements
 fix UTF encoding
 
 after the last note of the song is hit activates checkForFC
+
+make the ticks and tracks siblings rather than parent-child in order to make the ticks rotated 45deg

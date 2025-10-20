@@ -1,11 +1,13 @@
 import { unpause, pause, countdown, paused, showDeathMsg } from './modals.js';
 
+const difficulties = ["relaxed", "normal", "hard", "brutal"]
+
 var fps = 60;
 var timeout = 100;
 var hp = 100;
 var difficulty = "normal";
 var speed = 5; // pixels per frame
-var hitcommenttimeout = 500;
+var hitcommenttimeout = 1000;
 
 const perfectSound = new Audio("sfx/perfect.wav");
 const missSound = new Audio("sfx/miss.mp3");
@@ -29,6 +31,12 @@ function updatehp() {
     0.1 + hp * 0.007 + "s"
   );
   document.documentElement.style.setProperty("--hp", hp + "%");
+  console.log("HP updated to:", hp + "%");
+  if (difficulty != "relaxed") {
+    if (hp > 100) {
+      hp == 100
+    }
+  }
   if (hp <= 0) {
     showDeathMsg()
   }

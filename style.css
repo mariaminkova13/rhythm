@@ -1,20 +1,50 @@
+@font-face {
+    font-family: "Raccoon";
+    src: url('fonts/RaccoonSerif-Mini.otf');
+}
+
+@font-face {
+    font-family: "Abaddon";
+    src: url('fonts/Abaddon Light.ttf');
+}
+
+@font-face {
+    font-family: "Peaberry";
+    src: url('fonts/PeaberryMono.ttf');
+}
+
+@font-face {
+    font-family: "AtariGames";
+    src: url('fonts/AtariGames.ttf');
+}
+
+@font-face {
+    font-family: "Acme";
+    src: url('fonts/Grixel Acme 9 Regular Bold Regular.ttf')
+}
+
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
     --tickheight: calc(var(--barwidth) * 1.5);
-    --tickgap: 20px;
     --hpwidth: calc(var(--barwidth) * 2.5);
     --heartsize: calc(var(--hpwidth) + 20px);
     --cursor: none;
     --pausemodalvisibility: hidden;
     --deathmsgvisibility: hidden;
     --fontsize: 18px;
-    --accentcolor: purple;
+    --accentcolor: rgba(128, 0, 128, 0.2);
+    --pulsespeed: 1.5s;
+    --bodyfont: Abaddon;
+    --headfont: AtariGames, Acme;
+    --barcolor: blue;
+    --hpcolor: darkolivegreen;
+    --hpradius: 3px;
     --bgcolor: gray;
+    --textcolor: black;
 }
 
 body {
-    background-color: var(--bgcolor);
     align-items: center;
     text-align: justify;
     margin: 0;
@@ -22,6 +52,16 @@ body {
     font-family: 'Times New Roman', monospace;
     overflow: hidden;
     cursor: var(--cursor);
+    font-family: var(--bodyfont);
+    background-color: var(--bgcolor);
+    color: var(--textcolor);
+}
+
+button {
+    width: 20ch;
+    font-family: var(--bodyfont);
+    margin: 0 auto;
+    font-size: calc(var(--fontsize) * 2);
 }
 
 note {
@@ -60,11 +100,17 @@ sidecolumn {
 
 lettergrade {
     font-size: calc(var(--fontsize) * 10);
-    font-weight: bold;
     width: 1ch;
     height: 150px;
     position: relative;
     text-align: center;
+    font-family: var(--headfont);
+}
+
+h1 {
+    font-family: var(--headfont);
+    text-align: center;
+    font-size: calc(var(--fontsize) * 3);
 }
 
 plusminus {
@@ -81,9 +127,10 @@ scorebar {
     display: block;
     height: calc(150px + 1lh);
     width: calc(var(--barwidth) * 2);
-    background-color: blueviolet;
+    background-color: var(--barcolor);
     margin-left: calc(var(--barwidth) * 3);
     bottom: 0;
+    border-radius: var(--hpradius);
 }
 
 songname {
@@ -131,7 +178,6 @@ hitline {
 gutter {
     display: flex;
     flex-direction: row;
-    gap: var(--tickgap);
     width: 100%;
     bottom: 0;
     position: absolute;
@@ -143,10 +189,26 @@ gutter {
 
 tick {
     height: var(--tickheight);
-    flex: 1;
-    background-color: rgba(255, 192, 203, 1);
+    width: var(--tickheight);
+    aspect-ratio: 1 / 1;
     position: relative;
     z-index: -2;
+    background-color: var(--bgcolor);
+    border: 2px solid red;
+    margin: 0 auto;
+    border-radius: var(--hpradius);
+}
+
+tick[aria-pressed="true"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--accentcolor);
+    box-shadow: 0px 0px 10px 5px var(--accentcolor);
+    z-index: -3;
 }
 
 track {
@@ -156,7 +218,8 @@ track {
     bottom: var(--bottompadding);
     width: 2px;
     height: 100vh;
-    background-color: var(--accentcolor);
+    background: linear-gradient(to top, var(--bgcolor), transparent);
+    filter: brightness(1.5);
     opacity: 0.7;
     z-index: -3;
 }
@@ -165,21 +228,24 @@ songprogress {
     top: 0;
     left: 0;
     height: var(--barwidth);
-    background-color: blue;
+    background-color: var(--barcolor);
     position: fixed;
     opacity: 0.5;
     z-index: 999;
     width: 90%;
+    border-bottom-right-radius: var(--hpradius);
 }
 
 hpbar {
     height: var(--hpwidth);
-    background-color: darkolivegreen;
-    border: 2px solid blue;
+    border: 2px solid var(--barcolor);
     width: 80%;
     position: relative;
     display: flex;
     z-index: 2;
+    background-color: var(--hpcolor);
+    border-bottom-right-radius: var(--hpradius);
+    border-top-right-radius: var(--hpradius);
 }
 
 hpbar::after {
@@ -187,9 +253,16 @@ hpbar::after {
     position: absolute;
     height: 100%;
     left: 0;
-    background-color: forestgreen;
+    top: 0;
     width: var(--hp);
     max-width: 100%;
+    z-index: 1;
+    transition: width 0.2s ease;
+    opacity: 1;
+    background-color: var(--hpcolor);
+    filter: brightness(1.5) saturate(1.9);
+    border-bottom-right-radius: var(--hpradius);
+    border-top-right-radius: var(--hpradius);
 }
 
 hpbar::before {
@@ -201,7 +274,9 @@ hpbar::before {
     left: calc(var(--heartsize) / -2);
     z-index: 3;
     top: calc(calc(calc(var(--heartsize) - var(--hpwidth)) / 2) * -1);
+    animation: pulse var(--pulsespeed) ease-in-out infinite;
     background: #FF5252;
+    border-radius: 50px;
     clip-path: polygon(50% 15%,
             61% 6%, 75% 0%, 89% 6%, 95% 20%,
             95% 35%, 50% 85%,
@@ -231,6 +306,49 @@ deathmsg {
     visibility: var(--deathmsgvisibility);
 }
 
+hitcomment {
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    height: 1lh;
+    font-size: 40px;
+    z-index: 10;
+    margin-top: 2lh;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: brightness(0.9);
+    }
+
+    10% {
+        transform: scale(1.15);
+        filter: brightness(1.4);
+    }
+
+    25% {
+        filter: brightness(1)
+    }
+}
+
+overlay {
+    bottom: 0;
+    width: 100%;
+    height: var(--bottompadding);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    backdrop-filter: blur(5px);
+}
+
 blurring, vignette {
     display: block;
     position: fixed;
@@ -247,18 +365,11 @@ blurring {
 
 vignette {
     box-shadow: darkslategray 0px 0px 60px 10px inset;
-    z-index: 67;
+    z-index: 9999;
 }
 
-hitcomment {
-    display: block;
-    position: absolute;
-    width: 100%;
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: bold;
-    height: 1lh;
-    font-size: 40px;
-    z-index: 10;
-    margin-top: 2lh;
+flexcolumn {
+    flex: 1;
+    display: flex;
+    align-items: center;
 }
