@@ -10,8 +10,8 @@ var speed = 5; // pixels per frame
 var hitcommenttimeout = 1000;
 
 const perfectSound = new Audio("sfx/perfect.wav");
-const missSound = new Audio("sfx/miss.mp3");
-const hitSound = new Audio("sfx/hit.wav");
+const badmissSound = new Audio("sfx/badmiss.mp3");
+const hitSound = new Audio("sfx/hit.wav");  
 const shitSound = new Audio("sfx/shit.wav");
 
 const note = document.createElement("note");
@@ -171,7 +171,7 @@ function setup() {
             shitCount++
           } else {
             console.log("miss");
-            missSound.play();
+            badmissSound.play();
             createHitComment("miss");
             hp -= missHpCost;
             updatehp();
@@ -182,7 +182,7 @@ function setup() {
           }
         } else {
           console.log(`Lane ${laneId}: No notes to hit`);
-          missSound.play();
+          badmissSound.play();
           hp -= badMissHpCost;
           updatehp();
           const newHitComment = document.createElement("hitcomment");
@@ -209,38 +209,12 @@ function setup() {
     }
   });
 
-  //open the pause modal on double spacebar press
-  let spacebarPressCount = 0;
-  let spacebarTimeout;
-
   document.addEventListener("keydown", (event) => {
-    if (event.key === " ") {
-      spacebarPressCount++;
-
-      // Clear the previous timeout if it exists
-      if (spacebarTimeout) {
-        clearTimeout(spacebarTimeout);
-      }
-
-      // Check if double press
-      if (spacebarPressCount === 2) {
+    if (event.key === " " || event.key === "Escape" || event.key === "Enter") {
         pause();
-        spacebarPressCount = 0; // Reset counter
-
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape") {
-            unpause();
-            removeEventListener;
-          }
-        });
-      }
-
-      // Reset counter after timeout if no second press
-      spacebarTimeout = setTimeout(() => {
-        spacebarPressCount = 0;
-      }, 250); // 250ms window for double press
     }
   });
+
   updatehp();
 }
 
@@ -272,7 +246,14 @@ function handleNote(noteElement) {
   }, 1000 / fps);
 }
 
-let grades = ['F', 'D', 'C', 'B', 'A'];
+let grades = {
+  F: 'You Suck',
+  D: 'Bruh',
+  C: 'Meh',
+  //mid and decent, phi is godlike
+  B: 'Nice',
+  A: 'Sick'
+}
 const lettergrade = document.querySelector("lettergrade");
 const plusminus = document.querySelector("plusminus");
 

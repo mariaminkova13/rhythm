@@ -1,97 +1,100 @@
+//https://codepen.io/amit_sheen/pen/oKaabp
+//https://codepen.io/paulita_p/pen/gLqLZr
+
 export function countdown() {
-    const countdownElement = document.createElement("countdownnumber");
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    const polygon = document.createElementNS(svgNS, "polygon");
+  const spinner = document.createElement("spinner");
+  const countdownElement = document.createElement("countdownnumber");
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  const polygon = document.createElementNS(svgNS, "polygon");
 
-    let numbers = ['3', '2', '1', 'GO!'];
-    let index = 0;
-    let startTime = Date.now();
-    let animationFrame;
+  let numbers = ["3", "2", "1", "GO"];
+  let index = 0;
+  let startTime = Date.now();
+  let animationFrame;
 
-    // Setup SVG
-    svg.setAttribute("width", "100%");
-    svg.setAttribute("height", "100%");
-    svg.style.position = "absolute";
-    svg.style.top = "0";
-    svg.style.left = "0";
-    svg.style.pointerEvents = "none";
-    svg.style.clipPath = "circle(50% at 50% 50%)";
-    svg.style.zIndex = "-1";
+  // Setup SVG
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "100%");
+  svg.style.position = "absolute";
+  svg.style.top = "0";
+  svg.style.left = "0";
+  svg.style.pointerEvents = "none";
+  svg.style.clipPath = "circle(50% at 50% 50%)";
+  svg.style.zIndex = "-1";
 
-    polygon.setAttribute("fill", "rgba(255, 255, 255, 0.5)");
-    svg.appendChild(polygon);
+  polygon.setAttribute("fill", "rgba(255, 255, 255, 0.5)");
+  svg.appendChild(polygon);
 
-    countdownElement.textContent = numbers[0];
-    countdownElement.appendChild(svg);
-    document.body.appendChild(countdownElement);
+  countdownElement.textContent = numbers[0];
+  countdownElement.appendChild(svg);
+  document.body.appendChild(spinner);
+  spinner.appendChild(countdownElement);
 
-    // Function to calculate polygon points based on percentage (like CodePen)
-    function getPoints(w, h, percent) {
-        const centerX = w / 2;
-        const centerY = h / 2;
-        const radius = Math.min(w, h) / 2;
+  // Function to calculate polygon points based on percentage
+  function getPoints(w, h, percent) {
+    const centerX = w / 2;
+    const centerY = h / 2;
+    const radius = Math.min(w, h) / 2;
+    // Start from center
+    let points = [`${centerX},${centerY}`];
+    // Start point at top
+    points.push(`${centerX},0`);
 
-        // Start from center
-        let points = [`${centerX},${centerY}`];
+    const angleInRadians = (percent / 100) * 2 * Math.PI;
 
-        // Start point at top (12 o'clock)
-        points.push(`${centerX},0`);
+    // Add corner points as we sweep clockwise
+    if (percent > 12.5) points.push(`${w},0`); // Top-right corner
+    if (percent > 37.5) points.push(`${w},${h}`); // Bottom-right corner
+    if (percent > 62.5) points.push(`0,${h}`); // Bottom-left corner
+    if (percent > 87.5) points.push(`0,0`); // Top-left corner
 
-        const angleInRadians = (percent / 100) * 2 * Math.PI;
+    // Calculate the current point on the circle edge
+    const x = centerX + radius * Math.sin(angleInRadians);
+    const y = centerY - radius * Math.cos(angleInRadians);
 
-        // Add corner points as we sweep clockwise
-        if (percent > 12.5) points.push(`${w},0`);           // Top-right corner
-        if (percent > 37.5) points.push(`${w},${h}`);        // Bottom-right corner
-        if (percent > 62.5) points.push(`0,${h}`);           // Bottom-left corner
-        if (percent > 87.5) points.push(`0,0`);              // Top-left corner
+    points.push(`${x},${y}`);
 
-        // Calculate the current point on the circle edge
-        const x = centerX + radius * Math.sin(angleInRadians);
-        const y = centerY - radius * Math.cos(angleInRadians);
+    return points.join(" ");
+  }
 
-        points.push(`${x},${y}`);
+  // Animate the polygon sweep (like animate_countdown)
+  function animateSweep() {
+    const now = Date.now();
+    const elapsed = now - startTime;
+    const percent = Math.min((elapsed / 1000) * 100, 100);
 
-        return points.join(" ");
+    const rect = countdownElement.getBoundingClientRect();
+    polygon.setAttribute("points", getPoints(rect.width, rect.height, percent));
+
+    if (percent < 100) {
+      animationFrame = requestAnimationFrame(animateSweep);
     }
+  }
 
-    // Animate the polygon sweep (like animate_countdown)
-    function animateSweep() {
-        const now = Date.now();
-        const elapsed = now - startTime;
-        const percent = Math.min((elapsed / 1000) * 100, 100);
+  // Start animation
+  animateSweep();
 
-        const rect = countdownElement.getBoundingClientRect();
-        polygon.setAttribute("points", getPoints(rect.width, rect.height, percent));
+  // Cycle through numbers
+  const countdownInterval = setInterval(() => {
+    index++;
 
-        if (percent < 100) {
-            animationFrame = requestAnimationFrame(animateSweep);
-        }
+    if (index < numbers.length) {
+      // Reset for next number
+      startTime = Date.now();
+      countdownElement.textContent = numbers[index];
+      countdownElement.appendChild(svg);
+      animateSweep();
+    } else {
+      // Clean up
+      cancelAnimationFrame(animationFrame);
+      countdownElement.remove();
+      clearInterval(countdownInterval);
     }
-
-    // Start animation
-    animateSweep();
-
-    // Cycle through numbers
-    const countdownInterval = setInterval(() => {
-        index++;
-
-        if (index < numbers.length) {
-            // Reset for next number
-            startTime = Date.now();
-            countdownElement.textContent = numbers[index];
-            countdownElement.appendChild(svg);
-            animateSweep();
-        } else {
-            // Clean up
-            cancelAnimationFrame(animationFrame);
-            countdownElement.remove();
-            clearInterval(countdownInterval);
-        }
-    }, 1000);
+  }, 1000);
 }
 
-export var paused = false
+export var paused = false;
 const blurring = document.createElement("blurring");
 
 export function pause() {
@@ -102,6 +105,13 @@ export function pause() {
     "visible"
   );
   document.documentElement.style.setProperty("--cursor", "default");
+  
+  document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            unpause();
+            removeEventListener;
+          }
+        });
 }
 
 export function unpause() {
@@ -116,10 +126,7 @@ export function unpause() {
 }
 
 export function showDeathMsg() {
-    document.body.appendChild(blurring);
-    document.documentElement.style.setProperty("--cursor", "default");
-    document.documentElement.style.setProperty(
-      "--deathmsgvisibility",
-      "visible"
-    );
+  document.body.appendChild(blurring);
+  document.documentElement.style.setProperty("--cursor", "default");
+  document.documentElement.style.setProperty("--deathmsgvisibility", "visible");
 }

@@ -1,0 +1,8 @@
+<
+key: Cdorian;
+precision: 16;
+bpm: 60;
+difficulty: normal;
+songname: amogus;
+songfilepath: songs/amogus.midi;
+>

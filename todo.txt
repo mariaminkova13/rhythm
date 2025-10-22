@@ -4,12 +4,22 @@ make the ticks in front of tracks but behind hitline
 make relaxed mode hide hpbar and badmiss comments
 make tracks visibly behind semi transparent ticks
 align sidecolumn elements
-
 fix UTF encoding
-
 after the last note of the song is hit activates checkForFC
-
-make the ticks and tracks siblings rather than parent-child in order to make the ticks rotated 45deg
+make the ticks and tracks siblings rather than parent-child in order to make the ticks rotated 45deg. Center properly.
 make the modals stop press event listeners
-
 make the sound playing stop whatever sfx is currently going
+make it wait until countdown over, style countdown
+fix resume button
+animate hitcomments
+audio visualizer bars
+
+combo & fever
+
+characters (choose your fighter screen with the character sprites going from a-pose to expressive on selection):
+1. black w/ thicc choker, spirit/senpai voice
+2. postsoviet doomer core, backwards baseball cap, pico voice
+3. horror game protag x mob wife x goth, Mom/female nonsense voice
+4. nonsense w/baggy jorts, meme shirt, Tankman/tralalero tralala voice
+
+https://kbhgames.com/game/friday-night-funkin-vs-tankman-week-7-in-hd
