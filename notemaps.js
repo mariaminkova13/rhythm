@@ -1,7 +1,7 @@
 const keys = {
-    Cdorian: [C4, D, Eb, F, G, A, Bb, C5],
+    Cdorian: [C4, D, Eb, F, G, A, Bb, C5], //default
     Cphrygian: [C4, Db, Eb, F, G, Ab, Bb, C5],
-    Clydian: [C4, D, E, Gb, G, A, B, C5]
+    Clydian: [C4, D, E, Gb, G, A, B, C5],
 }
 
 //frequencies in hertz https://muted.io/note-frequencies

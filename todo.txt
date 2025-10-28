@@ -14,6 +14,9 @@ fix resume button
 animate hitcomments
 audio visualizer bars
 
+mac & mobile compatibility
+QTEs- bullet hell game, etc
+
 combo & fever
 
 characters (choose your fighter screen with the character sprites going from a-pose to expressive on selection):
@@ -22,4 +25,12 @@ characters (choose your fighter screen with the character sprites going from a-p
 3. horror game protag x mob wife x goth, Mom/female nonsense voice
 4. nonsense w/baggy jorts, meme shirt, Tankman/tralalero tralala voice
 
-https://kbhgames.com/game/friday-night-funkin-vs-tankman-week-7-in-hd
+____________   ____________   ____________   ____________
+|    )    v|   |     o   v|   |     (   v|   |         v|
+|        .X|   |        .X|   |        .X|   |        .X|
+|/\     .X#|   |/\     .X#|   |/\     .X#|   |/\     .X#|
+| ^`\^/\XX#|   | ^`\^/\XX#|   | ^`\^/\XX#|   | ^`\^/\XX#|
+|` ^ `\X##M|   |` ^ `\X##M|   |` ^ `\X##M|   |` ^ `\X##M|
+|--.^XX##MM|   |--.^XX##MM|   |--.^XX##MM|   |--.^XX##MM|
++----------+   +----------+   +----------+   +----------+
+ Crescent 1      Full Moon     Crescent 2      New Moon
