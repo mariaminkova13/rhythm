@@ -8,14 +8,14 @@ export function countdown() {
   const svg = document.createElementNS(svgNS, "svg");
   const polygon = document.createElementNS(svgNS, "polygon");
 
-  let numbers = ["3", "2", "1", "GO"];
+  let numbers = ["3", "2", "1", "GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO"];
   let index = 0;
   let startTime = Date.now();
   let animationFrame;
 
   // Setup SVG
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", "100%");
+  // svg.setAttribute("width", "110%");
+  // svg.setAttribute("height", "110%");
   svg.style.position = "absolute";
   svg.style.top = "0";
   svg.style.left = "0";
@@ -88,7 +88,7 @@ export function countdown() {
     } else {
       // Clean up
       cancelAnimationFrame(animationFrame);
-      countdownElement.remove();
+      spinner.remove();
       clearInterval(countdownInterval);
     }
   }, 1000);

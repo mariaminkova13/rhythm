@@ -1,5 +1,7 @@
 import { unpause, pause, countdown, paused, showDeathMsg } from './modals.js';
 
+console.log("hello");
+
 const difficulties = ["relaxed", "normal", "hard", "brutal"]
 
 var fps = 60;
