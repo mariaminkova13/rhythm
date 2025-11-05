@@ -1,21 +1,21 @@
 # Description
-A rhythm game currently in early stages of development, inspired by popular titles like 'Project Sekai', 'Friday NIght Funkin', 'A Dance of Fire and Ice', and 'RoBeats'.
+A vertical-scrolling rhythm game currently in early stages of development, inspired by popular titles like 'Project Sekai', 'Friday NIght Funkin', 'A Dance of Fire and Ice', and 'RoBeats'.
 Intended to be played casually; 100% skill-based with no levels, upgrades, in-game currency or progression.
 So far, the features and installation listed haven't been added yet, but they are in progress
 >Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
 ## Contents:
-1. [Installation & Usage](#Installation&Usage)
+1. [Installation & Usage](#Installation-&-Usage)
    
 	1a. [Controls](##controls)
  
  	1b. [Features](##features)
 
-	1c. [What Makes it Cool](###whatmakesitcool)
+	1c. [What Makes it Cool](###what-makes-it-cool)
   
-3. [Credits](#assetsources&credits)
+3. [Credits](#asset-sources-&-credits)
 
-	3a. [Follow Me!](##FollowMe)
+	3a. [Follow Me!](##follow-me)
 
 	3b. [GNU General Public License](##License)
 

@@ -1,5 +1,28 @@
 {
+  "name": "rhythm",
+  "version": "1.0.0",
+  "description": "A rhythm game currently in early stages of development, inspired by popular titles like 'Project Sekai', 'Friday NIght Funkin', 'A Dance of Fire and Ice', and 'RoBeats'.\r Intended to be played casually; 100% skill-based with no levels, upgrades, in-game currency or progression.\r So far, the features and installation listed haven't been added yet, but they are in progress\r >Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)",
+  "main": "windowStartup.js",
+  "devDependencies": {
+    "electron": "^39.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariaminkova13/rhythm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mariaminkova13/rhythm/issues"
+  },
+  "homepage": "https://github.com/mariaminkova13/rhythm#readme",
   "dependencies": {
-    "electron.js": "^0.0.1"
+    "@electron/remote": "^2.1.3"
   }
 }
