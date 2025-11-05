@@ -7,17 +7,17 @@ So far, the features and installation listed haven't been added yet, but they ar
 ## Contents:
 1. [Installation & Usage](#Installation-&-Usage)
    
-	1a. [Controls](##controls)
+	1a. [Controls](#controls)
  
- 	1b. [Features](##features)
+ 	1b. [Features](#features)
 
-	1c. [What Makes it Cool](###what-makes-it-cool)
+	1c. [What Makes it Cool](#what-makes-it-cool)
   
 3. [Credits](#asset-sources-&-credits)
 
-	3a. [Follow Me!](##follow-me)
+	3a. [Follow Me!](#follow-me)
 
-	3b. [GNU General Public License](##License)
+	3b. [GNU General Public License](#License)
 
 # Installation & Usage
 Just download it and double-click to launch. Or just open the web version!
