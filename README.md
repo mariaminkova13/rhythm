@@ -5,7 +5,7 @@ So far, the features and installation listed haven't been added yet, but they ar
 >Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
 ## Contents:
-1. [Installation & Usage](#Installation-&-Usage)
+1. [Installation & Usage](#installation--usage)
    
 	1a. [Controls](#controls)
  
@@ -15,9 +15,9 @@ So far, the features and installation listed haven't been added yet, but they ar
   
 3. [Credits](#asset-sources-&-credits)
 
-	3a. [Follow Me!](#follow-me)
+	3a. [Follow Me!](#follow-me-_ツ_)
 
-	3b. [GNU General Public License](#License)
+	3b. [GNU General Public License](#license)
 
 # Installation & Usage
 Just download it and double-click to launch. Or just open the web version!
