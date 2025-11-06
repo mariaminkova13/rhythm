@@ -10,7 +10,7 @@ Played casually; 100% skill-based with no levels, upgrades, in-game currency or 
 	1a. [Controls](#controls)<br/>
  	1b. [Features](#features)<br/>
 	1c. [What Makes it Cool](#what-makes-it-cool)<br/>
-3. [Credits](#asset-sources-&-credits)<br/>
+3. [Credits](#asset-sources--credits)<br/>
 	3a. [Follow Me!](#follow-me-_ツ_)<br/>
 	3b. [GNU General Public License](#license)<br/>
 
