@@ -65,7 +65,7 @@ function createWindow() {
       contextIsolation: true,
       webSecurity: true,
     },
-    // icon: 'style/icons/pilcrow.ico'
+    // icon: 'icons/logo.ico'
   });
   require("@electron/remote/main").enable(mainWindow.webContents);
 
