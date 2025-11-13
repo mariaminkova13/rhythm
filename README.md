@@ -1,5 +1,5 @@
 # Description
-A simple vertical-scrolling rhythm game.
+A simple vertical-scrolling rhythm game that uses Electron.
 
 Played casually; 100% skill-based with no levels, upgrades, in-game currency or progression. This game might not be suited for beginners- it's intended more as a hardcore challenge, reminiscent of Dark Souls... so don't be surprised if the 'relaxed' difficulty feels about right and 'normal' is difficult; I based it mostly on my personal experience and skill level.
 >So far, the features and installation listed haven't been added yet, but they are in progress
@@ -74,7 +74,7 @@ Analog Snares from [here](https://www.echosoundworks.com/eswanalogsnares)
 Licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), meaning that this project is completely free & open-source — with the condition that any derivative works are open-source as well.
 
 ## Inspiration
-Inspired by many popular titles. If you enjoyed my game, I recommend trying those as well:
+Inspired by many popular titles:
 - ['Taiko no Tatsujin'](https://www.bandainamcoent.com/games/taiko-no-tatsujin-rhythm-festival)
 - ['Friday Night Funkin'](https://www.newgrounds.com/portal/view/770371)
 - ['Phigros'](https://play.google.com/store/apps/details?id=com.PigeonGames.Phigros&hl=en-US)
@@ -82,8 +82,9 @@ Inspired by many popular titles. If you enjoyed my game, I recommend trying thos
 - ['Rhythm Doctor'](https://rhythmdr.com/cny/#)
 - ['Arcaea'](https://arcaea.lowiro.com/en)
 - ['Rhythm Hell'](https://rhythmhell.com)
+- ['Bemuse'](https://bemuse.ninja)
 
 Visual inspo from:
 - ['Cytus 2'](https://rayark.com/g/cytus2)
 - ['Chainsaw Dance'](https://benedique.itch.io/chainsaw-dance)
-- ['Rhythm+'](https://rhythm-plus.com/menu) & ['Project Sekai: Colorful Stage'](https://www.colorfulstage.com)
+- ['Rhythm+'](https://rhythm-plus.com/menu)
