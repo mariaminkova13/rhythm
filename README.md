@@ -3,7 +3,6 @@ A simple vertical-scrolling rhythm game made with Electron.
 
 Played casually; 100% skill-based with no levels, upgrades, in-game currency or progression. This game might not be suited for beginners- it's intended more as a hardcore challenge, reminiscent of Dark Souls... so don't be surprised if the 'relaxed' difficulty feels about right and 'normal' is difficult; I based it mostly on my personal experience and skill level.
 
-> So far, the features and installation listed haven't been added yet, but they are in progress
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
 ## Contents:
@@ -56,8 +55,7 @@ Just download it and double-click to launch. Or just open the web version!
 ### Overview of Difficulties
 
 # Asset Sources & Credits:
-
-- [Sound Effects](https://www.echosoundworks.com/eswanalogsnares)
+[Vignette Shader](https://www.shadertoy.com/view/lsKSWR)
 
 |                         Font |                                Name with Link                                 |
 | ---------------------------: | :---------------------------------------------------------------------------: |

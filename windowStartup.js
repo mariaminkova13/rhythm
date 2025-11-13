@@ -1,6 +1,3 @@
-// Creating a window https://www.geeksforgeeks.org/how-to-create-a-desktop-app-using-javascript/
-console.clear();
-
 const { app, BrowserWindow, Menu, MenuItem, ipcMain } = require("electron");
 const { spawn } = require("child_process");
 
@@ -57,7 +54,7 @@ function createWindow() {
     height: 600,
     minWidth: 900,
     minHeight: 600,
-    titleBarStyle: 'hidden',
+    titleBarStyle: "hidden",
     ...(process.platform !== "darwin" ? { titleBarOverlay: false } : {}),
     resizable: true,
     webPreferences: {
@@ -112,11 +109,3 @@ app.on("before-quit", () => {
     pythonServer.kill();
   }
 });
-
-///////webGL
-// const canvas = document.getElementById('glcanvas');
-// const gl = canvas.getContext('webgl');
-
-// if (!gl) {
-//     alert("Unable to initialize WebGL. Your browser may not support it.");
-// }

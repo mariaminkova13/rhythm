@@ -1,36 +1,47 @@
 @font-face {
     font-family: "Raccoon";
-    src: url('fonts/RaccoonSerif-Mini.otf');
+    src: url('style/fonts/RaccoonSerif-Mini.otf');
 }
 
 @font-face {
     font-family: "Abaddon";
-    src: url('fonts/Abaddon Light.ttf');
+    src: url('style/fonts/Abaddon Light.ttf');
 }
 
 @font-face {
     font-family: "Peaberry";
-    src: url('fonts/PeaberryMono.ttf');
+    src: url('style/fonts/PeaberryMono.ttf');
 }
 
 @font-face {
     font-family: "AtariGames";
-    src: url('fonts/AtariGames.ttf');
+    src: url('style/fonts/AtariGames.ttf');
 }
 
 @font-face {
     font-family: "Acme";
-    src: url('fonts/Grixel Acme 9 Regular Bold Regular.ttf')
+    src: url('style/fonts/Grixel Acme 9 Regular Bold Regular.ttf')
 }
 
 @font-face {
     font-family: "CyrillicPixel";
-    src: url('fonts/CyrillicPixel7-LPeg.ttf')
+    src: url('style/fonts/CyrillicPixel7-LPeg.ttf')
 }
 
 @font-face {
     font-family: "DotGothic";
-    src: url('fonts/DotGothic16-Regular.ttf')
+    src: url('style/fonts/DotGothic16-Regular.ttf')
+}
+
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000000;
+    display: block;
+    pointer-events: none;
 }
 
 :root {
@@ -72,6 +83,16 @@ body {
     font-family: var(--bodyfont);
     background-color: var(--bgcolor);
     color: var(--textcolor);
+}
+
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    display: block;
 }
 
 button {
