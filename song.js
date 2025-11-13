@@ -1,7 +1,5 @@
 import { unpause, pause, countdown, paused, showDeathMsg } from './modals.js';
 
-console.log("hello");
-
 const difficulties = ["relaxed", "normal", "hard", "brutal"]
 
 var fps = 60;
@@ -19,12 +17,7 @@ const shitSound = new Audio("sfx/shit.wav");
 const note = document.createElement("note");
 // const hitcomment = document.createElement("hitcomment")
 
-const lane1 = document.getElementById("lane1");
-const lane2 = document.getElementById("lane2");
-const lane3 = document.getElementById("lane3");
-const lane4 = document.getElementById("lane4");
-const lane5 = document.getElementById("lane5");
-const lane6 = document.getElementById("lane6");
+let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
 
 function updatehp() {
   document.documentElement.style.setProperty(
@@ -90,6 +83,15 @@ function createHitComment(msg) {
 }
 
 function setup() {
+  // Initialize lane elements
+  Slane = document.getElementById("Slane");
+  Dlane = document.getElementById("Dlane");
+  Flane = document.getElementById("Flane");
+  spacelane = document.getElementById("spacelane");
+  Jlane = document.getElementById("Jlane");
+  Klane = document.getElementById("Klane");
+  Llane = document.getElementById("Llane");
+
   // Setup pause modal buttons
   const resumeButton = document.getElementById("resumeButton");
   const quitButton = document.getElementById("quitButton");
@@ -106,12 +108,13 @@ function setup() {
   }
 
   let keymap = {};
-  keymap["lane1"] = ["1", "s", "S"];
-  keymap["lane2"] = ["2", "d", "D"];
-  keymap["lane3"] = ["3", "f", "F"];
-  keymap["lane4"] = ["4", "j", "J"];
-  keymap["lane5"] = ["5", "k", "K"];
-  keymap["lane6"] = ["6", "l", "L"];
+  keymap["Slane"] = ["1", "s", "S"];
+  keymap["Dlane"] = ["2", "d", "D"];
+  keymap["Flane"] = ["3", "f", "F"];
+  keymap["spacelane"] = [""];
+  keymap["Jlane"] = ["4", "j", "J"];
+  keymap["Klane"] = ["5", "k", "K"];
+  keymap["Llane"] = ["6", "l", "L"];
 
   let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
   let missCount, hitCount, shitCount, perfectCount = 0;
@@ -212,8 +215,12 @@ function setup() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === " " || event.key === "Escape" || event.key === "Enter") {
+    if (event.key === "Escape" || event.key === "Enter") {
+      if (paused) {
+        unpause();
+      } else {
         pause();
+      }
     }
   });
 
@@ -274,5 +281,5 @@ function checkForFC() {
 
 setup();
 countdown();
-lane1.appendChild(note);
+Slane.appendChild(note);
 handleNote(note);

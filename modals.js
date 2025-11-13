@@ -1,8 +1,10 @@
 //https://codepen.io/amit_sheen/pen/oKaabp
 //https://codepen.io/paulita_p/pen/gLqLZr
 
+let spinner = null;
+
 export function countdown() {
-  const spinner = document.createElement("spinner");
+  spinner = document.createElement("spinner");
   const countdownElement = document.createElement("countdownnumber");
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
@@ -98,6 +100,9 @@ export var paused = false;
 const blurring = document.createElement("blurring");
 
 export function pause() {
+  if (paused) return; // Don't pause if already paused
+  if (spinner) {spinner.remove();}
+
   paused = true;
   document.body.appendChild(blurring);
   document.documentElement.style.setProperty(
@@ -105,16 +110,11 @@ export function pause() {
     "visible"
   );
   document.documentElement.style.setProperty("--cursor", "default");
-  
-  document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape") {
-            unpause();
-            removeEventListener;
-          }
-        });
 }
 
 export function unpause() {
+  if (!paused) return; // Don't unpause if not paused
+
   paused = false;
   document.body.removeChild(blurring);
   document.documentElement.style.setProperty(
