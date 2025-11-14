@@ -53,6 +53,7 @@
     --pulsespeed: 1.5s;
     --countdownouterspinnerwidth: calc(var(--barwidth) * 2);
     --countdownsize: 50vh;
+    --titlebarheight: calc(var(--barwidth) * 2);
 
     --cursor: none;
     --pausemodalvisibility: hidden;
@@ -72,10 +73,37 @@
     --trackcolor: white;
 }
 
+titlebar {
+    width: 100%;
+    top: 0;
+    position: fixed;
+    height: var(--titlebarheight);
+    background: red;
+    app-region: drag;
+    padding: 5px;
+    z-index: 1000000000;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+controlButtonDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+windowControlButton {
+    aspect-ratio: 1 / 1;
+    height: max-content;
+}
+
 body {
     align-items: center;
     text-align: justify;
     margin: 0;
+    padding-top: var(--titlebarheight);
     font-size: var(--fontsize);
     font-family: 'Times New Roman', monospace;
     overflow: hidden;
@@ -263,7 +291,7 @@ track {
 }
 
 songprogress {
-    top: 0;
+    top: calc(var(--titlebarheight) + var(--barwidth));
     left: 0;
     height: var(--barwidth);
     background-color: var(--barcolor);

@@ -109,11 +109,11 @@ function setup() {
 
   let keymap = {};
   keymap["Slane"] = ["1", "s", "S"];
-  keymap["Dlane"] = ["2", "d", "D"];
-  keymap["Flane"] = ["3", "f", "F"];
+  keymap["Dlane"] = ["2", "d", "D", "ArrowLeft"];
+  keymap["Flane"] = ["3", "f", "F", "ArrowDown"];
   keymap["spacelane"] = [""];
-  keymap["Jlane"] = ["4", "j", "J"];
-  keymap["Klane"] = ["5", "k", "K"];
+  keymap["Jlane"] = ["4", "j", "J", "ArrowUp"];
+  keymap["Klane"] = ["5", "k", "K", "ArrowRight"];
   keymap["Llane"] = ["6", "l", "L"];
 
   let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
@@ -122,13 +122,11 @@ function setup() {
   if (difficulty === "relaxed") {
     missHpCost = 0;
     badMissHpCost = 0;
-    perfectHeal = 0;
   } else if (difficulty === "normal") {
     missHpCost = 5;
     badMissHpCost = 15;
-    perfectHeal = 20;
-    minHeal = perfectHeal / 1.8;
-    maxHeal = 20 * 1.2;
+    minHeal = 13;
+    maxHeal = 30;
   }
 
   // Event listeners - optimized using keymap
@@ -158,8 +156,6 @@ function setup() {
             console.log("perfect");
             perfectSound.play();
             createHitComment("perfect!");
-            const minHeal = perfectHeal / 1.5;
-            const maxHeal = perfectHeal * 1.5;
             hp += Math.random() * (maxHeal - minHeal) + minHeal;
             updatehp();
             note.setAttribute("aria-active", "false");
