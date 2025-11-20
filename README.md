@@ -83,7 +83,8 @@ Inspired by many popular titles. If you enjoyed my game, I recommend trying thos
 
 - [Taiko no Tatsujin](https://www.bandainamcoent.com/games/taiko-no-tatsujin-rhythm-festival)
 - [Friday Night Funkin'](https://www.newgrounds.com/portal/view/770371)
-- [Phigros](https://play.google.com/store/apps/details?id=com.PigeonGames.Phigros&hl=en-US)['RoBeats(https://robeats.fandom.com/wiki/Robeats_Wiki)
+- [Phigros](https://play.google.com/store/apps/details?id=com.PigeonGames.Phigros&hl=en-US)
+- [RoBeats](https://robeats.fandom.com/wiki/Robeats_Wiki)
 - [Rhythm Doctor](https://rhythmdr.com/cny/#)
 - [Arcaea](https://arcaea.lowiro.com/en)
 - [Rhythm Hell](https://rhythmhell.com)
