@@ -76,7 +76,7 @@ Analog Snares from [here](https://www.echosoundworks.com/eswanalogsnares)
 - Blog
 
 ## License
-Licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), meaning that this project is completely free & open-source — with the condition that any derivative works are open-source as well.
+Licensed under the newest version of the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), meaning that this project is completely free & open-source — with the condition that any derivative works are open-source as well. The full license may be viewed at <LICENSE.md>.
 
 ## Inspiration
 Inspired by many popular titles. If you enjoyed my game, I recommend trying those as well:
