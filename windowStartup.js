@@ -58,24 +58,22 @@ function createWindow() {
     ...(process.platform !== "darwin" ? { titleBarOverlay: false } : {}),
     resizable: true,
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
+      nodeIntegration: true,
+      contextIsolation: false,
       webSecurity: true,
+      enableRemoteModule: true,
+      // icon: 'icons/logo.ico'
     },
-    // icon: 'icons/logo.ico'
   });
   require("@electron/remote/main").enable(mainWindow.webContents);
-
-  // Clear cache before loading (helpful during development)
-  mainWindow.webContents.session.clearCache();
-
-  // Load from the Python server instead of a local file
   mainWindow.loadURL(`http://localhost:${PORT}`);
-
-  mainWindow.webContents.openDevTools();
   mainWindow.on("closed", function () {
     mainWindow = null;
   });
+
+  //development stuff
+  mainWindow.webContents.openDevTools();
+  mainWindow.webContents.session.clearCache();
 }
 
 // Start the app: first start Python server, then create window
@@ -103,7 +101,6 @@ app.on("activate", function () {
   }
 });
 
-// Clean up Python server on quit
 app.on("before-quit", () => {
   if (pythonServer) {
     pythonServer.kill();

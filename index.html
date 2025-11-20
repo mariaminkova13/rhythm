@@ -3,19 +3,20 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'; connect-src 'self'">
     <link rel="stylesheet" href="style.css">
-    <title>Rhythm Game</title>
+    <title>Rhythmata</title>
     <meta name="author" content="sadgrl_07">
     <meta name="dir" content="ltr">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="license" content="GNU General Public License v3.0">
+    <meta name="license" content="GNU General Public License">
+    <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> -->
   </head>
 
   <body>
     <titlebar id="custom-titlebar">
       <controlButtonDiv>
-        <windowControlButton id="minimizeButton">-</windowControlButton>
-        <windowControlButton id="restoreButton">0</windowControlButton>
-        <windowControlButton id="closeButton">X</windowControlButton>
+        <windowControlButton id="minimizeBtn">-</windowControlButton>
+        <windowControlButton id="maximizeBtn">0</windowControlButton>
+        <windowControlButton id="closeBtn">X</windowControlButton>
       </controlButtonDiv>
     </titlebar>
     <canvas id="webgl-canvas"></canvas>
@@ -63,6 +64,7 @@
   </body>
 </html>
 
+<script src="index.js"></script>
 <script type="module" src="style/webgl-renderer.js"></script>
 <script type="module" src="modals.js"></script>
 <script type="module" src="song.js"></script>

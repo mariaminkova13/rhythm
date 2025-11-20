@@ -80,30 +80,41 @@ titlebar {
     height: var(--titlebarheight);
     background: red;
     app-region: drag;
-    padding: 5px;
     z-index: 1000000000;
     cursor: default;
+    /* box-sizing: border-box; */
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
 }
 
 controlButtonDiv {
     display: flex;
     flex-direction: row;
     align-items: center;
+    transition: 0.2s all;
+    /* position: absolute;
+    right: 0; */
+    margin: 5px;
 }
 
+/* controlButtonDiv:hover {
+    visibility: visible;
+} */
+
 windowControlButton {
-    aspect-ratio: 1 / 1;
-    height: max-content;
+    height: 100%;
+    width: 2ch;
+    cursor: pointer;
+    z-index: 100000000000000;
+    -webkit-app-region: no-drag;
 }
 
 body {
     align-items: center;
     text-align: justify;
     margin: 0;
-    padding-top: var(--titlebarheight);
+    min-height: 100vh;
     font-size: var(--fontsize);
     font-family: 'Times New Roman', monospace;
     overflow: hidden;
@@ -111,6 +122,20 @@ body {
     font-family: var(--bodyfont);
     background-color: var(--bgcolor);
     color: var(--textcolor);
+}
+
+/* Hide titlebar in fullscreen mode */
+body:fullscreen titlebar,
+body:-webkit-full-screen titlebar,
+body:-moz-full-screen titlebar {
+    display: none;
+}
+
+/* Move to very top when in fullscreen */
+body:fullscreen songprogress,
+body:-webkit-full-screen songprogress,
+body:-moz-full-screen songprogress {
+    top: 0;
 }
 
 #webgl-canvas {
@@ -152,6 +177,14 @@ column {
     flex-direction: row;
     gap: 0;
     height: calc(100% - (var(--bottompadding)));
+    transition: padding-top 0.2s ease;
+}
+
+/* Remove top padding when in fullscreen */
+body:fullscreen column,
+body:-webkit-full-screen column,
+body:-moz-full-screen column {
+    padding-top: 0;
 }
 
 sidecolumn {
@@ -300,6 +333,7 @@ songprogress {
     z-index: 999;
     width: 90%;
     border-bottom-right-radius: var(--hpradius);
+    transition: top 0.2s ease;
 }
 
 hpbar {

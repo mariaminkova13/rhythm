@@ -4,7 +4,6 @@ Played casually; 100% skill-based with no levels, upgrades, in-game currency or 
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
 ## Contents:
-
 1. [Installation](#installation--usage)<br/>
    1a. [Controls](#controls)<br/>
    1b. [Features](#features)<br/>
@@ -82,16 +81,16 @@ Licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl
 ## Inspiration
 Inspired by many popular titles. If you enjoyed my game, I recommend trying those as well:
 
-- ['Taiko no Tatsujin'](https://www.bandainamcoent.com/games/taiko-no-tatsujin-rhythm-festival)
-- ['Friday Night Funkin'](https://www.newgrounds.com/portal/view/770371)
-- ['Phigros'](https://play.google.com/store/apps/details?id=com.PigeonGames.Phigros&hl=en-US)['RoBeats(https://robeats.fandom.com/wiki/Robeats_Wiki)
-- ['Rhythm Docto'](https://rhythmdr.com/cny/#)
--'Arcaea'](https://arcaea.lowiro.com/en)
-- 'Rhythm(https://rhythmhell.com)
+- [Taiko no Tatsujin](https://www.bandainamcoent.com/games/taiko-no-tatsujin-rhythm-festival)
+- [Friday Night Funkin'](https://www.newgrounds.com/portal/view/770371)
+- [Phigros](https://play.google.com/store/apps/details?id=com.PigeonGames.Phigros&hl=en-US)['RoBeats(https://robeats.fandom.com/wiki/Robeats_Wiki)
+- [Rhythm Doctor](https://rhythmdr.com/cny/#)
+- [Arcaea](https://arcaea.lowiro.com/en)
+- [Rhythm Hell](https://rhythmhell.com)
 - [Bemuse](https://bemuse.ninja)
 
 Visual inspo from:
 - [Cytus 2](https://rayark.com/g/cytus2)
-- ['Chainsaw Dance'](https://benedique.itch.io/chainsaw-dance)
+- [Chainsaw Dance](https://benedique.itch.io/chainsaw-dance)
 - [Rhythm+](https://rhythm-plus.com/menu)
 [Logo Inspo](https://int10h.org)
