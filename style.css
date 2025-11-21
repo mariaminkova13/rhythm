@@ -104,7 +104,7 @@ controlButtonDiv {
 
 windowControlButton {
     height: 100%;
-    width: 2ch;
+    width: 4ch;
     cursor: pointer;
     z-index: 100000000000000;
     -webkit-app-region: no-drag;
@@ -122,20 +122,25 @@ body {
     font-family: var(--bodyfont);
     background-color: var(--bgcolor);
     color: var(--textcolor);
+
+    display: flex;
+    flex-direction: column;
+}
+
+#appContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    outline: 1px solid rgba(0, 0, 0, 0.5);
+    outline-offset: -1;
 }
 
 /* Hide titlebar in fullscreen mode */
 body:fullscreen titlebar,
 body:-webkit-full-screen titlebar,
-body:-moz-full-screen titlebar {
+body:-moz-full-screen titlebar,
+body.is-fullscreen titlebar {
     display: none;
-}
-
-/* Move to very top when in fullscreen */
-body:fullscreen songprogress,
-body:-webkit-full-screen songprogress,
-body:-moz-full-screen songprogress {
-    top: 0;
 }
 
 #webgl-canvas {
@@ -324,11 +329,11 @@ track {
 }
 
 songprogress {
-    top: calc(var(--titlebarheight) + var(--barwidth));
+    top: calc(var(--barwidth) * 2);
     left: 0;
     height: var(--barwidth);
     background-color: var(--barcolor);
-    position: fixed;
+    position: absolute;
     opacity: 0.5;
     z-index: 999;
     width: 90%;

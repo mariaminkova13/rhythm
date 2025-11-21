@@ -1,13 +1,16 @@
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'; connect-src 'self'">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'; connect-src 'self'"
+    />
+    <link rel="stylesheet" href="style.css" />
     <title>Rhythmata</title>
-    <meta name="author" content="sadgrl_07">
-    <meta name="dir" content="ltr">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="license" content="GNU General Public License">
+    <meta name="author" content="sadgrl_07" />
+    <meta name="dir" content="ltr" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="license" content="GNU General Public License" />
     <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> -->
   </head>
 
@@ -19,48 +22,62 @@
         <windowControlButton id="closeBtn">X</windowControlButton>
       </controlButtonDiv>
     </titlebar>
-    <canvas id="webgl-canvas"></canvas>
-    <pausemodal>
-      <h1>𝄞 Game Paused ♪</h1>
-      <div style="display: flex; flex-direction: column">
-        <button id="resumeButton">Resume :D</button>
-        <button id="quitButton">Quit :<</button>
-      </div>
-    </pausemodal>
-    <deathmsg>
-      <h1>Game Over!</h1>
-      <button>Try Again</button>
-      <button>Maybe Later</button>
-    </deathmsg>
-    <songprogress></songprogress>
-    <column>
-      <sidecolumn></sidecolumn>
-      <notecontainer>
-        <gutter>
-          <flexcolumn><tick id="Slane"><track /></tick></flexcolumn>
-          <flexcolumn><tick id="Dlane"><track /></tick></flexcolumn>
-          <flexcolumn><tick id="Flane"><track /></tick></flexcolumn>
-          <flexcolumn><tick id="Jlane"><track /></tick></flexcolumn>
-          <flexcolumn><tick id="Klane"><track /></tick></flexcolumn>
-          <flexcolumn><tick id="Llane"><track /></tick></flexcolumn>
-        </gutter>
-        <hitline></hitline>
-      </notecontainer>
-      <sidecolumn style="padding-top: var(--barwidth)">
-        <songname> among us drip by Ohio - 67:69 </songname>
-        <div id="infobox">
-          <div id="scorebox">
-            <lettergrade>A</lettergrade>
-            <accuracy>99.95%</accuracy>
-          </div>
-          <plusminus>-</plusminus>
-          <scorebar></scorebar>
+    <div style="width: 100%; height: 100%" id="appContainer">
+      <canvas id="webgl-canvas"></canvas>
+      <pausemodal>
+        <h1>𝄞 Game Paused ♪</h1>
+        <div style="display: flex; flex-direction: column">
+          <button id="resumeButton">Resume :D</button>
+          <button id="quitButton">Quit :<</button>
         </div>
-      </sidecolumn>
-    </column>
-    <overlay>
-      <hpbar></hpbar>
-    </overlay>
+      </pausemodal>
+      <deathmsg>
+        <h1>Game Over!</h1>
+        <button>Try Again</button>
+        <button>Maybe Later</button>
+      </deathmsg>
+      <songprogress></songprogress>
+      <column>
+        <sidecolumn></sidecolumn>
+        <notecontainer>
+          <gutter>
+            <flexcolumn
+              ><tick id="Slane"><track /></tick
+            ></flexcolumn>
+            <flexcolumn
+              ><tick id="Dlane"><track /></tick
+            ></flexcolumn>
+            <flexcolumn
+              ><tick id="Flane"><track /></tick
+            ></flexcolumn>
+            <flexcolumn
+              ><tick id="Jlane"><track /></tick
+            ></flexcolumn>
+            <flexcolumn
+              ><tick id="Klane"><track /></tick
+            ></flexcolumn>
+            <flexcolumn
+              ><tick id="Llane"><track /></tick
+            ></flexcolumn>
+          </gutter>
+          <hitline></hitline>
+        </notecontainer>
+        <sidecolumn style="padding-top: var(--barwidth)">
+          <songname> among us drip by Ohio - 67:69 </songname>
+          <div id="infobox">
+            <div id="scorebox">
+              <lettergrade>A</lettergrade>
+              <accuracy>99.95%</accuracy>
+            </div>
+            <plusminus>-</plusminus>
+            <scorebar></scorebar>
+          </div>
+        </sidecolumn>
+      </column>
+      <overlay>
+        <hpbar></hpbar>
+      </overlay>
+    </div>
   </body>
 </html>
 

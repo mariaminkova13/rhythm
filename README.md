@@ -1,22 +1,11 @@
 # Description
-A simple vertical-scrolling rhythm game made with Electron.
+A simple vertical-scrolling rhythm game made with Electron, a Python server, and JS/HTML/CSS.
 Played casually; 100% skill-based with no levels, upgrades, in-game currency or progression. This game might not be suited for beginners- it's intended more as a hardcore challenge, reminiscent of Dark Souls... so don't be surprised if the 'relaxed' difficulty feels about right and 'normal' is difficult; I based it mostly on my personal experience and skill level.
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
-
-## Contents:
-1. [Installation](#installation--usage)<br/>
-   1a. [Controls](#controls)<br/>
-   1b. [Features](#features)<br/>
-   1c. [What Makes it Cool](#what-makes-it-cool)<br/>
-   1d. [Difficulties](#overview-of-difficulties)<br/>
-2. [Credits](#asset-sources--credits)<br/>
-   3a. [Follow Me!](#follow-me-_ツ_)<br/>
-   3b. [GNU General Public License](#license)<br/>
-
 ---
 
 # Installation & Usage
-Just download it and double-click to launch. Or just open the web version!
+Just download the package and run it.
 > BTW the server will probably be hosted on a 5$ computer chip I'll store in my room :P
 
 ## Controls:
@@ -76,7 +65,7 @@ Analog Snares from [here](https://www.echosoundworks.com/eswanalogsnares)
 - Blog
 
 ## License
-Licensed under the newest version of the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), meaning that this project is completely free & open-source — with the condition that any derivative works are open-source as well. The full license may be viewed at <LICENSE.md>.
+Licensed under the newest version of the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), meaning that this project is completely free & open-source — with the condition that any derivative works are open-source as well. The full license may be viewed at [LICENSE.md](LICENSE.md).
 
 ## Inspiration
 Inspired by many popular titles. If you enjoyed my game, I recommend trying those as well:
@@ -94,4 +83,9 @@ Visual inspo from:
 - [Cytus 2](https://rayark.com/g/cytus2)
 - [Chainsaw Dance](https://benedique.itch.io/chainsaw-dance)
 - [Rhythm+](https://rhythm-plus.com/menu)
-[Logo Inspo](https://int10h.org)
+- [Logo Inspo](https://int10h.org)
+
+# Documentation
+This game uses its own notemap file format with a ".notemap" file extension. To make the development easy in the future, I also created an app that creates these files automatically, allowing you to edit & preview songs. I also have a Visual Studio Code extension with syntax highlighting and icons for .notemap files. See the repository [here](); its README.md has very thorough documentation for those who are interested.
+
+## Structure
