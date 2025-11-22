@@ -53,9 +53,11 @@
     --pulsespeed: 1.5s;
     --countdownouterspinnerwidth: calc(var(--barwidth) * 2);
     --countdownsize: 50vh;
-    --titlebarheight: calc(var(--barwidth) * 2);
+    --titlebarheight: 20px;
+    --transitionspeed: 0.2s;
 
     --cursor: none;
+    --user-select: none;
     --pausemodalvisibility: hidden;
     --deathmsgvisibility: hidden;
 
@@ -71,20 +73,19 @@
     --tickcolor: red;
     --accentcolor: rgba(128, 0, 128, 0.2);
     --trackcolor: white;
+    --titlebarcolor: red;
 }
 
 titlebar {
     width: 100%;
-    top: 0;
-    position: fixed;
     height: var(--titlebarheight);
-    background: red;
+    background: var(--titlebarcolor);
     app-region: drag;
     z-index: 1000000000;
     cursor: default;
     /* box-sizing: border-box; */
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -92,22 +93,19 @@ controlButtonDiv {
     display: flex;
     flex-direction: row;
     align-items: center;
-    transition: 0.2s all;
-    /* position: absolute;
-    right: 0; */
-    margin: 5px;
+    transition: var(--transitionspeed) all;
+    cursor: default;
+    box-sizing: border-box;
+    padding-right: 5px;
+    opacity: 1;
+    background: var(--titlebarcolor);
 }
-
-/* controlButtonDiv:hover {
-    visibility: visible;
-} */
 
 windowControlButton {
     height: 100%;
     width: 4ch;
     cursor: pointer;
-    z-index: 100000000000000;
-    -webkit-app-region: no-drag;
+    app-region: no-drag;
 }
 
 body {
@@ -130,17 +128,10 @@ body {
 #appContainer {
     position: relative;
     width: 100%;
-    height: 100%;
-    outline: 1px solid rgba(0, 0, 0, 0.5);
-    outline-offset: -1;
-}
-
-/* Hide titlebar in fullscreen mode */
-body:fullscreen titlebar,
-body:-webkit-full-screen titlebar,
-body:-moz-full-screen titlebar,
-body.is-fullscreen titlebar {
-    display: none;
+    height: calc(100% - var(--titlebarheight));
+    bottom: 0;
+    border: 2px solid var(--titlebarcolor);
+    border-top: none;
 }
 
 #webgl-canvas {
@@ -182,7 +173,6 @@ column {
     flex-direction: row;
     gap: 0;
     height: calc(100% - (var(--bottompadding)));
-    transition: padding-top 0.2s ease;
 }
 
 /* Remove top padding when in fullscreen */
@@ -329,7 +319,7 @@ track {
 }
 
 songprogress {
-    top: calc(var(--barwidth) * 2);
+    top: 0;
     left: 0;
     height: var(--barwidth);
     background-color: var(--barcolor);
@@ -338,7 +328,7 @@ songprogress {
     z-index: 999;
     width: 90%;
     border-bottom-right-radius: var(--hpradius);
-    transition: top 0.2s ease;
+    transition: top var(--transitionspeed) ease;
 }
 
 hpbar {
@@ -362,7 +352,7 @@ hpbar::after {
     width: var(--hp);
     max-width: 100%;
     z-index: 1;
-    transition: width 0.2s ease;
+    transition: width var(--transitionspeed) ease;
     opacity: 1;
     background-color: var(--hpcolor);
     filter: brightness(1.2) saturate(1.9) hue-rotate(40deg);

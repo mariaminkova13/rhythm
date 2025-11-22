@@ -6,7 +6,6 @@
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'; connect-src 'self'"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>Rhythmata</title>
     <meta name="author" content="sadgrl_07" />
     <meta name="dir" content="ltr" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,13 +15,14 @@
 
   <body>
     <titlebar id="custom-titlebar">
+      <span style="margin-left: 4ch" id="gameName">Rhythm Game</span>
       <controlButtonDiv>
         <windowControlButton id="minimizeBtn">-</windowControlButton>
         <windowControlButton id="maximizeBtn">0</windowControlButton>
         <windowControlButton id="closeBtn">X</windowControlButton>
       </controlButtonDiv>
     </titlebar>
-    <div style="width: 100%; height: 100%" id="appContainer">
+    <div id="appContainer">
       <canvas id="webgl-canvas"></canvas>
       <pausemodal>
         <h1>𝄞 Game Paused ♪</h1>
