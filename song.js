@@ -107,14 +107,15 @@ function setup() {
     });
   }
 
-  let keymap = {};
-  keymap["Slane"] = ["1", "s", "S"];
-  keymap["Dlane"] = ["2", "d", "D", "ArrowLeft"];
-  keymap["Flane"] = ["3", "f", "F", "ArrowDown"];
-  keymap["spacelane"] = [""];
-  keymap["Jlane"] = ["4", "j", "J", "ArrowUp"];
-  keymap["Klane"] = ["5", "k", "K", "ArrowRight"];
-  keymap["Llane"] = ["6", "l", "L"];
+  let keymap = {
+  ["Slane"]: ["1", "s", "S"],
+  ["Dlane"]: ["2", "d", "D", "ArrowLeft"],
+  ["Flane"]: ["3", "f", "F", "ArrowDown"],
+  ["spacelane"]: [" "],
+  ["Jlane"]: ["4", "j", "J", "ArrowUp"],
+  ["Klane"]: ["5", "k", "K", "ArrowRight"],
+  ["Llane"]: ["6", "l", "L"],
+  };
 
   let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
   let missCount, hitCount, shitCount, perfectCount = 0;

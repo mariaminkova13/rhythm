@@ -34,6 +34,7 @@ addEventListener("DOMContentLoaded", () => {
 
   function songprogressDown() {
     titlebar.style.opacity = "1";
+    titlebar.style.visibility = "visible";
     titlebar.style.cursor = "default";
     controlButtonDiv.style.cursor = "default";
     controlButtonDiv.style.opacity = "1";

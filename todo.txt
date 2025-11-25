@@ -18,9 +18,3 @@ mac & mobile compatibility
 QTEs- bullet hell game, etc
 
 combo & fever
-
-characters (choose your fighter screen with the character sprites going from a-pose to expressive on selection):
-1. black w/ thicc choker, spirit/senpai voice
-2. postsoviet doomer core, backwards baseball cap, pico voice
-3. horror game protag x mob wife x goth, Mom/female nonsense voice
-4. nonsense w/baggy jorts, meme shirt, Tankman/tralalero tralala voice
