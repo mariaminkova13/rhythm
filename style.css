@@ -33,28 +33,17 @@
     src: url('style/fonts/DotGothic16-Regular.ttf')
 }
 
-#webgl-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100000000;
-    display: block;
-    pointer-events: none;
-}
-
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
     --tickheight: 20px;
     --tickgap: calc(var(--tickheight) * 1.5);
-    --hpwidth: calc(var(--barwidth) * 2.5);
+    --hpwidth: 1.5em;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
     --countdownouterspinnerwidth: calc(var(--barwidth) * 2);
     --countdownsize: 50vh;
-    --titlebarheight: 20px;
+    --titlebarheight: 30px;
     --transitionspeed: 0.2s;
 
     --cursor: none;
@@ -80,13 +69,18 @@ titlebar {
     width: 100%;
     height: var(--titlebarheight);
     background: var(--titlebarcolor);
-    app-region: drag;
+    -webkit-app-region: drag;
     z-index: 1000000000;
-    cursor: default;
-    /* box-sizing: border-box; */
+    cursor: grab !important;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: var(--fontsize)
+}
+
+titlebar:active {
+    cursor: grabbing !important;
+    /*FIXME*/
 }
 
 controlButtonDiv {
@@ -99,6 +93,7 @@ controlButtonDiv {
     padding: 0px 5px 0px 5px;
     opacity: 1;
     background: var(--titlebarcolor);
+    height: 100%;
 }
 
 windowControlButton {
@@ -106,6 +101,15 @@ windowControlButton {
     width: 4ch;
     cursor: pointer;
     app-region: no-drag;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+windowControlButton:hover {
+    filter: brightness(2);
+    border-bottom: 2px solid blue;
 }
 
 body {
@@ -128,23 +132,23 @@ body {
 }
 
 #appContainer {
-    position: relative;
+    position: absolute;
     width: 100%;
-    height: calc(100% - var(--titlebarheight));
     bottom: 0;
-    border: 2px solid var(--titlebarcolor);
-    border-top: none;
-    /*FIXME*/
+    border-color: var(--titlebarcolor);
+    box-sizing: border-box;
 }
 
-#webgl-canvas {
-    position: fixed;
+canvas {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 100000000;
     display: block;
+    pointer-events: none;
+    mix-blend-mode: normal;
 }
 
 button {
@@ -262,9 +266,10 @@ accuracy {
 }
 
 notecontainer {
-    flex: 0.8;
+    flex: 0.6;
     display: flex;
     position: relative;
+    background-color: lightslategrey;
 }
 
 hitline {
@@ -280,7 +285,7 @@ hitline {
     bottom: 0;
     box-sizing: border-box;
     gap: var(--tickgap);
-    padding: 0 var(--tickgap) 0 var(--tickgap);
+    /* padding: 0 var(--tickgap) 0 var(--tickgap); */
 }
 
 ticksection {
@@ -288,6 +293,7 @@ ticksection {
     width: calc(var(--tickheight) * 5);
     gap: calc(var(--tickheight) * 0.2);
     justify-content: space-between;
+    align-items: center;
 }
 
 tick {

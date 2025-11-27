@@ -11,6 +11,7 @@ addEventListener("DOMContentLoaded", () => {
   const titlebar = document.querySelector("titlebar");
   const songprogress = document.querySelector("songprogress");
   const controlButtonDiv = document.querySelector("controlbuttondiv");
+  const appContainer = document.getElementById("appContainer");
 
   // Store event listeners for removal
   const mouseoverHandler = () => {
@@ -24,10 +25,12 @@ addEventListener("DOMContentLoaded", () => {
   function songprogressUp() {
     titlebar.style.visibility = "hidden";
     controlButtonDiv.style.visibility = "visible";
+    titlebar.style.position = "fixed";
     titlebar.style.cursor = "none";
     controlButtonDiv.style.opacity = "0";
-    songprogress.style.position = "fixed";
-    songprogress.style.top = "0";
+    appContainer.style.border = "none";
+    appContainer.style.height = "100%";
+
     controlButtonDiv.addEventListener("mouseover", mouseoverHandler);
     controlButtonDiv.addEventListener("mouseout", mouseoutHandler);
   }
@@ -36,10 +39,13 @@ addEventListener("DOMContentLoaded", () => {
     titlebar.style.opacity = "1";
     titlebar.style.visibility = "visible";
     titlebar.style.cursor = "default";
-    controlButtonDiv.style.cursor = "default";
+    titlebar.style.position = "absolute";
     controlButtonDiv.style.opacity = "1";
-    songprogress.style.position = "";
-    songprogress.style.top = "";
+    appContainer.style.height = "calc(100% - var(--titlebarheight))";
+
+    appContainer.style.border = "4px solid var(--titlebarcolor)";
+    appContainer.style.borderTop = "none";
+
     controlButtonDiv.removeEventListener("mouseover", mouseoverHandler);
     controlButtonDiv.removeEventListener("mouseout", mouseoutHandler);
   }
@@ -97,4 +103,6 @@ addEventListener("DOMContentLoaded", () => {
   win.on("unminimize", () => {
     //disable filter
   });
+
+  songprogressDown();
 });

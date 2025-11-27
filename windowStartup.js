@@ -50,9 +50,10 @@ function startPythonServer() {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 600,
-    minWidth: 900,
+    //900x600
+    width: 1075,
+    height: 800,
+    minWidth: 1075,
     minHeight: 600,
     titleBarStyle: "hidden",
     ...(process.platform !== "darwin" ? { titleBarOverlay: false } : {}),
