@@ -1,58 +1,57 @@
-// Function to read and parse notemap.txt
-async function readNotemap(filePath = 'notemap.txt') {
-    try {
-        const response = await fetch(filePath);
-        const text = await response.text();
+export { readNotemap };
 
-        // Parse the file
-        const headMatch = text.match(/<([\s\S]*?)>/);
-        const bodyMatch = text.match(/\[([\s\S]*?)\]/);
+async function readNotemap(filePath) {
+  try {
+    const response = await fetch(filePath);
+    const text = await response.text();
 
-        const head = {};
-        const body = [];
+    // Parse the file
+    const headMatch = text.match(/<([\s\S]*?)>/);
+    const bodyMatch = text.match(/\[([\s\S]*?)\]/);
 
-        // Parse head
-        if (headMatch) {
-            const headLines = headMatch[1].trim().split('\n');
-            headLines.forEach(line => {
-                const [key, value] = line.split(':').map(s => s.trim());
-                if (key && value) {
-                    // Convert to appropriate types
-                    if (value === 'true') head[key] = true;
-                    else if (value === 'false') head[key] = false;
-                    else if (!isNaN(value)) head[key] = Number(value);
-                    else head[key] = value;
-                }
-            });
+    const head = {};
+    const body = [];
+
+    // Parse head
+    if (headMatch) {
+      const headLines = headMatch[1].trim().split("\n");
+      headLines.forEach((line) => {
+        const [key, value] = line.split(":").map((s) => s.trim());
+        if (key && value) {
+          // Convert to appropriate types
+          if (value === "true") head[key] = true;
+          else if (value === "false") head[key] = false;
+          else if (!isNaN(value)) head[key] = Number(value);
+          else head[key] = value;
         }
-        else {
-            //return error
-        }
-
-        // Parse body
-        if (bodyMatch) {
-            const bodyLines = bodyMatch[1].trim().split('\n');
-            bodyLines.forEach(line => {
-                const trimmed = line.trim();
-                if (trimmed) {
-                    body.push(trimmed);
-                }
-            });
-        }
-        else {
-            //return error
-        }
-
-        return { head, body };
-    } catch (error) {
-        console.error('Error reading notemap:', error);
-        return null;
+      });
+    } else {
+      //return error
     }
+
+    // Parse body
+    if (bodyMatch) {
+      const bodyLines = bodyMatch[1].trim().split("\n");
+      bodyLines.forEach((line) => {
+        const trimmed = line.trim();
+        if (trimmed) {
+          body.push(trimmed);
+        }
+      });
+    } else {
+      //return error
+    }
+
+    return { head, body };
+  } catch (error) {
+    console.error("Error reading notemap:", error);
+    return null;
+  }
 }
 
-readNotemap().then(data => {
-    console.log('head:', data.head);
-    console.log('body:', data.body);
+readNotemap("notemap.txt").then((data) => {
+  console.log("bpm:", data.head.bpm);
+  console.log("body:", data.body);
 });
 
 // const keys = {

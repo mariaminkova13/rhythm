@@ -142,7 +142,7 @@ body {
     box-sizing: border-box;
 }
 
-canvas {
+canvas, #allthestuff {
     position: absolute;
     top: 0;
     left: 0;

@@ -1,96 +1,111 @@
-import { unpause, pause, countdown, paused, showDeathMsg } from './modals.js';
+export { songSetup };
+import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
+import { songFilePath } from "./index.js";
+import { readNotemap } from "./notemapReader.js";
 
-const difficulties = ["relaxed", "normal", "hard", "brutal"]
-
-var fps = 60;
-var timeout = 100;
-var hp = 100;
-var difficulty = "normal";
-var speed = 5; // pixels per frame
-var hitcommenttimeout = 1000;
-
-const perfectSound = new Audio("sfx/perfect.wav");
-const badmissSound = new Audio("sfx/badmiss.mp3");
-const hitSound = new Audio("sfx/hit.wav");  
-const shitSound = new Audio("sfx/shit.wav");
-
-const note = document.createElement("note");
-// const hitcomment = document.createElement("hitcomment")
-
-let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
-
-function updatehp() {
-  document.documentElement.style.setProperty(
-    "--pulsespeed",
-    //linear interpolation
-    0.1 + hp * 0.007 + "s"
-  );
-  document.documentElement.style.setProperty("--hp", hp + "%");
-  console.log("HP updated to:", hp + "%");
-  if (difficulty != "relaxed") {
-    if (hp > 100) {
-      hp == 100
+function songSetup() {
+  function updatehp() {
+    document.documentElement.style.setProperty(
+      "--pulsespeed",
+      //linear interpolation
+      0.1 + hp * 0.007 + "s"
+    );
+    document.documentElement.style.setProperty("--hp", hp + "%");
+    console.log("HP updated to:", hp + "%");
+    if (difficulty != "relaxed") {
+      if (hp > 100) {
+        hp == 100;
+      }
+    }
+    if (hp <= 0) {
+      showDeathMsg();
     }
   }
-  if (hp <= 0) {
-    showDeathMsg()
-  }
-}
 
-function checkHit(laneId) {
-  const lane = document.getElementById(laneId);
-  const lanenotes = lane.querySelectorAll('note[aria-active="true"]');
+  function checkHit(laneId) {
+    const lane = document.getElementById(laneId);
+    const lanenotes = lane.querySelectorAll('note[aria-active="true"]');
 
-  console.log(`Lane: ${laneId}, Notes found: ${lanenotes.length}`, lanenotes);
+    console.log(`Lane: ${laneId}, Notes found: ${lanenotes.length}`, lanenotes);
 
-  if (lanenotes.length === 0) {
-    return null; // No notes in this lane
-  }
-
-  // Get the tick's center position (bottom of lane)
-  const laneRect = lane.getBoundingClientRect();
-  // Get the computed tick height directly from the lane's height
-  const tickHeightPixels = laneRect.height;
-  const tickCenterY = laneRect.bottom - tickHeightPixels / 2;
-
-  let closestNote = null;
-  let closestDistance = Infinity;
-
-  // Find the closest note to the tick
-  lanenotes.forEach((note) => {
-    const noteRect = note.getBoundingClientRect();
-    const noteCenterY = noteRect.top + noteRect.height / 2;
-    const distance = Math.abs(noteCenterY - tickCenterY);
-
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestNote = note;
+    if (lanenotes.length === 0) {
+      return null; // No notes in this lane
     }
-  });
 
-  return {
-    note: closestNote,
-    distance: closestDistance,
-  };
-}
+    // Get the tick's center position (bottom of lane)
+    const laneRect = lane.getBoundingClientRect();
+    // Get the computed tick height directly from the lane's height
+    const tickHeightPixels = laneRect.height;
+    const tickCenterY = laneRect.bottom - tickHeightPixels / 2;
 
-function createHitComment(msg) {
-  const newHitComment = document.createElement("hitcomment");
-  newHitComment.textContent = msg;
-  const container = document.querySelector("notecontainer");
-  container.appendChild(newHitComment);
-  setTimeout(() => newHitComment.remove(), hitcommenttimeout);
-}
+    let closestNote = null;
+    let closestDistance = Infinity;
 
-function setup() {
-  // Initialize lane elements
-  Slane = document.getElementById("Slane");
-  Dlane = document.getElementById("Dlane");
-  Flane = document.getElementById("Flane");
-  spacelane = document.getElementById("spacelane");
-  Jlane = document.getElementById("Jlane");
-  Klane = document.getElementById("Klane");
-  Llane = document.getElementById("Llane");
+    // Find the closest note to the tick
+    lanenotes.forEach((note) => {
+      const noteRect = note.getBoundingClientRect();
+      const noteCenterY = noteRect.top + noteRect.height / 2;
+      const distance = Math.abs(noteCenterY - tickCenterY);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestNote = note;
+      }
+    });
+
+    return {
+      note: closestNote,
+      distance: closestDistance,
+    };
+  }
+
+  function createHitComment(msg) {
+    const newHitComment = document.createElement("hitcomment");
+    newHitComment.textContent = msg;
+    const container = document.querySelector("notecontainer");
+    container.appendChild(newHitComment);
+    setTimeout(() => newHitComment.remove(), hitcommenttimeout);
+  }
+
+  const difficulties = ["relaxed", "normal", "hard", "brutal"];
+
+  var fps = 60;
+  var timeout = 100;
+  var hp = 100;
+  var difficulty = "normal";
+  var speed = 5; // pixels per frame
+  var hitcommenttimeout = 1000;
+
+  const perfectSound = new Audio("sfx/perfect.wav");
+  const badmissSound = new Audio("sfx/badmiss.mp3");
+  const hitSound = new Audio("sfx/hit.wav");
+  const shitSound = new Audio("sfx/shit.wav");
+
+  const note = document.createElement("note");
+  // const hitcomment = document.createElement("hitcomment")
+
+  let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
+
+  fetch("song.html")
+    .then((response) => response.text())
+    .then((html) => {
+      document.getElementById("allthestuff").innerHTML = html;
+      countdown();
+
+      // Initialize lane elements after HTML is loaded
+      Slane = document.getElementById("Slane");
+      Dlane = document.getElementById("Dlane");
+      Flane = document.getElementById("Flane");
+      spacelane = document.getElementById("spacelane");
+      Jlane = document.getElementById("Jlane");
+      Klane = document.getElementById("Klane");
+      Llane = document.getElementById("Llane");
+
+      Slane.appendChild(note);
+      handleNote(note);
+
+      readNotemap(songFilePath);
+    });
 
   // Setup pause modal buttons
   const resumeButton = document.getElementById("resumeButton");
@@ -108,17 +123,20 @@ function setup() {
   }
 
   let keymap = {
-  ["Slane"]: ["Digit1", "KeyS"],
-  ["Dlane"]: ["Digit2", "KeyD", "ArrowLeft"],
-  ["Flane"]: ["Digit3", "KeyF", "ArrowDown"],
-  ["spacelane"]: ["Space"],
-  ["Jlane"]: ["Digit4", "KeyJ", "ArrowUp"],
-  ["Klane"]: ["Digit5", "KeyK", "ArrowRight"],
-  ["Llane"]: ["Digit6", "KeyL"],
+    ["Slane"]: ["Digit1", "KeyS"],
+    ["Dlane"]: ["Digit2", "KeyD", "ArrowLeft"],
+    ["Flane"]: ["Digit3", "KeyF", "ArrowDown"],
+    ["spacelane"]: ["Space"],
+    ["Jlane"]: ["Digit4", "KeyJ", "ArrowUp"],
+    ["Klane"]: ["Digit5", "KeyK", "ArrowRight"],
+    ["Llane"]: ["Digit6", "KeyL"],
   };
 
   let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
-  let missCount, hitCount, shitCount, perfectCount = 0;
+  let missCount,
+    hitCount,
+    shitCount,
+    perfectCount = 0;
 
   if (difficulty === "relaxed") {
     missHpCost = 0;
@@ -160,17 +178,17 @@ function setup() {
             hp += Math.random() * (maxHeal - minHeal) + minHeal;
             updatehp();
             note.setAttribute("aria-active", "false");
-            perfectCount++
+            perfectCount++;
           } else if (hitResult.distance <= 40) {
             console.log("hit");
             hitSound.play();
             note.setAttribute("aria-active", "false");
-            hitCount++
+            hitCount++;
           } else if (hitResult.distance <= 80) {
             console.log("shit");
             shitSound.play();
             note.setAttribute("aria-active", "false");
-            shitCount++
+            shitCount++;
           } else {
             console.log("miss");
             badmissSound.play();
@@ -180,7 +198,7 @@ function setup() {
             if (hitResult.distance <= 200) {
               note.setAttribute("aria-active", "false");
             }
-            missCount++
+            missCount++;
           }
         } else {
           console.log(`Lane ${laneId}: No notes to hit`);
@@ -192,7 +210,7 @@ function setup() {
           const container = document.querySelector("notecontainer");
           container.appendChild(newHitComment);
           setTimeout(() => newHitComment.remove(), hitcommenttimeout);
-          missCount++
+          missCount++;
         }
 
         break; // Exit loop once we find a match
@@ -222,61 +240,55 @@ function setup() {
   });
 
   updatehp();
-}
 
-function handleNote(noteElement) {
-  // Move the note down the track
-  // Get --bottompadding CSS variable and convert to pixels
-  noteElement.setAttribute("aria-active", "true");
-  const bottomPaddingValue = getComputedStyle(document.documentElement)
-    .getPropertyValue("--bottompadding")
-    .trim();
-  const bottomPaddingPixels =
-    (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
-  // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
-  let position = -(window.innerHeight - bottomPaddingPixels) - 100;
-  const fallInterval = setInterval(() => {
-    // Don't move notes while paused
-    if (paused) {
-      return;
-    }
+  function handleNote(noteElement) {
+    // Move the note down the track
+    // Get --bottompadding CSS variable and convert to pixels
+    noteElement.setAttribute("aria-active", "true");
+    const bottomPaddingValue = getComputedStyle(document.documentElement)
+      .getPropertyValue("--bottompadding")
+      .trim();
+    const bottomPaddingPixels =
+      (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
+    // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
+    let position = -(window.innerHeight - bottomPaddingPixels) - 100;
+    const fallInterval = setInterval(() => {
+      // Don't move notes while paused
+      if (paused) {
+        return;
+      }
 
-    position += speed;
-    noteElement.style.top = position + "px";
+      position += speed;
+      noteElement.style.top = position + "px";
 
-    // Delete the note when it goes offscreen
-    if (position > window.innerHeight) {
-      noteElement.remove();
-      clearInterval(fallInterval);
-    }
-  }, 1000 / fps);
-}
+      // Delete the note when it goes offscreen
+      if (position > window.innerHeight) {
+        noteElement.remove();
+        clearInterval(fallInterval);
+      }
+    }, 1000 / fps);
+  }
+  let grades = {
+    F: "You Suck",
+    D: "Bruh",
+    C: "Meh",
+    //mid and decent, phi is godlike
+    B: "Nice",
+    A: "Sick",
+  };
+  const lettergrade = document.querySelector("lettergrade");
+  const plusminus = document.querySelector("plusminus");
 
-let grades = {
-  F: 'You Suck',
-  D: 'Bruh',
-  C: 'Meh',
-  //mid and decent, phi is godlike
-  B: 'Nice',
-  A: 'Sick'
-}
-const lettergrade = document.querySelector("lettergrade");
-const plusminus = document.querySelector("plusminus");
-
-function checkForFC() {
-  if (missCount = 0){
-    lettergrade.innerText = "β"
-    plusminus.innerText = "-"
-    if (shitCount = 0){
-      plusminus.innerText = ""
-      if (hitCount = 0) {
-        plusminus.innerText = "+"
+  function checkForFC() {
+    if ((missCount = 0)) {
+      lettergrade.innerText = "β";
+      plusminus.innerText = "-";
+      if ((shitCount = 0)) {
+        plusminus.innerText = "";
+        if ((hitCount = 0)) {
+          plusminus.innerText = "+";
+        }
       }
     }
   }
 }
-
-setup();
-countdown();
-Slane.appendChild(note);
-handleNote(note);

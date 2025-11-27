@@ -1,4 +1,44 @@
+import { songSetup } from "./song.js";
+export { songFilePath };
+let songFilePath;
+
+function audioFilter() {
+  //TODO muffled & lo-fi echoey filter
+}
+
+function song(songParameter) {
+  let songFilePath = songParameter;
+  songSetup();
+}
+
 addEventListener("DOMContentLoaded", () => {
+  function songprogressUp() {
+  titlebar.style.visibility = "hidden";
+  controlButtonDiv.style.visibility = "visible";
+  titlebar.style.position = "fixed";
+  titlebar.style.cursor = "none";
+  controlButtonDiv.style.opacity = "0";
+  appContainer.style.border = "none";
+  appContainer.style.height = "100%";
+
+  controlButtonDiv.addEventListener("mouseover", mouseoverHandler);
+  controlButtonDiv.addEventListener("mouseout", mouseoutHandler);
+}
+
+function songprogressDown() {
+  titlebar.style.opacity = "1";
+  titlebar.style.visibility = "visible";
+  titlebar.style.cursor = "default";
+  titlebar.style.position = "absolute";
+  controlButtonDiv.style.opacity = "1";
+  appContainer.style.height = "calc(100% - var(--titlebarheight))";
+
+  appContainer.style.border = "4px solid var(--titlebarcolor)";
+  appContainer.style.borderTop = "none";
+
+  controlButtonDiv.removeEventListener("mouseover", mouseoverHandler);
+  controlButtonDiv.removeEventListener("mouseout", mouseoutHandler);
+}
   
   /// titling
   var appTitle = "Rhythmata!";
@@ -21,35 +61,6 @@ addEventListener("DOMContentLoaded", () => {
   const mouseoutHandler = () => {
     controlButtonDiv.style.opacity = "0";
   };
-
-  function songprogressUp() {
-    titlebar.style.visibility = "hidden";
-    controlButtonDiv.style.visibility = "visible";
-    titlebar.style.position = "fixed";
-    titlebar.style.cursor = "none";
-    controlButtonDiv.style.opacity = "0";
-    appContainer.style.border = "none";
-    appContainer.style.height = "100%";
-
-    controlButtonDiv.addEventListener("mouseover", mouseoverHandler);
-    controlButtonDiv.addEventListener("mouseout", mouseoutHandler);
-  }
-
-  function songprogressDown() {
-    titlebar.style.opacity = "1";
-    titlebar.style.visibility = "visible";
-    titlebar.style.cursor = "default";
-    titlebar.style.position = "absolute";
-    controlButtonDiv.style.opacity = "1";
-    appContainer.style.height = "calc(100% - var(--titlebarheight))";
-
-    appContainer.style.border = "4px solid var(--titlebarcolor)";
-    appContainer.style.borderTop = "none";
-
-    controlButtonDiv.removeEventListener("mouseover", mouseoverHandler);
-    controlButtonDiv.removeEventListener("mouseout", mouseoutHandler);
-  }
-
 
   //FIXME reappear titlebar when unfulscreen
   //FIXME make buttons work in fullscreen not maximize
@@ -92,9 +103,6 @@ addEventListener("DOMContentLoaded", () => {
   });
 
   /////////////AUDIO FILTER
-  function audioFilter() {
-    //TODO muffled & lo-fi echoey filter
-  }
 
   win.on("minimize", () => {
     //enable filter
@@ -105,4 +113,5 @@ addEventListener("DOMContentLoaded", () => {
   });
 
   songprogressDown();
+  song();
 });
