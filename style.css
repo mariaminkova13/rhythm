@@ -101,6 +101,9 @@ windowControlButton {
     width: 4ch;
     cursor: pointer;
     app-region: no-drag;
+}
+
+windowControlButton, #gameName {
     text-align: center;
     display: flex;
     align-items: center;
@@ -487,6 +490,19 @@ hitcomment {
     font-size: 40px;
     z-index: 10;
     margin-top: 2lh;
+    animation: slidedown 0.1s ease;
+}
+
+@keyframes slidedown {
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    
+    100% {
+        transform: none;
+        opacity: 1
+    }
 }
 
 @keyframes pulse {

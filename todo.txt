@@ -3,8 +3,6 @@ make the overlay blur notes but not lines
 make the ticks in front of tracks but behind hitline
 make relaxed mode hide hpbar and badmiss comments
 make tracks visibly behind semi transparent ticks
-align sidecolumn elements
-fix UTF encoding
 after the last note of the song is hit activates checkForFC
 make the ticks and tracks siblings rather than parent-child in order to make the ticks rotated 45deg. Center properly.
 make the modals stop press event listeners
@@ -12,9 +10,6 @@ make the sound playing stop whatever sfx is currently going
 make it wait until countdown over, style countdown
 fix resume button
 animate hitcomments
-audio visualizer bars
 
 mac & mobile compatibility
 QTEs- bullet hell game, etc
-
-combo & fever

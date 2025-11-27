@@ -1,6 +1,6 @@
 <
-precision: 16
 bpm: 60
+precision: 3
 6lanes: true
 centerLane: false
 >

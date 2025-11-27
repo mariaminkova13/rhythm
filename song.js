@@ -108,13 +108,13 @@ function setup() {
   }
 
   let keymap = {
-  ["Slane"]: ["1", "s", "S"],
-  ["Dlane"]: ["2", "d", "D", "ArrowLeft"],
-  ["Flane"]: ["3", "f", "F", "ArrowDown"],
-  ["spacelane"]: [" "],
-  ["Jlane"]: ["4", "j", "J", "ArrowUp"],
-  ["Klane"]: ["5", "k", "K", "ArrowRight"],
-  ["Llane"]: ["6", "l", "L"],
+  ["Slane"]: ["Digit1", "KeyS"],
+  ["Dlane"]: ["Digit2", "KeyD", "ArrowLeft"],
+  ["Flane"]: ["Digit3", "KeyF", "ArrowDown"],
+  ["spacelane"]: ["Space"],
+  ["Jlane"]: ["Digit4", "KeyJ", "ArrowUp"],
+  ["Klane"]: ["Digit5", "KeyK", "ArrowRight"],
+  ["Llane"]: ["Digit6", "KeyL"],
   };
 
   let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
@@ -140,7 +140,7 @@ function setup() {
     // Loop through each lane in the keymap
     for (const [laneId, keys] of Object.entries(keymap)) {
       // Check if the pressed key matches any key for this lane
-      if (keys.includes(event.key)) {
+      if (keys.includes(event.code)) {
         const lane = document.getElementById(laneId);
         lane.setAttribute("aria-pressed", "true");
 
@@ -203,7 +203,7 @@ function setup() {
   // remove 'pressed' on keyup
   document.addEventListener("keyup", (event) => {
     for (const [laneId, keys] of Object.entries(keymap)) {
-      if (keys.includes(event.key)) {
+      if (keys.includes(event.code)) {
         const lane = document.getElementById(laneId);
         lane.setAttribute("aria-pressed", "false");
         break;
