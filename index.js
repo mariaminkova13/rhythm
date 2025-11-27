@@ -1,4 +1,6 @@
 import { songSetup } from "./song.js";
+import { readNotemap } from "./notemapReader.js";
+
 export { songFilePath };
 let songFilePath;
 
@@ -7,8 +9,14 @@ function audioFilter() {
 }
 
 function song(songParameter) {
-  let songFilePath = songParameter;
+  songFilePath = songParameter;
   songSetup();
+
+  // Read the notemap after songFilePath is set
+  readNotemap(songFilePath).then((data) => {
+    console.log("bpm:", data.head.bpm);
+    console.log("body:", data.body);
+  });
 }
 
 addEventListener("DOMContentLoaded", () => {
@@ -113,5 +121,5 @@ function songprogressDown() {
   });
 
   songprogressDown();
-  song();
+  song("./notemap.txt");
 });

@@ -49,11 +49,6 @@ async function readNotemap(filePath) {
   }
 }
 
-readNotemap("notemap.txt").then((data) => {
-  console.log("bpm:", data.head.bpm);
-  console.log("body:", data.body);
-});
-
 // const keys = {
 //     Cdorian: [C4, D, Eb, F, G, A, Bb, C5], //default
 //     Cphrygian: [C4, Db, Eb, F, G, Ab, Bb, C5],
