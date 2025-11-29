@@ -23,8 +23,8 @@ function songSetup() {
   }
 
   function checkHit(laneId) {
-    const lane = document.getElementById(laneId);
-    const lanenotes = lane.querySelectorAll('note[aria-active="true"]');
+    // const lane = document.getElementById(laneId);
+    const lanenotes = laneId.querySelectorAll('note[aria-active="true"]');
 
     console.log(`Lane: ${laneId}, Notes found: ${lanenotes.length}`, lanenotes);
 
@@ -33,7 +33,7 @@ function songSetup() {
     }
 
     // Get the tick's center position (bottom of lane)
-    const laneRect = lane.getBoundingClientRect();
+    const laneRect = laneId.getBoundingClientRect();
     // Get the computed tick height directly from the lane's height
     const tickHeightPixels = laneRect.height;
     const tickCenterY = laneRect.bottom - tickHeightPixels / 2;
@@ -93,21 +93,78 @@ function songSetup() {
       countdown();
 
       // Initialize lane elements after HTML is loaded
-      Slane = document.getElementById("Slane");
-      Dlane = document.getElementById("Dlane");
-      Flane = document.getElementById("Flane");
-      spacelane = document.getElementById("spacelane");
-      Jlane = document.getElementById("Jlane");
-      Klane = document.getElementById("Klane");
-      Llane = document.getElementById("Llane");
 
-      Slane.appendChild(note);
-      handleNote(note);
+      const rightHand = document.createElement("ticksection");
+      const leftHand = document.createElement("ticksection");
+      const hitline = document.querySelector("hitline");
+      Dlane = document.createElement("tick");
+      Flane = document.createElement("tick");
+      Jlane = document.createElement("tick");
+      Klane = document.createElement("tick");
 
-      readNotemap(songFilePath);
+      readNotemap(songFilePath).then((data) => {
+        hitline.appendChild(leftHand);
+        leftHand.appendChild(Dlane);
+        leftHand.appendChild(Flane);
+        if (data.head.centerLane == true) {
+          const centerHand = document.createElement("ticksection");
+          hitline.appendChild(centerHand);
+          spacelane = document.createElement("tick");
+          centerHand.appendChild(spacelane);
+          spacelane.id = "spacelane";
+        }
+        hitline.appendChild(rightHand);
+        rightHand.appendChild(Jlane);
+        rightHand.appendChild(Klane);
+        if (data.head.sixLanes == true) {
+          Slane = document.createElement("tick");
+          leftHand.insertBefore(Slane, Dlane);
+          Llane = document.createElement("tick");
+          rightHand.appendChild(Llane);
+        }
+
+        document.querySelectorAll("tick").forEach((tick) => {
+          tick.appendChild(document.createElement("track"));
+        });
+
+        // Move code that depends on lanes here
+        Dlane.firstChild.appendChild(note);
+        handleNote(note);
+
+        tickEventListeners();
+      });
     });
 
-  // Setup pause modal buttons
+function handleNote(noteElement) {
+    // Move the note down the track
+    // Get --bottompadding CSS variable and convert to pixels
+    noteElement.setAttribute("aria-active", "true");
+    const bottomPaddingValue = getComputedStyle(document.documentElement)
+      .getPropertyValue("--bottompadding")
+      .trim();
+    const bottomPaddingPixels =
+      (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
+    // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
+    let position = -(window.innerHeight - bottomPaddingPixels) - 100;
+    const fallInterval = setInterval(() => {
+      // Don't move notes while paused
+      if (paused) {
+        return;
+      }
+
+      position += speed;
+      noteElement.style.top = position + "px";
+
+      // Delete the note when it goes offscreen
+      if (position > window.innerHeight) {
+        noteElement.remove();
+        clearInterval(fallInterval);
+      }
+    }, 1000 / fps);
+  }
+
+  function tickEventListeners() {
+    // Setup pause modal buttons
   const resumeButton = document.getElementById("resumeButton");
   const quitButton = document.getElementById("quitButton");
 
@@ -122,15 +179,15 @@ function songSetup() {
     });
   }
 
-  let keymap = {
-    ["Slane"]: ["Digit1", "KeyS"],
-    ["Dlane"]: ["Digit2", "KeyD", "ArrowLeft"],
-    ["Flane"]: ["Digit3", "KeyF", "ArrowDown"],
-    ["spacelane"]: ["Space"],
-    ["Jlane"]: ["Digit4", "KeyJ", "ArrowUp"],
-    ["Klane"]: ["Digit5", "KeyK", "ArrowRight"],
-    ["Llane"]: ["Digit6", "KeyL"],
-  };
+  // Build keymap with actual lane elements
+  let keymap = new Map();
+  if (Slane) keymap.set(Slane, ["Digit1", "KeyS"]);
+  keymap.set(Dlane, ["Digit2", "KeyD", "ArrowLeft"]);
+  keymap.set(Flane, ["Digit3", "KeyF", "ArrowDown"]);
+  if (spacelane) keymap.set(spacelane, ["Space"]);
+  keymap.set(Jlane, ["Digit4", "KeyJ", "ArrowUp"]);
+  keymap.set(Klane, ["Digit5", "KeyK", "ArrowRight"]);
+  if (Llane) keymap.set(Llane, ["Digit6", "KeyL"]);
 
   let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
   let missCount,
@@ -156,17 +213,16 @@ function songSetup() {
     }
 
     // Loop through each lane in the keymap
-    for (const [laneId, keys] of Object.entries(keymap)) {
+    for (const [lane, keys] of keymap) {
       // Check if the pressed key matches any key for this lane
       if (keys.includes(event.code)) {
-        const lane = document.getElementById(laneId);
         lane.setAttribute("aria-pressed", "true");
 
         // Check for hit detection
-        const hitResult = checkHit(laneId);
+        const hitResult = checkHit(lane);
         if (hitResult) {
           console.log(
-            `Lane ${laneId}: Closest note is ${hitResult.distance.toFixed(
+            `Lane ${lane || 'unknown'}: Closest note is ${hitResult.distance.toFixed(
               2
             )} pixels away`
           );
@@ -201,7 +257,7 @@ function songSetup() {
             missCount++;
           }
         } else {
-          console.log(`Lane ${laneId}: No notes to hit`);
+          console.log(`Lane ${lane || 'unknown'}: No notes to hit`);
           badmissSound.play();
           hp -= badMissHpCost;
           updatehp();
@@ -220,9 +276,8 @@ function songSetup() {
 
   // remove 'pressed' on keyup
   document.addEventListener("keyup", (event) => {
-    for (const [laneId, keys] of Object.entries(keymap)) {
+    for (const [lane, keys] of keymap) {
       if (keys.includes(event.code)) {
-        const lane = document.getElementById(laneId);
         lane.setAttribute("aria-pressed", "false");
         break;
       }
@@ -241,33 +296,6 @@ function songSetup() {
 
   updatehp();
 
-  function handleNote(noteElement) {
-    // Move the note down the track
-    // Get --bottompadding CSS variable and convert to pixels
-    noteElement.setAttribute("aria-active", "true");
-    const bottomPaddingValue = getComputedStyle(document.documentElement)
-      .getPropertyValue("--bottompadding")
-      .trim();
-    const bottomPaddingPixels =
-      (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
-    // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
-    let position = -(window.innerHeight - bottomPaddingPixels) - 100;
-    const fallInterval = setInterval(() => {
-      // Don't move notes while paused
-      if (paused) {
-        return;
-      }
-
-      position += speed;
-      noteElement.style.top = position + "px";
-
-      // Delete the note when it goes offscreen
-      if (position > window.innerHeight) {
-        noteElement.remove();
-        clearInterval(fallInterval);
-      }
-    }, 1000 / fps);
-  }
   let grades = {
     F: "You Suck",
     D: "Bruh",
@@ -290,5 +318,6 @@ function songSetup() {
         }
       }
     }
+  }
   }
 }

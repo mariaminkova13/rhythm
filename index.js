@@ -64,7 +64,6 @@ function songprogressDown() {
   // Store event listeners for removal
   const mouseoverHandler = () => {
     controlButtonDiv.style.opacity = "1";
-    console.log("hhhhhh");
   };
   const mouseoutHandler = () => {
     controlButtonDiv.style.opacity = "0";

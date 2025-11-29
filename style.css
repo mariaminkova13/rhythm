@@ -310,6 +310,18 @@ tick {
     border-radius: var(--radius);
 }
 
+#Slane, #Jlane {
+    order: 1
+}
+
+#Dlane, #Klane {
+    order: 2
+}
+
+#Flane, #Llane {
+    order: 3
+}
+
 #spacelane {
     border-radius: 100px;
 }
