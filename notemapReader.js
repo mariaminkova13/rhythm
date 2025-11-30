@@ -19,14 +19,14 @@ async function readNotemap(filePath) {
         const [key, value] = line.split(":").map((s) => s.trim());
         if (key && value) {
           // Convert to appropriate types
-          if (value == true) head[key] = true;
-          else if (value == false) head[key] = false;
+          if (value == true || value === "true") head[key] = true;
+          else if (value == false || value === "false") head[key] = false;
           else if (!isNaN(value)) head[key] = Number(value);
           else head[key] = value;
         }
       });
     } else {
-      //return error
+      throw new Error("header not found, check your syntax");
     }
 
     // Parse body
@@ -39,7 +39,7 @@ async function readNotemap(filePath) {
         }
       });
     } else {
-      //return error
+      throw new Error("body not found, check your syntax");
     }
 
     return { head, body };

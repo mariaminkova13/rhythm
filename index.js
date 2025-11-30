@@ -4,6 +4,8 @@ import { readNotemap } from "./notemapReader.js";
 export { songFilePath };
 let songFilePath;
 
+var cursor = new osuCursor();
+
 function audioFilter() {
   //TODO muffled & lo-fi echoey filter
 }
