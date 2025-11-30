@@ -1,5 +1,6 @@
 import { songSetup } from "./song.js";
 import { readNotemap } from "./notemapReader.js";
+import osuCursor from "./style/cursor/src/osu-cursor.js";
 
 export { songFilePath };
 let songFilePath;

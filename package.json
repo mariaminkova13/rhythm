@@ -14,7 +14,11 @@
     "type": "git",
     "url": "git+https://github.com/mariaminkova13/rhythm.git"
   },
-  "keywords": ["rhythm", "game", "electron"],
+  "keywords": [
+    "rhythm",
+    "game",
+    "electron"
+  ],
   "author": "sadgrl_07",
   "license": "GNU General Public License",
   "type": "commonjs",
@@ -23,6 +27,7 @@
   },
   "homepage": "https://github.com/mariaminkova13/rhythm#readme",
   "dependencies": {
-    "@electron/remote": "^2.1.3"
+    "@electron/remote": "^2.1.3",
+    "animejs": "^3.2.1"
   }
 }
