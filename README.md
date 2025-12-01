@@ -14,3 +14,4 @@ Licensed under the newest version of the [GNU General Public License](https://ww
 
 ## See Also
 All other information may be viewed in the [wiki](https://github.com/mariaminkova13/rhythm/wiki).
+Report bugs or share suggestions in ['Issues'](https://github.com/mariaminkova13/rhythm/issues).
