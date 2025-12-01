@@ -165,19 +165,6 @@ function handleNote(noteElement) {
 
   function tickEventListeners() {
     // Setup pause modal buttons
-  const resumeButton = document.getElementById("resumeButton");
-  const quitButton = document.getElementById("quitButton");
-
-  if (resumeButton) {
-    resumeButton.addEventListener("click", unpause);
-  }
-
-  if (quitButton) {
-    quitButton.addEventListener("click", () => {
-      // Add quit functionality here
-      console.log("Quit button clicked");
-    });
-  }
 
   // Build keymap with actual lane elements
   let keymap = new Map();

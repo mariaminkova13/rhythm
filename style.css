@@ -47,8 +47,6 @@
     --transitionspeed: 0.2s;
 
     --cursor: none;
-    --pausemodalvisibility: hidden;
-    --deathmsgvisibility: hidden;
 
     --fontsize: 18px;
     --bodyfont: Abaddon, DotGothic;
@@ -71,7 +69,7 @@ titlebar {
     background: var(--titlebarcolor);
     -webkit-app-region: drag;
     z-index: 1000000000;
-    cursor: grab !important;
+    /* cursor: grab !important; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,7 +140,7 @@ body {
     box-sizing: border-box;
 }
 
-canvas, #allthestuff {
+canvas, #allthestuff, blurring {
     position: absolute;
     top: 0;
     left: 0;
@@ -159,6 +157,7 @@ button {
     font-family: var(--bodyfont);
     margin: 0 auto;
     font-size: calc(var(--fontsize) * 2);
+    cursor: pointer;
 }
 
 note {
@@ -219,6 +218,7 @@ h1 {
     font-family: var(--headfont);
     text-align: center;
     font-size: calc(var(--fontsize) * 3);
+    margin: 0;
 }
 
 plusminus {
@@ -468,27 +468,32 @@ spinner::after {
     }
 }
 
-pausemodal,
-deathmsg {
+modal {
     height: 50%;
     width: 50%;
-    background-color: wheat;
     top: 50%;
     left: 50%;
     position: fixed;
     transform: translate(-50%, -50%);
-    visibility: var(--pausemodalvisibility);
-    padding: 10ch;
+
+    padding: 5em;
     z-index: 69;
+
     display: flex;
     flex-direction: column;
+
     outline: 5px solid var(--accentcolor);
     outline-offset: -10px;
     border: 3px solid var(--accentcolor);
+    background-color: wheat;
 }
 
-deathmsg {
-    visibility: var(--deathmsgvisibility);
+#pausemodal {
+    visibility: hidden;
+}
+
+#deathmsg {
+    visibility: hidden;
 }
 
 hitcomment {
@@ -545,6 +550,15 @@ hitcomment {
     }
 }
 
+modal, blurring, body {
+    animation: fadeIn var(--transitionspeed) ease-in
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @keyframes shimmy
 
 /*3.5s infinite ease-in-out forwards;*/
@@ -572,19 +586,10 @@ overlay {
     backdrop-filter: blur(5px);
 }
 
-blurring,
-vignette {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-}
-
 blurring {
     backdrop-filter: blur(8px);
     z-index: 68;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 flexcolumn {

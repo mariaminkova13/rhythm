@@ -74,7 +74,6 @@ export function countdown() {
     }
   }
 
-  // Start animation
   animateSweep();
 
   // Cycle through numbers
@@ -102,31 +101,35 @@ const blurring = document.createElement("blurring");
 export function pause() {
   if (paused) return; // Don't pause if already paused
   if (spinner) {spinner.remove();}
-
   paused = true;
-  document.body.appendChild(blurring);
-  document.documentElement.style.setProperty(
-    "--pausemodalvisibility",
-    "visible"
-  );
-  document.documentElement.style.setProperty("--cursor", "default");
+  document.getElementById("allthestuff").appendChild(blurring);
+  document.getElementById("pausemodal").style.visibility = "visible";
+  // TODO make blurring not blur border
+  //TODO why so much lag when change cursor
+  document.body.style.cursor = "default";
 }
 
 export function unpause() {
   if (!paused) return; // Don't unpause if not paused
-
   paused = false;
-  document.body.removeChild(blurring);
-  document.documentElement.style.setProperty(
-    "--pausemodalvisibility",
-    "hidden"
-  );
-  document.documentElement.style.setProperty("--cursor", "none");
+  hideModal("pausemodal");
   countdown();
 }
 
 export function showDeathMsg() {
-  document.body.appendChild(blurring);
-  document.documentElement.style.setProperty("--cursor", "default");
-  document.documentElement.style.setProperty("--deathmsgvisibility", "visible");
+  showModal("deathmsg")
+}
+
+function showModal(modalId) {
+  document.getElementById("allthestuff").appendChild(blurring);
+  document.body.style.cursor = "default";
+  const modal = document.getElementById(modalId);
+  modal.style.visibility = "visible";
+  // FIXME modal.style.animation = `fadeIn var(--transitionspeed) ease-in`;
+}
+
+function hideModal(modalId) {
+  document.getElementById("allthestuff").removeChild(blurring);
+  document.getElementById(modalId).style.visibility = "hidden";
+  document.body.style.cursor = "none";
 }
