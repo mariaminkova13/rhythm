@@ -52,7 +52,7 @@
     --bodyfont: Abaddon, DotGothic;
     --headfont: AtariGames, Acme, CyrillicPixel;
 
-    --barcolor: blue;
+    --color1: blue;
     --hpcolor: darkolivegreen;
     --radius: 3px;
     --bgcolor: gray;
@@ -235,7 +235,7 @@ scorebar {
     display: block;
     height: calc(150px + 1lh);
     width: calc(var(--barwidth) * 2);
-    background-color: var(--barcolor);
+    background-color: var(--color1);
     margin-left: calc(var(--barwidth) * 3);
     bottom: 0;
     border-radius: var(--radius);
@@ -347,7 +347,7 @@ songprogress {
     top: 0;
     left: 0;
     height: var(--barwidth);
-    background-color: var(--barcolor);
+    background-color: var(--color1);
     position: absolute;
     opacity: 0.5;
     z-index: 999;
@@ -358,7 +358,7 @@ songprogress {
 
 hpbar {
     height: var(--hpwidth);
-    border: 2px solid var(--barcolor);
+    border: 2px solid var(--color1);
     width: 80%;
     position: relative;
     display: flex;

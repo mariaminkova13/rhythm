@@ -1,5 +1,5 @@
 .tileContainer {
-    width: 100%;
+    width: max-content;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -7,15 +7,27 @@
     box-sizing: border-box;
     gap: 10px;
     justify-content: left;
+    cursor: default;
+    overflow-x: scroll;
+    pointer-events: auto;
 }
 
-tile {
+.tile {
     position: relative;
     float: left;
     height: 100%;
     overflow: hidden;
     aspect-ratio: 5 / 7;
-    background-color: black;
+    background: black;
+
+    border: 5px solid var(--color1);
+    box-shadow: 5px 5px 5px inset black;
+    transition: all var(--transitionspeed);
+}
+
+.tile:hover {
+    margin: 0 3em 0 3em;
+    border-width: 10px;
 }
 
 .photo {
@@ -27,7 +39,7 @@ tile {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    transition: transform .5s ease-out;
+    transition: transform var(--transitionspeed) ease-out;
 }
 
 /*LOADERRRRR from cssloaders.com*/

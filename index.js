@@ -1,5 +1,6 @@
 import { songSetup } from "./song.js";
 import { parseNotemap } from "./notemapReader.js";
+import { initializeTileEffects } from "./markup/albumsMenuVFX.js";
 import osuCursor from "./style/cursor/src/osu-cursor.js";
 
 export { songFilePath };
@@ -132,6 +133,8 @@ addEventListener("DOMContentLoaded", () => {
   .then((response) => response.text())
   .then((html) => {
     document.getElementById("allthestuff").innerHTML = html;
+    // Initialize tile effects after HTML is loaded
+    initializeTileEffects();
   });
 
   // song("notemaps/notemap.txt");
