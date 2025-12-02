@@ -1,7 +1,7 @@
 export { songSetup };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { songFilePath } from "./index.js";
-import { readNotemap } from "./notemapReader.js";
+import { parseNotemap } from "./notemapReader.js";
 
 function songSetup() {
   function updatehp() {
@@ -86,11 +86,10 @@ function songSetup() {
 
   let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
 
-  fetch("song.html")
+  fetch("markup/song.html")
     .then((response) => response.text())
     .then((html) => {
       document.getElementById("allthestuff").innerHTML = html;
-      countdown();
 
       // Initialize lane elements after HTML is loaded
 
@@ -102,7 +101,7 @@ function songSetup() {
       Jlane = document.createElement("tick");
       Klane = document.createElement("tick");
 
-      readNotemap(songFilePath).then((data) => {
+      parseNotemap(songFilePath).then((data) => {
         hitline.appendChild(leftHand);
         leftHand.appendChild(Dlane);
         leftHand.appendChild(Flane);
@@ -132,6 +131,7 @@ function songSetup() {
         handleNote(note);
 
         tickEventListeners();
+        countdown();
       });
     });
 

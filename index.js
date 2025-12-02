@@ -1,5 +1,5 @@
 import { songSetup } from "./song.js";
-import { readNotemap } from "./notemapReader.js";
+import { parseNotemap } from "./notemapReader.js";
 import osuCursor from "./style/cursor/src/osu-cursor.js";
 
 export { songFilePath };
@@ -16,41 +16,41 @@ function song(songParameter) {
   songSetup();
 
   // Read the notemap after songFilePath is set
-  readNotemap(songFilePath).then((data) => {
+  parseNotemap(songFilePath).then((data) => {
     console.log("bpm:", data.head.bpm);
     console.log("body:", data.body);
   });
 }
 
-addEventListener("DOMContentLoaded", () => {
+function initializeWindowControls() {
   function songprogressUp() {
-  titlebar.style.visibility = "hidden";
-  controlButtonDiv.style.visibility = "visible";
-  titlebar.style.position = "fixed";
-  titlebar.style.cursor = "none";
-  controlButtonDiv.style.opacity = "0";
-  appContainer.style.border = "none";
-  appContainer.style.height = "100%";
+    titlebar.style.visibility = "hidden";
+    controlButtonDiv.style.visibility = "visible";
+    titlebar.style.position = "fixed";
+    titlebar.style.cursor = "none";
+    controlButtonDiv.style.opacity = "0";
+    appContainer.style.border = "none";
+    appContainer.style.height = "100%";
 
-  controlButtonDiv.addEventListener("mouseover", mouseoverHandler);
-  controlButtonDiv.addEventListener("mouseout", mouseoutHandler);
-}
+    controlButtonDiv.addEventListener("mouseover", mouseoverHandler);
+    controlButtonDiv.addEventListener("mouseout", mouseoutHandler);
+  }
 
-function songprogressDown() {
-  titlebar.style.opacity = "1";
-  titlebar.style.visibility = "visible";
-  titlebar.style.cursor = "default";
-  titlebar.style.position = "absolute";
-  controlButtonDiv.style.opacity = "1";
-  appContainer.style.height = "calc(100% - var(--titlebarheight))";
+  function songprogressDown() {
+    titlebar.style.opacity = "1";
+    titlebar.style.visibility = "visible";
+    titlebar.style.cursor = "default";
+    titlebar.style.position = "absolute";
+    controlButtonDiv.style.opacity = "1";
+    appContainer.style.height = "calc(100% - var(--titlebarheight))";
 
-  appContainer.style.border = "4px solid var(--titlebarcolor)";
-  appContainer.style.borderTop = "none";
+    appContainer.style.border = "4px solid var(--titlebarcolor)";
+    appContainer.style.borderTop = "none";
 
-  controlButtonDiv.removeEventListener("mouseover", mouseoverHandler);
-  controlButtonDiv.removeEventListener("mouseout", mouseoutHandler);
-}
-  
+    controlButtonDiv.removeEventListener("mouseover", mouseoverHandler);
+    controlButtonDiv.removeEventListener("mouseout", mouseoutHandler);
+  }
+
   /// titling
   var appTitle = "Rhythmata!";
   const gameName = document.getElementById("gameName");
@@ -123,5 +123,16 @@ function songprogressDown() {
   });
 
   songprogressDown();
-  song("./notemap.txt");
+}
+
+addEventListener("DOMContentLoaded", () => {
+  initializeWindowControls();
+
+  fetch("markup/albumsMenu.html")
+  .then((response) => response.text())
+  .then((html) => {
+    document.getElementById("allthestuff").innerHTML = html;
+  });
+
+  // song("notemaps/notemap.txt");
 });

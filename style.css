@@ -540,16 +540,6 @@ hitcomment {
     }
 }
 
-@keyframes whirl {
-    0% {
-        transform: rotate(0deg) translate(-50px) rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg) translate(-50px) rotate(-360deg);
-    }
-}
-
 modal, blurring, body {
     animation: fadeIn var(--transitionspeed) ease-in
 }
@@ -557,21 +547,6 @@ modal, blurring, body {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
-}
-
-@keyframes shimmy
-
-/*3.5s infinite ease-in-out forwards;*/
-    {
-    50% {
-        background-position: 50vw 0
-    }
-}
-
-@keyframes wave {
-    50% {
-        top: 120px;
-    }
 }
 
 overlay {

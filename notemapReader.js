@@ -1,6 +1,6 @@
-export { readNotemap };
+export { parseNotemap };
 
-async function readNotemap(filePath) {
+async function parseNotemap(filePath) {
   try {
     const response = await fetch(filePath);
     const text = await response.text();
