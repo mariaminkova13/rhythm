@@ -5,11 +5,13 @@
 export { initializeTileEffects };
 
 const scaleMultiplier = "1.1";
+const scrollFactor = 2;
 
 function initializeTileEffects() {
+  const tileContainer = document.getElementById("tileContainer");
   // Set data-image attributes for specific tiles if not already set
-  const album1 = document.getElementById("album1");
-  album1.setAttribute("data-image", "windowsdarkmode.jpg");
+  // const album1 = document.getElementById("album1");
+  // album1.setAttribute("data-image", "windowsdarkmode.jpg");
 
   // Get all tile elements
   const tiles = document.querySelectorAll(".tile");
@@ -51,8 +53,6 @@ function initializeTileEffects() {
   });
 
   //// parallax scroll
-  let scrollFactor = 2;
-  const tileContainer = document.getElementById("tileContainer");
 
   // tileContainer.onmousedown = (e) => {
   //   tileContainer.dataset.mouseDownAt = e.clientX;
@@ -72,39 +72,54 @@ function initializeTileEffects() {
   // }
 
   const handleMouseDown = (e) => {
-      tileContainer.dataset.mouseDownAt = e.clientX;
-    };
+    tileContainer.dataset.mouseDownAt = e.clientX;
+  };
 
-    const handleMouseMove = (e) => {
-      if (!tileContainer.dataset.mouseDownAt) return;
+  const handleMouseMove = (e) => {
+    if (!tileContainer.dataset.mouseDownAt) return;
 
-      const mouseDelta =
-        parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
-        maxDelta = window.innerWidth / scrollFactor;
+    const mouseDelta =
+      parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
+      maxDelta = window.innerWidth / scrollFactor;
 
-      const percentage = ((mouseDelta / maxDelta) * 100) * -1,
-        nextPercentageUnclamped = parseFloat(tileContainer.dataset.prevPercentage) + percentage;
+    const percentage = ((mouseDelta / maxDelta) * 100) * -1,
+      nextPercentageUnclamped = parseFloat(tileContainer.dataset.prevPercentage) + percentage;
 
-      // Calculate max scroll based on container width
-      const containerWidth = tileContainer.scrollWidth;
-      const viewportWidth = window.innerWidth;
-      const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
+    // Calculate max scroll based on container width
+    const containerWidth = tileContainer.scrollWidth;
+    const viewportWidth = window.innerWidth;
+    const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
+    const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
 
-      const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
+    tileContainer.dataset.percentage = nextPercentage;
+    tileContainer.animate({
+      transform: `translateX(${nextPercentage}%)`
+    }, {
+      duration: 1200, fill: "forwards"
+    });
 
-      tileContainer.dataset.percentage = nextPercentage;
+    Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
+      photo.animate({
+        backgroundPosition: `${100 + nextPercentage}% 50%`
+      }, {
+        duration: 1200, fill: "forwards"
+      });
+    });
+  };
 
-      tileContainer.style.transform = `translateX(${nextPercentage}%)`;
-    };
+  const handleMouseUp = () => {
+    tileContainer.dataset.mouseDownAt = null;
+    tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
+  };
 
-    const handleMouseUp = () => {
-      tileContainer.dataset.mouseDownAt = null;
-      tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
-    };
+  // Initialize prevPercentage
+  tileContainer.dataset.prevPercentage = 0;
+  tileContainer.dataset.percentage = 0;
+  tileContainer.dataset.nextPercentage = 0;
 
-
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+  window.addEventListener('mousedown', handleMouseDown);
+  window.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('mouseup', handleMouseUp);
   //TODO make the tiles behind border
+  //FIXME scrolling breaks after a while Invalid keyframe value for property transform: translateX(NaN%)
 }

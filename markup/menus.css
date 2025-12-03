@@ -18,8 +18,11 @@
     float: left;
     height: 100%;
     overflow: hidden;
-    aspect-ratio: 5 / 7;
+    /* aspect-ratio: 1 / 5; */
     background: black;
+
+    text-orientation: upright;
+    writing-mode: vertical-rl;
 
     border: 5px solid var(--color1);
     box-shadow: 5px 5px 5px inset black;
@@ -27,18 +30,28 @@
 }
 
 .tile:hover {
+    outline: 10px solid var(--color1);
+    margin: 0 10px
+}
+
+.tile [aria-selected = true] {
     margin: 0 3em 0 3em;
-    outline: 10px solid var(--color1)
+    writing-mode: horizontal-tb;
+    aspect-ratio: 5 / 7;
+}
+
+.tile:not([aria-selected="true"]) .photo {
+    filter: brightness(0.8) blur(2px)
 }
 
 .photo {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 100% 50%;
     background-size: cover;
     transition: transform var(--transitionspeed) ease-out;
 }
