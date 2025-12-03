@@ -1,6 +1,6 @@
 import { songSetup } from "./song.js";
 import { parseNotemap } from "./notemapReader.js";
-import { initializeTileEffects } from "./markup/albumsMenuVFX.js";
+import { initializeTileEffects } from "./markup/MenuVFX.js";
 import osuCursor from "./style/cursor/src/osu-cursor.js";
 
 export { songFilePath };
