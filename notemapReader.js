@@ -1,4 +1,5 @@
-export { parseNotemap };
+export { parseNotemap, createNotes };
+import { handleNote } from "./song.js";
 
 async function parseNotemap(filePath) {
   try {
@@ -46,6 +47,29 @@ async function parseNotemap(filePath) {
   } catch (error) {
     console.error("Error reading notemap:", error);
     return null;
+  }
+}
+
+noteDelay = "1000"
+
+async function createNotes(body) {
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  let laneList = [];
+  Array.from(document.querySelectorAll("track")).forEach((element) =>
+    (laneList.push(element))
+  );
+  console.log(laneList)
+
+  for (const line of body) {
+    for (let i = 0; i < line.length; i++) {
+      if (line[i] === "0") {
+        const newNote = document.createElement("note");
+        laneList[i].appendChild(newNote);
+        handleNote(newNote);
+        await delay(noteDelay);
+      }
+    }
   }
 }
 

@@ -73,11 +73,6 @@ function initializeWindowControls() {
     controlButtonDiv.style.opacity = "0";
   };
 
-  //FIXME reappear titlebar when unfulscreen
-  //FIXME make buttons work in fullscreen not maximize
-  //FIXME border
-  //FIXME borderbox
-  // Handle fullscreen changes
   const win = remote.BrowserWindow.getFocusedWindow();
   win.on("enter-full-screen", () => {
     songprogressUp();
@@ -126,16 +121,17 @@ function initializeWindowControls() {
   songprogressDown();
 }
 
-addEventListener("DOMContentLoaded", () => {
-  initializeWindowControls();
-
+function loadAlbumMenu() {
   fetch("markup/albumsMenu.html")
   .then((response) => response.text())
   .then((html) => {
     document.getElementById("allthestuff").innerHTML = html;
-    // Initialize tile effects after HTML is loaded
     initializeTileEffects();
   });
+}
 
-  // song("notemaps/notemap.txt");
+addEventListener("DOMContentLoaded", () => {
+  initializeWindowControls();
+  loadAlbumMenu();
+  song("notemaps/notemap.txt");
 });

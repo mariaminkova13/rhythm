@@ -18,6 +18,7 @@
     float: left;
     height: 100%;
     overflow: hidden;
+    aspect-ratio: 5 / 7;
     /* aspect-ratio: 1 / 5; */
     background: black;
 

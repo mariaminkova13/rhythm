@@ -5,7 +5,7 @@
 export { initializeTileEffects };
 
 const scaleMultiplier = "1.1";
-const scrollFactor = 2;
+const scrollFactor = 1.2;
 
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
