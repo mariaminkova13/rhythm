@@ -5,12 +5,20 @@ import { parseNotemap, createNotes } from "./notemapReader.js";
 
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
-var fps = 60;
-var timeout = 100;
-var hp = 100;
-var difficulty = "normal";
-var speed = 5; // pixels per frame
-var hitcommenttimeout = 1000;
+var fps = 60,
+  timeout = 100,
+  hp = 100,
+  difficulty = "normal",
+  speed = 5, // pixels per frame
+  hitcommenttimeout = 1000;
+
+var missHpCost = 5,
+  badMissHpCost = 15,
+  minHeal = 13,
+  maxHeal = 30,
+  perfectThreshold = 8,
+  hitThreshold = 40,
+  shitThreshold = 80;
 
 const perfectSound = new Audio("sfx/perfect.wav"),
   badmissSound = new Audio("sfx/badmiss.mp3"),
@@ -175,7 +183,6 @@ function songSetup() {
     keymap.set(Klane, ["Digit5", "KeyK", "ArrowRight"]);
     if (Llane) keymap.set(Llane, ["Digit6", "KeyL"]);
 
-    let missHpCost, badMissHpCost, perfectHeal, minHeal, maxHeal;
     let missCount,
       hitCount,
       shitCount,
@@ -184,11 +191,8 @@ function songSetup() {
     if (difficulty === "relaxed") {
       missHpCost = 0;
       badMissHpCost = 0;
-    } else if (difficulty === "normal") {
-      missHpCost = 5;
-      badMissHpCost = 15;
-      minHeal = 13;
-      maxHeal = 30;
+    } else if (difficulty === "hard") {
+
     }
 
     // Event listeners - optimized using keymap
@@ -213,7 +217,7 @@ function songSetup() {
               )} pixels away`
             );
             // hit evaluation
-            if (hitResult.distance <= 8) {
+            if (hitResult.distance <= perfectThreshold) {
               console.log("perfect");
               perfectSound.play();
               createHitComment("perfect!");
@@ -221,12 +225,12 @@ function songSetup() {
               updatehp();
               note.setAttribute("aria-active", "false");
               perfectCount++;
-            } else if (hitResult.distance <= 40) {
+            } else if (hitResult.distance <= hitThreshold) {
               console.log("hit");
               hitSound.play();
               note.setAttribute("aria-active", "false");
               hitCount++;
-            } else if (hitResult.distance <= 80) {
+            } else if (hitResult.distance <= shitThreshold) {
               console.log("shit");
               shitSound.play();
               note.setAttribute("aria-active", "false");

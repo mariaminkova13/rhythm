@@ -1,11 +1,16 @@
 <
 bpm: 60
 precision: 3
-sixLanes: true
-centerLane: false
+sixLanes: false
+centerLane: true
 >
 
 [
     0.....
     .0....
+    ..0...
+    ...0..
+    ....0.
+    .....0
+    000000
 ]

@@ -50,7 +50,7 @@ async function parseNotemap(filePath) {
   }
 }
 
-noteDelay = "1000"
+var noteDelay = 1000
 
 async function createNotes(body) {
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -59,17 +59,16 @@ async function createNotes(body) {
   Array.from(document.querySelectorAll("track")).forEach((element) =>
     (laneList.push(element))
   );
-  console.log(laneList)
 
   for (const line of body) {
-    for (let i = 0; i < line.length; i++) {
+    for (let i = 0; i < Math.min(line.length, laneList.length); i++) {
       if (line[i] === "0") {
         const newNote = document.createElement("note");
         laneList[i].appendChild(newNote);
         handleNote(newNote);
-        await delay(noteDelay);
       }
     }
+    await delay(noteDelay);
   }
 }
 
