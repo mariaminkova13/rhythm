@@ -83,7 +83,8 @@ function initializeTileEffects() {
       maxDelta = window.innerWidth / scrollFactor;
 
     const percentage = ((mouseDelta / maxDelta) * 100) * -1,
-      nextPercentageUnclamped = parseFloat(tileContainer.dataset.prevPercentage) + percentage;
+      prevPercentage = parseFloat(tileContainer.dataset.prevPercentage) || 0,
+      nextPercentageUnclamped = prevPercentage + percentage;
 
     // Calculate max scroll based on container width
     const containerWidth = tileContainer.scrollWidth;

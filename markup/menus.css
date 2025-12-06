@@ -57,21 +57,10 @@
     transition: transform var(--transitionspeed) ease-out;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#loading-screen {
+    background: black;
+    z-index: 99999999999
+}
 
 /*LOADERRRRR from cssloaders.com*/
 loader {

@@ -1,5 +1,4 @@
 import { songSetup } from "./song.js";
-import { parseNotemap } from "./notemapReader.js";
 import { initializeTileEffects } from "./markup/MenuVFX.js";
 import osuCursor from "./style/cursor/src/osu-cursor.js";
 
@@ -10,17 +9,6 @@ var cursor = new osuCursor();
 
 function audioFilter() {
   //TODO muffled & lo-fi echoey filter
-}
-
-function song(songParameter) {
-  songFilePath = songParameter;
-  songSetup();
-
-  // Read the notemap after songFilePath is set
-  parseNotemap(songFilePath).then((data) => {
-    console.log("bpm:", data.head.bpm);
-    console.log("body:", data.body);
-  });
 }
 
 function initializeWindowControls() {
@@ -133,5 +121,5 @@ function loadAlbumMenu() {
 addEventListener("DOMContentLoaded", () => {
   initializeWindowControls();
   loadAlbumMenu();
-  song("notemaps/notemap.txt");
+  songSetup("notemaps/notemap.txt");
 });

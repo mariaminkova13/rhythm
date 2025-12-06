@@ -1,15 +1,15 @@
 export { songSetup, handleNote, note };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
-import { songFilePath } from "./index.js";
-import { parseNotemap, createNotes } from "./notemapReader.js";
 
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
-var fps = 60,
+
+var noteSpeedAdaptive = 60,
   timeout = 100,
   hp = 100,
   difficulty = "normal",
-  speed = 5, // pixels per frame
+  noteSpeedFixed = 5,
+  noteDelayPx = 3,
   hitcommenttimeout = 1000;
 
 var missHpCost = 5,
@@ -29,7 +29,89 @@ const perfectSound = new Audio("sfx/perfect.wav"),
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
 
-function handleNote(noteElement) {
+async function parseNotemap(filePath) {
+  try {
+    const response = await fetch(filePath);
+    const text = await response.text();
+
+    // Parse the file - split on 3+ dashes
+    const parts = text.split(/^-{3,}$/m);
+    const headMatch = parts[0] ? parts[0].trim() : null;
+    const bodyMatch = parts[1] ? parts[1].trim() : null;
+
+    const head = {},
+      body = [];
+
+    // Parse head
+    if (headMatch) {
+      const headLines = headMatch.split("\n");
+      headLines.forEach((line) => {
+        const [key, value] = line.split(":").map((s) => s.trim());
+        if (key && value) {
+          // Convert to appropriate types
+          if (value == true || value === "true") head[key] = true;
+          else if (value == false || value === "false") head[key] = false;
+          else if (!isNaN(value)) head[key] = Number(value);
+          else head[key] = value;
+        }
+      });
+    } else {
+      throw new Error("header not found, check your syntax");
+    }
+
+    // Parse body
+    if (bodyMatch) {
+      const bodyLines = bodyMatch.split("\n");
+      bodyLines.forEach((line) => {
+        const trimmed = line.trim();
+        if (trimmed) {
+          body.push(trimmed);
+        }
+      });
+    } else {
+      throw new Error("body not found, check your syntax");
+    }
+
+    return { head, body };
+  } catch (error) {
+    console.error("Error reading notemap:", error);
+    return null;
+  }
+}
+
+async function createNotes(data, onMissCallback) {
+  let laneList = [];
+  Array.from(document.querySelectorAll("track")).forEach((element) =>
+    (laneList.push(element))
+  );
+
+  for (const line of data.body) {
+    const notesInLine = [];
+
+    for (let i = 0; i < Math.min(line.length, laneList.length); i++) {
+      if (line[i] === "0") {
+        const newNote = document.createElement("note");
+        laneList[i].appendChild(newNote);
+        handleNote(newNote, onMissCallback);
+        notesInLine.push(newNote);
+      }
+    }
+
+    // Wait for the first note in this line to complete its delay before creating the next line
+    if (notesInLine.length > 0) {
+      await new Promise(resolve => {
+        notesInLine[0].addEventListener('noteDelayDone', resolve, { once: true });
+      });
+    }
+  }
+}
+
+//FIXME misses don't always work
+//TODO add transition time for ticks if low bpm
+
+function handleNote(noteElement, onMissCallback) {
+  let eventTriggered = false,
+    distanceMoved = 0;
   // Move the note down the track
   // Get --bottompadding CSS variable and convert to pixels
   noteElement.setAttribute("aria-active", "true");
@@ -40,24 +122,44 @@ function handleNote(noteElement) {
     (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
   // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
   let position = -(window.innerHeight - bottomPaddingPixels) - 100;
+  const startPosition = position;
   const fallInterval = setInterval(() => {
     // Don't move notes while paused
     if (paused) {
       return;
     }
 
-    position += speed;
+    position += noteSpeedFixed;
+    distanceMoved = position - startPosition;
     noteElement.style.top = position + "px";
+
+    // Trigger event when note has moved noteDelayPx
+    if (!eventTriggered && distanceMoved >= noteDelayPx) {
+      eventTriggered = true;
+      // event code here
+      noteElement.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
+    }
 
     // Delete the note when it goes offscreen
     if (position > window.innerHeight) {
-      noteElement.remove();
       clearInterval(fallInterval);
-    }
-  }, 1000 / fps);
+      if (noteElement.getAttribute("aria-active") === "true") {
+        // Call the miss callback if provided
+        if (onMissCallback) {
+          onMissCallback();
+        }
+      }
+      noteElement.remove();
+    } //TODO: make aria-active aither preset or not present rather than boolean
+  }, 1000 / noteSpeedAdaptive);
 }
 
-function songSetup() {
+function songSetup(songFilePath) {
+  let missCount = 0,
+    hitCount = 0,
+    shitCount = 0,
+    perfectCount = 0;
+
   function updatehp() {
     document.documentElement.style.setProperty(
       "--pulsespeed",
@@ -74,6 +176,15 @@ function songSetup() {
     if (hp <= 0) {
       showDeathMsg();
     }
+  }
+
+  function badMiss() {
+    console.log("Note missed - went offscreen");
+    badmissSound.play();
+    createHitComment("miss!");
+    hp -= badMissHpCost;
+    missCount++;
+    updatehp();
   }
 
   function checkHit(laneId) {
@@ -114,6 +225,7 @@ function songSetup() {
   }
 
   function createHitComment(msg) {
+    document.querySelectorAll("hitcomment").remove;
     const newHitComment = document.createElement("hitcomment");
     newHitComment.textContent = msg;
     const container = document.querySelector("notecontainer");
@@ -166,7 +278,7 @@ function songSetup() {
         tickEventListeners();
         countdown();
 
-        createNotes(data.body);
+        createNotes(data, badMiss);
       });
     });
 
@@ -182,11 +294,6 @@ function songSetup() {
     keymap.set(Jlane, ["Digit4", "KeyJ", "ArrowUp"]);
     keymap.set(Klane, ["Digit5", "KeyK", "ArrowRight"]);
     if (Llane) keymap.set(Llane, ["Digit6", "KeyL"]);
-
-    let missCount,
-      hitCount,
-      shitCount,
-      perfectCount = 0;
 
     if (difficulty === "relaxed") {
       missHpCost = 0;
@@ -222,7 +329,6 @@ function songSetup() {
               perfectSound.play();
               createHitComment("perfect!");
               hp += Math.random() * (maxHeal - minHeal) + minHeal;
-              updatehp();
               note.setAttribute("aria-active", "false");
               perfectCount++;
             } else if (hitResult.distance <= hitThreshold) {
@@ -232,6 +338,7 @@ function songSetup() {
               hitCount++;
             } else if (hitResult.distance <= shitThreshold) {
               console.log("shit");
+              createHitComment("ok");
               shitSound.play();
               note.setAttribute("aria-active", "false");
               shitCount++;
@@ -240,24 +347,15 @@ function songSetup() {
               badmissSound.play();
               createHitComment("miss");
               hp -= missHpCost;
-              updatehp();
               if (hitResult.distance <= 200) {
                 note.setAttribute("aria-active", "false");
               }
               missCount++;
             }
           } else {
-            console.log(`Lane ${lane || 'unknown'}: No notes to hit`);
-            badmissSound.play();
-            hp -= badMissHpCost;
-            updatehp();
-            const newHitComment = document.createElement("hitcomment");
-            newHitComment.textContent = "miss";
-            const container = document.querySelector("notecontainer");
-            container.appendChild(newHitComment);
-            setTimeout(() => newHitComment.remove(), hitcommenttimeout);
-            missCount++;
+            badMiss()
           }
+          updatehp();
 
           break; // Exit loop once we find a match
         }
