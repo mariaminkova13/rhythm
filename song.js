@@ -5,20 +5,29 @@ const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
 
 var noteSpeedAdaptive = 60,
-  timeout = 100,
   hp = 100,
   difficulty = "normal",
   noteSpeedFixed = 5,
-  noteDelayPx = 3,
+  noteDelayPx = 100,
   hitcommenttimeout = 1000;
 
 var missHpCost = 5,
   badMissHpCost = 15,
+  forgotNoteCost = 7,
   minHeal = 13,
   maxHeal = 30,
   perfectThreshold = 8,
   hitThreshold = 40,
   shitThreshold = 80;
+
+var missCount = 0,
+  hitCount = 0,
+  shitCount = 0,
+  perfectCount = 0,
+
+  hitResult = null;
+
+var earlyOrLate = null;
 
 const perfectSound = new Audio("sfx/perfect.wav"),
   badmissSound = new Audio("sfx/badmiss.mp3"),
@@ -79,7 +88,7 @@ async function parseNotemap(filePath) {
   }
 }
 
-async function createNotes(data, onMissCallback) {
+async function createNotes(data) {
   let laneList = [];
   Array.from(document.querySelectorAll("track")).forEach((element) =>
     (laneList.push(element))
@@ -92,7 +101,7 @@ async function createNotes(data, onMissCallback) {
       if (line[i] === "0") {
         const newNote = document.createElement("note");
         laneList[i].appendChild(newNote);
-        handleNote(newNote, onMissCallback);
+        handleNote(newNote);
         notesInLine.push(newNote);
       }
     }
@@ -106,10 +115,9 @@ async function createNotes(data, onMissCallback) {
   }
 }
 
-//FIXME misses don't always work
 //TODO add transition time for ticks if low bpm
 
-function handleNote(noteElement, onMissCallback) {
+function handleNote(noteElement) {
   let eventTriggered = false,
     distanceMoved = 0;
   // Move the note down the track
@@ -144,23 +152,41 @@ function handleNote(noteElement, onMissCallback) {
     if (position > window.innerHeight) {
       clearInterval(fallInterval);
       if (noteElement.getAttribute("aria-active") === "true") {
-        // Call the miss callback if provided
-        if (onMissCallback) {
-          onMissCallback();
-        }
+        console.log("Note offscreen, completely missed");
+        badmissSound.play();
+        earlyOrLate = "late.";
+        createHitComment("miss!");
+        hp -= forgotNoteCost;
+        missCount++;
+        updatehp();
       }
       noteElement.remove();
     } //TODO: make aria-active aither preset or not present rather than boolean
   }, 1000 / noteSpeedAdaptive);
 }
 
-function songSetup(songFilePath) {
-  let missCount = 0,
-    hitCount = 0,
-    shitCount = 0,
-    perfectCount = 0;
+function createHitComment(msg) {
+  if (hitResult && hitResult.distance > 0) {
+    earlyOrLate = "early";
+  }
+  else if (hitResult && hitResult.distance === 0) {
+    earlyOrLate = "exact!!!"
+  }
+  else if (hitResult) {
+    earlyOrLate = "late";
+  }
+  document.querySelectorAll("hitcomment").forEach(el => el.remove());
+  const newHitComment = document.createElement("hitcomment"),
+    container = document.querySelector("notecontainer");
+  newHitComment.textContent = msg;
+  container.appendChild(newHitComment);
+  newHitComment.style.setProperty("--after-hitcomment", `"${earlyOrLate}"`);
+  setTimeout(() => newHitComment.remove(), hitcommenttimeout);
+}
 
-  function updatehp() {
+//TODO: make hitcomments appear for each lane individually eg robeats for higher difficulty
+
+function updatehp() {
     document.documentElement.style.setProperty(
       "--pulsespeed",
       //linear interpolation
@@ -178,14 +204,7 @@ function songSetup(songFilePath) {
     }
   }
 
-  function badMiss() {
-    console.log("Note missed - went offscreen");
-    badmissSound.play();
-    createHitComment("miss!");
-    hp -= badMissHpCost;
-    missCount++;
-    updatehp();
-  }
+function songSetup(songFilePath) {
 
   function checkHit(laneId) {
     // const lane = document.getElementById(laneId);
@@ -198,22 +217,23 @@ function songSetup(songFilePath) {
     }
 
     // Get the tick's center position (bottom of lane)
-    const laneRect = laneId.getBoundingClientRect();
+    const laneRect = laneId.getBoundingClientRect(),
     // Get the computed tick height directly from the lane's height
-    const tickHeightPixels = laneRect.height;
-    const tickCenterY = laneRect.bottom - tickHeightPixels / 2;
+    tickHeightPixels = laneRect.height,
+    tickCenterY = laneRect.bottom - tickHeightPixels / 2;
 
-    let closestNote = null;
-    let closestDistance = Infinity;
+    let closestNote = null,
+    closestDistance = Infinity;
 
     // Find the closest note to the tick
     lanenotes.forEach((note) => {
       const noteRect = note.getBoundingClientRect();
       const noteCenterY = noteRect.top + noteRect.height / 2;
-      const distance = Math.abs(noteCenterY - tickCenterY);
+      const distance = noteCenterY - tickCenterY;
+      const absoluteDistance = Math.abs(distance)
 
-      if (distance < closestDistance) {
-        closestDistance = distance;
+      if (absoluteDistance < closestDistance) {
+        closestDistance = absoluteDistance;
         closestNote = note;
       }
     });
@@ -222,15 +242,6 @@ function songSetup(songFilePath) {
       note: closestNote,
       distance: closestDistance,
     };
-  }
-
-  function createHitComment(msg) {
-    document.querySelectorAll("hitcomment").remove;
-    const newHitComment = document.createElement("hitcomment");
-    newHitComment.textContent = msg;
-    const container = document.querySelector("notecontainer");
-    container.appendChild(newHitComment);
-    setTimeout(() => newHitComment.remove(), hitcommenttimeout);
   }
 
   fetch("markup/song.html")
@@ -278,7 +289,7 @@ function songSetup(songFilePath) {
         tickEventListeners();
         countdown();
 
-        createNotes(data, badMiss);
+        createNotes(data);
       });
     });
 
@@ -315,45 +326,50 @@ function songSetup(songFilePath) {
         if (keys.includes(event.code)) {
           lane.setAttribute("aria-pressed", "true");
 
-          // Check for hit detection
-          const hitResult = checkHit(lane);
+          hitResult = checkHit(lane);
           if (hitResult) {
+            const absoluteDistance = hitResult.distance;
             console.log(
-              `Lane ${lane || 'unknown'}: Closest note is ${hitResult.distance.toFixed(
+              `Lane ${lane || 'unknown'}: Closest note is ${absoluteDistance.toFixed(
                 2
               )} pixels away`
             );
             // hit evaluation
-            if (hitResult.distance <= perfectThreshold) {
+            if (absoluteDistance <= perfectThreshold) {
               console.log("perfect");
               perfectSound.play();
               createHitComment("perfect!");
               hp += Math.random() * (maxHeal - minHeal) + minHeal;
-              note.setAttribute("aria-active", "false");
+              hitResult.note.setAttribute("aria-active", "false");
               perfectCount++;
-            } else if (hitResult.distance <= hitThreshold) {
+            } else if (absoluteDistance <= hitThreshold) {
               console.log("hit");
               hitSound.play();
-              note.setAttribute("aria-active", "false");
+              hitResult.note.setAttribute("aria-active", "false");
               hitCount++;
-            } else if (hitResult.distance <= shitThreshold) {
+            } else if (absoluteDistance <= shitThreshold) {
               console.log("shit");
               createHitComment("ok");
               shitSound.play();
-              note.setAttribute("aria-active", "false");
+              hitResult.note.setAttribute("aria-active", "false");
               shitCount++;
             } else {
               console.log("miss");
               badmissSound.play();
               createHitComment("miss");
               hp -= missHpCost;
-              if (hitResult.distance <= 200) {
-                note.setAttribute("aria-active", "false");
+              if (absoluteDistance <= 200) {
+                hitResult.note.setAttribute("aria-active", "false");
               }
               missCount++;
             }
           } else {
-            badMiss()
+            console.log("No note present");
+            badmissSound.play();
+            createHitComment("miss!");
+            hp -= badMissHpCost;
+            missCount++;
+            updatehp();
           }
           updatehp();
 

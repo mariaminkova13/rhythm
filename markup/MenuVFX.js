@@ -122,5 +122,4 @@ function initializeTileEffects() {
   window.addEventListener('mousemove', handleMouseMove);
   window.addEventListener('mouseup', handleMouseUp);
   //TODO make the tiles behind border
-  //FIXME scrolling breaks after a while Invalid keyframe value for property transform: translateX(NaN%)
 }

@@ -118,6 +118,7 @@ body {
     text-align: justify;
     margin: 0;
     min-height: 100vh;
+    line-height: 0.9;
     font-size: var(--fontsize);
     font-family: 'Times New Roman', monospace;
     overflow: hidden;
@@ -182,13 +183,6 @@ column {
     flex-direction: row;
     gap: 0;
     height: calc(100% - (var(--bottompadding)));
-}
-
-/* Remove top padding when in fullscreen */
-body:fullscreen column,
-body:-webkit-full-screen column,
-body:-moz-full-screen column {
-    padding-top: 0;
 }
 
 marquee {
@@ -497,17 +491,25 @@ modal {
 }
 
 hitcomment {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
     position: absolute;
     width: 100%;
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
-    height: 1lh;
-    font-size: 40px;
+    height: fit-content;
+    font-size: calc(var(--fontsize) * 2);
     z-index: 10;
     margin-top: 2lh;
     animation: slidedown 0.1s ease;
+}
+
+hitcomment::after {
+    content: var(--after-hitcomment);
+    text-transform: lowercase;
+    font-size: var(--fontsize);
 }
 
 @keyframes slidedown {
