@@ -28,6 +28,7 @@
   "homepage": "https://github.com/mariaminkova13/rhythm#readme",
   "dependencies": {
     "@electron/remote": "^2.1.3",
+    "@monokai/monoco": "^0.3.2",
     "animejs": "^3.2.1"
   }
 }
