@@ -1,13 +1,37 @@
 export { songSetup, handleNote, note };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 
+const avg = data => {
+  if (data.length < 1) {
+    return;
+  }
+  return data.reduce((prev, current) => prev + current) / data.length;
+};
+
+function median(array) {
+  var concat = array;
+  concat = concat.sort(
+    function (a, b) { return a - b });
+  var length = concat.length;
+  if (length % 2 == 1) {
+    return concat[(length / 2) - .5]
+
+  }
+  else {
+    return (concat[length / 2]
+      + concat[(length / 2) - 1]) / 2;
+  }
+}
+
+const accuracyDiv = document.getElementById("accuracyDiv")
+
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
 
 var noteSpeedAdaptive = 60,
   hp = 100,
   difficulty = "normal",
-  noteSpeedFixed = 5,
+  noteSpeedFixed = 2,
   noteDelayPx = 100,
   hitcommenttimeout = 1000;
 
@@ -24,17 +48,16 @@ var missCount = 0,
   hitCount = 0,
   shitCount = 0,
   perfectCount = 0,
-
   hitResult = null;
 
 var earlyOrLate = null;
+const noteStartingPosition = -10;
+var hitAccuracy = [];
 
 const perfectSound = new Audio("sfx/perfect.wav"),
   badmissSound = new Audio("sfx/badmiss.mp3"),
   hitSound = new Audio("sfx/hit.wav"),
   shitSound = new Audio("sfx/shit.wav");
-
-// const hitcomment = document.createElement("hitcomment")
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
 
@@ -100,6 +123,7 @@ async function createNotes(data) {
     for (let i = 0; i < Math.min(line.length, laneList.length); i++) {
       if (line[i] === "0") {
         const newNote = document.createElement("note");
+        newNote.style.top = noteStartingPosition + "px";
         laneList[i].appendChild(newNote);
         handleNote(newNote);
         notesInLine.push(newNote);
@@ -123,16 +147,16 @@ function handleNote(noteElement) {
   // Move the note down the track
   // Get --bottompadding CSS variable and convert to pixels
   noteElement.setAttribute("aria-active", "true");
-  const bottomPaddingValue = getComputedStyle(document.documentElement)
-    .getPropertyValue("--bottompadding")
-    .trim();
-  const bottomPaddingPixels =
-    (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
+  // const containerHeight = getComputedStyle(document.notecontainer)
+  //   .getPropertyValue("height")
+  //   .trim();
+  // const bottomPaddingPixels =
+  //   (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
   // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
-  let position = -(window.innerHeight - bottomPaddingPixels) - 100;
+  let position = noteStartingPosition;
   const startPosition = position;
   const fallInterval = setInterval(() => {
-    // Don't move notes while paused
+
     if (paused) {
       return;
     }
@@ -144,7 +168,6 @@ function handleNote(noteElement) {
     // Trigger event when note has moved noteDelayPx
     if (!eventTriggered && distanceMoved >= noteDelayPx) {
       eventTriggered = true;
-      // event code here
       noteElement.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
 
@@ -187,22 +210,22 @@ function createHitComment(msg) {
 //TODO: make hitcomments appear for each lane individually eg robeats for higher difficulty
 
 function updatehp() {
-    document.documentElement.style.setProperty(
-      "--pulsespeed",
-      //linear interpolation
-      0.1 + hp * 0.007 + "s"
-    );
-    document.documentElement.style.setProperty("--hp", hp + "%");
-    console.log("HP updated to:", hp + "%");
-    if (difficulty != "relaxed") {
-      if (hp > 100) {
-        hp == 100;
-      }
-    }
-    if (hp <= 0) {
-      showDeathMsg();
+  document.documentElement.style.setProperty(
+    "--pulsespeed",
+    //linear interpolation
+    0.1 + hp * 0.007 + "s"
+  );
+  document.documentElement.style.setProperty("--hp", hp + "%");
+  console.log("HP updated to:", hp + "%");
+  if (difficulty != "relaxed") {
+    if (hp > 100) {
+      hp == 100;
     }
   }
+  if (hp <= 0) {
+    showDeathMsg();
+  }
+}
 
 function songSetup(songFilePath) {
 
@@ -210,25 +233,23 @@ function songSetup(songFilePath) {
     // const lane = document.getElementById(laneId);
     const lanenotes = laneId.querySelectorAll('note[aria-active="true"]');
 
-    console.log(`Lane: ${laneId}, Notes found: ${lanenotes.length}`, lanenotes);
+    // console.log(`Lane: ${laneId}, Notes found: ${lanenotes.length}`, lanenotes);
 
     if (lanenotes.length === 0) {
-      return null; // No notes in this lane
+      return null;
     }
 
     // Get the tick's center position (bottom of lane)
     const laneRect = laneId.getBoundingClientRect(),
-    // Get the computed tick height directly from the lane's height
-    tickHeightPixels = laneRect.height,
-    tickCenterY = laneRect.bottom - tickHeightPixels / 2;
+      tickCenterY = laneRect.bottom - (laneRect.height / 2);
 
     let closestNote = null,
-    closestDistance = Infinity;
+      closestDistance = Infinity;
 
     // Find the closest note to the tick
     lanenotes.forEach((note) => {
       const noteRect = note.getBoundingClientRect();
-      const noteCenterY = noteRect.top + noteRect.height / 2;
+      const noteCenterY = noteRect.top + (noteRect.height / 2);
       const distance = noteCenterY - tickCenterY;
       const absoluteDistance = Math.abs(distance)
 
@@ -329,12 +350,18 @@ function songSetup(songFilePath) {
           hitResult = checkHit(lane);
           if (hitResult) {
             const absoluteDistance = hitResult.distance;
+
             console.log(
               `Lane ${lane || 'unknown'}: Closest note is ${absoluteDistance.toFixed(
                 2
               )} pixels away`
             );
+
             // hit evaluation
+            hitAccuracy.push(absoluteDistance);
+            accuracyDiv.textContent = avg(hitAccuracy);
+            // console.log("median: " + median(hitAccuracy));
+
             if (absoluteDistance <= perfectThreshold) {
               console.log("perfect");
               perfectSound.play();
