@@ -1,4 +1,4 @@
-<img alt="Static Badge" align="right" src="https://img.shields.io/badge/github-repo-steelblue?style=for-the-badge&logo=github"> <a href="https://github.com/mariaminkova13/rhythm/issues"> <img alt="Static Badge" position="fixed" src="https://img.shields.io/badge/20%25-completed-grey?style=for-the-badge&labelColor=maroon&"> </a>
+<img alt="Static Badge" align="right" src="https://img.shields.io/badge/github-repo-steelblue?style=for-the-badge&logo=github"> <a href="https://github.com/mariaminkova13/rhythm/issues">
 
 # Description
 A simple vertical-scrolling rhythm game made with Electron, a Python server, and JS/HTML/CSS.
