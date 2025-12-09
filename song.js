@@ -23,16 +23,11 @@ function median(array) {
   }
 }
 
-const accuracyDiv = document.getElementById("accuracyDiv")
-
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
 
-var noteSpeedAdaptive = 60,
-  hp = 100,
+  var hp = 100,
   difficulty = "normal",
-  noteSpeedFixed = 2,
-  noteDelayPx = 100,
   hitcommenttimeout = 1000;
 
 var missHpCost = 5,
@@ -51,6 +46,10 @@ var missCount = 0,
   hitResult = null;
 
 var earlyOrLate = null;
+
+var noteStepSize = 1;
+var noteSpacingPx;
+var noteSpeedFrequency = 60;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
@@ -161,12 +160,12 @@ function handleNote(noteElement) {
       return;
     }
 
-    position += noteSpeedFixed;
+    position += noteStepSize;
     distanceMoved = position - startPosition;
     noteElement.style.top = position + "px";
 
-    // Trigger event when note has moved noteDelayPx
-    if (!eventTriggered && distanceMoved >= noteDelayPx) {
+    // Trigger event when note has moved noteSpacingPx
+    if (!eventTriggered && distanceMoved >= noteSpacingPx) {
       eventTriggered = true;
       noteElement.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
@@ -184,8 +183,8 @@ function handleNote(noteElement) {
         updatehp();
       }
       noteElement.remove();
-    } //TODO: make aria-active aither preset or not present rather than boolean
-  }, 1000 / noteSpeedAdaptive);
+    } //TODO: make aria-active aither preset or not present rather than boolean??????
+  }, 1000 / noteSpeedFrequency);
 }
 
 function createHitComment(msg) {
@@ -281,6 +280,15 @@ function songSetup(songFilePath) {
       Klane = document.createElement("tick");
 
       parseNotemap(songFilePath).then((data) => {
+        const accuracyDiv = document.getElementById("accuracyDiv");
+
+        const bps = data.head.bpm / 60;
+        // console.log(bps);
+        const speed = ((1000 / noteSpeedFrequency) * noteStepSize);
+        noteSpacingPx = 100;
+        console.log("frequency: " + noteSpeedFrequency)
+        // noteSpacingPx = speed / bps;
+
         hitline.appendChild(leftHand);
         leftHand.appendChild(Dlane);
         leftHand.appendChild(Flane);
@@ -359,8 +367,7 @@ function songSetup(songFilePath) {
 
             // hit evaluation
             hitAccuracy.push(absoluteDistance);
-            accuracyDiv.textContent = avg(hitAccuracy);
-            // console.log("median: " + median(hitAccuracy));
+            accuracyDiv.textContent = Math.round(median(hitAccuracy));
 
             if (absoluteDistance <= perfectThreshold) {
               console.log("perfect");

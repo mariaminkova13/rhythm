@@ -123,3 +123,5 @@ function initializeTileEffects() {
   window.addEventListener('mouseup', handleMouseUp);
   //TODO make the tiles behind border
 }
+
+//TODO make title page https://codepen.io/iamryanyu/pen/OBORdo and shake on click like OvO

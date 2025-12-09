@@ -1,0 +1,52 @@
+{
+    "albumName": {
+        "cover-image-path": "windowsdarkmode.jpg",
+        "contents": {
+            "songName": {
+                "composer": "idk",
+                "audio-file": "song.ogg",
+                "notemap-file-paths": {
+                    "relaxed": "notemaps/songName/songNameRELAXED.txt",
+                    "normal": "notemaps/songName/songNameNORMAL.txt",
+                    "hard": "notemaps/songName/songNameHARD.txt",
+                    "brutal": "notemaps/songName/songNameBRUTAL.txt"
+                }
+            },
+            "songName2": {
+                "composer": "idk",
+                "audio-file": "song.ogg",
+                "notemap-file-paths": {
+                    "relaxed": "notemaps/songName/songName2RELAXED.txt",
+                    "normal": "notemaps/songName/songName2NORMAL.txt",
+                    "hard": "notemaps/songName/songName2HARD.txt",
+                    "brutal": "notemaps/songName/songName2BRUTAL.txt"
+                }
+            }
+        }
+    },
+    "albumName2": {
+        "cover-image-path": "windowsdarkmode.jpg",
+        "contents": {
+            "songName3": {
+                "composer": "idk",
+                "audio-file": "song.ogg",
+                "notemap-file-paths": {
+                    "relaxed": "notemaps/songName/songName3RELAXED.txt",
+                    "normal": "notemaps/songName/songName3NORMAL.txt",
+                    "hard": "notemaps/songName/songName3HARD.txt",
+                    "brutal": "notemaps/songName/songName3BRUTAL.txt"
+                }
+            },
+            "songName4": {
+                "composer": "idk",
+                "audio-file": "song.ogg",
+                "notemap-file-paths": {
+                    "relaxed": "notemaps/songName/songName4RELAXED.txt",
+                    "normal": "notemaps/songName/songName4NORMAL.txt",
+                    "hard": "notemaps/songName/songName4HARD.txt",
+                    "brutal": "notemaps/songName/songName4BRUTAL.txt"
+                }
+            }
+        }
+    }
+}
