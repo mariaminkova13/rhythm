@@ -47,9 +47,8 @@ var missCount = 0,
 
 var earlyOrLate = null;
 
-var noteStepSize = 1;
-var noteSpacingPx;
-var noteSpeedFrequency = 60;
+var noteSpacingPx, noteStepSize, bps;
+var fps = 60;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
@@ -184,7 +183,7 @@ function handleNote(noteElement) {
       }
       noteElement.remove();
     } //TODO: make aria-active aither preset or not present rather than boolean??????
-  }, 1000 / noteSpeedFrequency);
+  }, 1000 / fps);
 }
 
 function createHitComment(msg) {
@@ -226,7 +225,7 @@ function updatehp() {
   }
 }
 
-function songSetup(songFilePath) {
+function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
 
   function checkHit(laneId) {
     // const lane = document.getElementById(laneId);
@@ -281,13 +280,16 @@ function songSetup(songFilePath) {
 
       parseNotemap(songFilePath).then((data) => {
         const accuracyDiv = document.getElementById("accuracyDiv");
-
-        const bps = data.head.bpm / 60;
-        // console.log(bps);
-        const speed = ((1000 / noteSpeedFrequency) * noteStepSize);
-        noteSpacingPx = 100;
-        console.log("frequency: " + noteSpeedFrequency)
-        // noteSpacingPx = speed / bps;
+        bps = data.head.bpm / 60;
+        if (AdaptiveNoteSpeedPreference === 'true') {
+          noteSpacingPx = 100 * bps;
+        }
+        else {
+          noteSpacingPx = 100 * AdaptiveNoteSpeedPreference
+        }
+        noteStepSize = bps * noteSpacingPx / fps;
+        console.log("noteStepSize: " + noteStepSize);
+        console.log("noteSpacingPx: " + noteSpacingPx);
 
         hitline.appendChild(leftHand);
         leftHand.appendChild(Dlane);

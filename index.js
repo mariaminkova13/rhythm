@@ -118,8 +118,10 @@ function loadAlbumMenu() {
   });
 }
 
+const AdaptiveNoteSpeedPreference = 'true'
+
 addEventListener("DOMContentLoaded", () => {
   initializeWindowControls();
   loadAlbumMenu();
-  songSetup("notemaps/notemap.txt");
+  songSetup("notemaps/notemap.txt", AdaptiveNoteSpeedPreference);
 });

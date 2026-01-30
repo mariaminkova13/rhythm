@@ -1,5 +1,5 @@
 bpm: 60
-precision: 3
+precision: 1
 sixLanes: true
 centerLane: false
 
