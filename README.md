@@ -1,7 +1,7 @@
 <img alt="Static Badge" align="right" src="https://img.shields.io/badge/github-repo-steelblue?style=for-the-badge&logo=github"> <a href="https://github.com/mariaminkova13/rhythm/issues">
 
 # Description
-A simple vertical-scrolling rhythm game made with Electron, a Python server, and JS/HTML/CSS.
+A simple vertical-scrolling rhythm game made with Electron, a Python server, and JS/HTML/CSS. Very generic and done more as an exercise for the process rather than for the finished product. But still play it if you want.
 Played casually; 100% skill-based with no levels, upgrades, in-game currency or progression. This game might not be suited for beginners- it's intended more as a hardcore challenge, reminiscent of Dark Souls... so don't be surprised if the 'relaxed' difficulty feels about right and 'normal' is difficult; I based it mostly on my personal experience and skill level.
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
