@@ -1,5 +1,6 @@
 bpm: 60
 precision: 1
+beatsPerBar: 2
 sixLanes: true
 centerLane: false
 

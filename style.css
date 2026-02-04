@@ -36,7 +36,7 @@
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
-    --tickheight: 20px;
+    --tickheight: 18px;
     --tickgap: calc(var(--tickheight) * 1.5);
     --hpwidth: 1.5em;
     --heartsize: calc(var(--hpwidth) + 20px);
@@ -46,21 +46,24 @@
     --titlebarheight: 30px;
     --transitionspeed: 0.2s;
 
+    --beatlength: 0.5s;
+    --ticktransitionspeed: calc(var(--beatlength) / 4);
+
     --cursor: none;
 
     --fontsize: 18px;
     --bodyfont: Abaddon, DotGothic;
     --headfont: AtariGames, Acme, CyrillicPixel;
-
-    --color1: blue;
-    --hpcolor: darkolivegreen;
     --radius: 3px;
+
     --bgcolor: gray;
-    --textcolor: black;
-    --tickcolor: red;
-    --accentcolor: rgba(128, 0, 128, 0.2);
+    --color1: rgb(0, 0, 255);
+    --color2: red;
     --trackcolor: white;
-    --titlebarcolor: red;
+    --hpcolor: darkolivegreen;
+    --textcolor: black;
+    --tickcolor: var(--color2);
+    --titlebarcolor: var(--color2);
 }
 
 titlebar {
@@ -285,6 +288,35 @@ hitline {
     /* padding: 0 var(--tickgap) 0 var(--tickgap); */
 }
 
+hitline::before {
+    content: "";
+    display: block;
+    height: 20px;
+    width: 100%;
+    position: absolute;
+    bottom: 1; /*TODO z-index instead?*/
+    z-index: -3;
+    animation: var(--beatlength) infinite lightup;
+}
+
+@keyframes lightup {
+    0%, 100% {
+        opacity: 0
+    }
+
+    20% {
+        opacity: 0.7
+    }
+}
+
+hitline[litup='on']::before {
+    background: linear-gradient(to top, var(--color1), transparent);
+}
+
+hitline[litup='strong']::before {
+    box-shadow: 0px -20px 25px -20px rgba(var(--color1), 0.8);
+}
+
 ticksection {
     display: flex;
     width: calc(var(--tickheight) * 5);
@@ -299,9 +331,10 @@ tick {
     aspect-ratio: 1 / 1;
     position: relative;
     z-index: -2;
-    border: 2px solid var(--tickcolor);
+    border: 1px solid var(--tickcolor);
     margin: 0 auto;
     border-radius: var(--radius);
+    transition: var(--ticktransitionspeed) all;
 }
 
 #Slane, #Jlane {
@@ -322,7 +355,7 @@ tick {
 
 tick[aria-pressed="true"] {
     background-color: var(--tickcolor);
-    box-shadow: 0px 0px 10px 10px var(--accentcolor);
+    box-shadow: 0px 0px 10px magenta;
 }
 
 track {
