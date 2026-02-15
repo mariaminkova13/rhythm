@@ -288,7 +288,7 @@ hitline {
     /* padding: 0 var(--tickgap) 0 var(--tickgap); */
 }
 
-hitline::before {
+hitlinelight {
     content: "";
     display: block;
     height: 20px;
@@ -296,7 +296,7 @@ hitline::before {
     position: absolute;
     bottom: 1; /*TODO z-index instead?*/
     z-index: -3;
-    animation: var(--beatlength) infinite lightup;
+    /* animation: var(--beatlength) infinite lightup; */
 }
 
 @keyframes lightup {
@@ -309,12 +309,14 @@ hitline::before {
     }
 }
 
-hitline[litup='on']::before {
+hitline[litup='on'].hitlinelight {
     background: linear-gradient(to top, var(--color1), transparent);
+    opacity: 0.3
 }
 
-hitline[litup='strong']::before {
-    box-shadow: 0px -20px 25px -20px rgba(var(--color1), 0.8);
+hitline[litup='strong'].hitlinelight {
+    box-shadow: 0px -20px 25px -20px;
+    opacity: 0.5
 }
 
 ticksection {

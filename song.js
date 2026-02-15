@@ -115,7 +115,13 @@ async function createNotes(data) {
     (laneList.push(element))
   );
 
+  var linesCounter = 0;
+  const hitline = document.querySelector('hitline');
   for (const line of data.body) {
+
+    const newBeat = document.createElement("beat");
+    handleBeat(newBeat, linesCounter, hitline, data.head.precision);
+
     const notesInLine = [];
 
     for (let i = 0; i < Math.min(line.length, laneList.length); i++) {
@@ -129,19 +135,60 @@ async function createNotes(data) {
     }
 
     // Wait for the first note in this line to complete its delay before creating the next line
-    if (notesInLine.length > 0) {
-      await new Promise(resolve => {
-        notesInLine[0].addEventListener('noteDelayDone', resolve, { once: true });
-      });
-    }
+    await new Promise(resolve => {
+      newBeat.addEventListener('noteDelayDone', resolve, { once: true });
+    });
+
+    linesCounter++;
   }
 }
 
+
+function handleBeat(beat, beatIndex, hitline, precision) {
+    let eventTriggered = false;
+    let distanceMoved = 0;
+    const hitlinelight = document.querySelector('hitlinelight')
+
+    let position = noteStartingPosition;
+    const startPosition = position;
+    const fallInterval = setInterval(() => {
+      if (paused) {
+        return;
+      }
+
+      position += noteStepSize;
+      distanceMoved = position - startPosition;
+      beat.style.top = position + "px";
+
+      if (!eventTriggered && distanceMoved >= noteSpacingPx) {
+        eventTriggered = true;
+        beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
+      }
+
+      //console.log(`beat ${beatIndex}: ${position}, hitline: ${hitline.position.y}`);
+      if (position >= hitline.getBoundingClientRect().top) {
+        if (beatIndex % precision == 0) {
+          console.log('Running animation for beat index ' + beatIndex);
+
+          hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
+          hitlinelight.animate(
+            {opacity: [0,1]},
+            // {opacity: 0.7, offset: 0.2},
+            // {opacity: 0},
+          {duration: 100});
+
+        }
+
+        clearInterval(fallInterval);
+        beat.remove();
+      }
+
+    }, 1000 / fps);
+}
 //TODO add transition time for ticks if low bpm
 
 function handleNote(noteElement) {
-  let eventTriggered = false,
-    distanceMoved = 0;
+  let distanceMoved = 0;
   // Move the note down the track
   // Get --bottompadding CSS variable and convert to pixels
   noteElement.setAttribute("aria-active", "true");
@@ -162,12 +209,6 @@ function handleNote(noteElement) {
     position += noteStepSize;
     distanceMoved = position - startPosition;
     noteElement.style.top = position + "px";
-
-    // Trigger event when note has moved noteSpacingPx
-    if (!eventTriggered && distanceMoved >= noteSpacingPx) {
-      eventTriggered = true;
-      noteElement.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
-    }
 
     // Delete the note when it goes offscreen
     if (position > window.innerHeight) {
