@@ -1,5 +1,6 @@
 export { songSetup, handleNote, note };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
+import anime from "/node_modules/animejs/lib/anime.es.js";
 
 const avg = data => {
   if (data.length < 1) {
@@ -23,10 +24,11 @@ function median(array) {
   }
 }
 
+
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
 
-  var hp = 100,
+var hp = 100,
   difficulty = "normal",
   hitcommenttimeout = 1000;
 
@@ -43,9 +45,8 @@ var missCount = 0,
   hitCount = 0,
   shitCount = 0,
   perfectCount = 0,
-  hitResult = null;
-
-var earlyOrLate = null;
+  hitResult = null,
+  earlyOrLate = null;
 
 var noteSpacingPx, noteStepSize, bps;
 var fps = 60;
@@ -145,45 +146,56 @@ async function createNotes(data) {
 
 
 function handleBeat(beat, beatIndex, hitline, precision) {
-    let eventTriggered = false;
-    let distanceMoved = 0;
-    const hitlinelight = document.querySelector('hitlinelight')
+  let eventTriggered = false;
+  let distanceMoved = 0;
+  const hitlinelight = document.querySelector('hitlinelight')
 
-    let position = noteStartingPosition;
-    const startPosition = position;
-    const fallInterval = setInterval(() => {
-      if (paused) {
-        return;
+  var lightduration = 500;
+  const lightup = anime({
+    targets: hitlinelight,
+    keyframes: [
+      { opacity: 0, offset: 0 },
+      { opacity: 0.7, offset: 0.2 },
+      { opacity: 0, offset: 1 },
+    ],
+    duration: lightduration,
+    easing: 'linear',
+    loop: 'false'
+  })
+
+  document.querySelector('notecontainer').appendChild(beat)
+
+  let position = noteStartingPosition;
+  const startPosition = position;
+  const fallInterval = setInterval(() => {
+    if (paused) {
+      return;
+    }
+
+    position += noteStepSize;
+    distanceMoved = position - startPosition;
+    beat.style.top = position + "px";
+
+    if (!eventTriggered && distanceMoved >= noteSpacingPx) {
+      eventTriggered = true;
+      beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
+    }
+
+    //console.log(`beat ${beatIndex}: ${position}, hitline: ${hitline.position.y}`);
+    if (position >= hitline.getBoundingClientRect().bottom - noteStepSize) {
+      if (beatIndex % precision == 0) {
+        console.log('Running animation for beat index ' + beatIndex);
+
+        hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
+        lightup.play();
+
       }
 
-      position += noteStepSize;
-      distanceMoved = position - startPosition;
-      beat.style.top = position + "px";
+      clearInterval(fallInterval);
+      beat.remove();
+    }
 
-      if (!eventTriggered && distanceMoved >= noteSpacingPx) {
-        eventTriggered = true;
-        beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
-      }
-
-      //console.log(`beat ${beatIndex}: ${position}, hitline: ${hitline.position.y}`);
-      if (position >= hitline.getBoundingClientRect().top) {
-        if (beatIndex % precision == 0) {
-          console.log('Running animation for beat index ' + beatIndex);
-
-          hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
-          hitlinelight.animate(
-            {opacity: [0,1]},
-            // {opacity: 0.7, offset: 0.2},
-            // {opacity: 0},
-          {duration: 100});
-
-        }
-
-        clearInterval(fallInterval);
-        beat.remove();
-      }
-
-    }, 1000 / fps);
+  }, 1000 / fps);
 }
 //TODO add transition time for ticks if low bpm
 

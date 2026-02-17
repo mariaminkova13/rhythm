@@ -299,16 +299,6 @@ hitlinelight {
     /* animation: var(--beatlength) infinite lightup; */
 }
 
-@keyframes lightup {
-    0%, 100% {
-        opacity: 0
-    }
-
-    20% {
-        opacity: 0.7
-    }
-}
-
 hitline[litup='on'].hitlinelight {
     background: linear-gradient(to top, var(--color1), transparent);
     opacity: 0.3
@@ -317,6 +307,13 @@ hitline[litup='on'].hitlinelight {
 hitline[litup='strong'].hitlinelight {
     box-shadow: 0px -20px 25px -20px;
     opacity: 0.5
+}
+
+beat {
+    background: red;
+    height: 1px;
+    width: 100%;
+    position: relative;
 }
 
 ticksection {
