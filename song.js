@@ -24,7 +24,6 @@ function median(array) {
   }
 }
 
-
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
 
@@ -118,6 +117,7 @@ async function createNotes(data) {
 
   var linesCounter = 0;
   const hitline = document.querySelector('hitline');
+
   for (const line of data.body) {
 
     const newBeat = document.createElement("beat");
@@ -148,20 +148,28 @@ async function createNotes(data) {
 function handleBeat(beat, beatIndex, hitline, precision) {
   let eventTriggered = false;
   let distanceMoved = 0;
-  const hitlinelight = document.querySelector('hitlinelight')
 
-  var lightduration = 500;
-  const lightup = anime({
-    targets: hitlinelight,
-    keyframes: [
-      { opacity: 0, offset: 0 },
-      { opacity: 0.7, offset: 0.2 },
-      { opacity: 0, offset: 1 },
-    ],
-    duration: lightduration,
-    easing: 'linear',
-    loop: 'false'
-  })
+  var lightduration = 800;
+  const peakOffset = 0.2
+
+  const lightup = function () {
+    // alert('lightup');
+    const hitlinelight = document.querySelector("hitlinelight")
+    hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
+    
+    const lightanimation = anime({
+      targets: hitlinelight,
+      keyframes: [
+        { opacity: 0, offset: 0 },
+        { opacity: 0.7, offset: peakOffset },
+        { opacity: 0, offset: 1 },
+      ],
+      duration: lightduration,
+      easing: 'linear',
+      loop: 'false'
+    });
+    lightanimation.restart();
+  }
 
   document.querySelector('notecontainer').appendChild(beat)
 
@@ -173,26 +181,28 @@ function handleBeat(beat, beatIndex, hitline, precision) {
     }
 
     position += noteStepSize;
-    distanceMoved = position - startPosition;
-    beat.style.top = position + "px";
+    let adjustedPosition = position + 11; //TODO make adaptive
+    distanceMoved = adjustedPosition - startPosition;
+    beat.style.top = adjustedPosition + "px";
 
     if (!eventTriggered && distanceMoved >= noteSpacingPx) {
       eventTriggered = true;
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
 
-    //console.log(`beat ${beatIndex}: ${position}, hitline: ${hitline.position.y}`);
-    if (position >= hitline.getBoundingClientRect().bottom - noteStepSize) {
-      if (beatIndex % precision == 0) {
-        console.log('Running animation for beat index ' + beatIndex);
-
-        hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
-        lightup.play();
-
+    if (beat.getBoundingClientRect().bottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitline.getBoundingClientRect().bottom) {
+      if (beat.getAttribute("aria-active") === "false") { }
+      else {
+        if (beatIndex % precision == 0) {
+          lightup();
+          beat.setAttribute("aria-active", "false")
+        }
       }
+    }
 
-      clearInterval(fallInterval);
-      beat.remove();
+    if (beat.getBoundingClientRect().bottom >= hitline.getBoundingClientRect().bottom) {
+        clearInterval(fallInterval);
+        beat.remove();
     }
 
   }, 1000 / fps);
@@ -235,7 +245,7 @@ function handleNote(noteElement) {
         updatehp();
       }
       noteElement.remove();
-    } //TODO: make aria-active aither preset or not present rather than boolean??????
+    }
   }, 1000 / fps);
 }
 

@@ -81,7 +81,7 @@ titlebar {
 
 titlebar:active {
     cursor: grabbing !important;
-    /*FIXME*/
+    /*TODO*/
 }
 
 controlButtonDiv {
@@ -267,13 +267,11 @@ accuracy {
 
 notecontainer {
     flex: 0.6;
-    display: flex;
     position: relative;
     background-color: lightslategrey;
 }
 
 hitline {
-    bottom: calc((var(--tickheight) / 2));
     height: 1px;
     background-color: var(--tickcolor);
     width: 100%;
@@ -296,6 +294,7 @@ hitlinelight {
     position: absolute;
     bottom: 1; /*TODO z-index instead?*/
     z-index: -3;
+    opacity: 0;
     /* animation: var(--beatlength) infinite lightup; */
 }
 
@@ -310,10 +309,12 @@ hitline[litup='strong'].hitlinelight {
 }
 
 beat {
-    background: red;
+    background: var(--trackcolor);
     height: 1px;
     width: 100%;
-    position: relative;
+    position: absolute;
+    opacity: 0.5
+    /*FIXME out of sync when hover devtools. make all notes and beats move at once or pause when click off*/
 }
 
 ticksection {

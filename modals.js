@@ -10,7 +10,7 @@ export function countdown() {
   const svg = document.createElementNS(svgNS, "svg");
   const polygon = document.createElementNS(svgNS, "polygon");
 
-  let numbers = ["3", "2", "1", "GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO"];
+  let numbers = ["3", "2", "1", "GO"];
   let index = 0;
   let startTime = Date.now();
   let animationFrame;
@@ -105,7 +105,7 @@ export function pause() {
   document.getElementById("allthestuff").appendChild(blurring);
   document.getElementById("pausemodal").style.visibility = "visible";
   // TODO make blurring not blur border
-  //TODO why so much lag when change cursor
+  //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
   document.body.style.cursor = "default";
 }
 
