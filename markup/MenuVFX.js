@@ -10,8 +10,7 @@ const scrollFactor = 1.2;
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
   // Set data-image attributes for specific tiles if not already set
-  // const album1 = document.getElementById("album1");
-  // album1.setAttribute("data-image", "windowsdarkmode.jpg");
+  document.getElementById("album1").setAttribute("data-image", "windowsdarkmode.jpg");
 
   // Get all tile elements
   const tiles = document.querySelectorAll(".tile");

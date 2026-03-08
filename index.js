@@ -123,5 +123,5 @@ const AdaptiveNoteSpeedPreference = 'true'
 addEventListener("DOMContentLoaded", () => {
   initializeWindowControls();
   loadAlbumMenu();
-  songSetup("notemaps/notemap.txt", AdaptiveNoteSpeedPreference);
+  // songSetup("notemaps/notemap.txt", AdaptiveNoteSpeedPreference);
 });

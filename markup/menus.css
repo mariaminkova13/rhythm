@@ -42,7 +42,7 @@
 }
 
 .tile:not([aria-selected="true"]) .photo {
-    filter: brightness(0.8) blur(2px)
+    filter: brightness(0.8) blur(2px) grayscale (0.2)
 }
 
 .photo {
