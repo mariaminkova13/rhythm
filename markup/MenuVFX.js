@@ -2,6 +2,8 @@
 // https://www.youtube.com/watch?v=PkADl0HubMY
 // https://codepen.io/l422y/pen/ngpaGB
 
+//TODO fix when few tiles
+
 export { initializeTileEffects };
 
 const scaleMultiplier = "1.1";
@@ -9,8 +11,6 @@ const scrollFactor = 1.2;
 
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
-  // Set data-image attributes for specific tiles if not already set
-  document.getElementById("album1").setAttribute("data-image", "windowsdarkmode.jpg");
 
   // Get all tile elements
   const tiles = document.querySelectorAll(".tile");

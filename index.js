@@ -111,21 +111,38 @@ function initializeWindowControls() {
   songprogressDown();
 }
 
-function loadAlbumMenu() {
-  fetch("markup/albumsMenu.html")
-  .then((response) => response.text())
-  .then((html) => {
-    document.getElementById("allthestuff").innerHTML = html;
-    initializeTileEffects();
+async function loadAlbumMenu() {
+  var response = await fetch("markup/albumsMenu.html");
+  allthestuff.innerHTML = await response.text();
+  // album1.setAttribute("data-image", "markup/covers/windowsdarkmode.jpg");
+
+  response = await fetch("markup/albums.json");
+  const parsedJson = await response.json();
+
+  for (const albumName in parsedJson) {
+    const albumtile = document.createElement("div")
+    albumtile.classList.add("tile")
+    const thisTile = tileContainer.appendChild(albumtile)
+    thisTile.setAttribute("id", albumName)
+    thisTile.setAttribute("data-image", parsedJson[albumName]['cover-image-path'])
 
     const menubutton = document.createElement('button')
     menubutton.classList.add('menubutton')
-    menubutton.onclick = function () {songSetup("notemaps/notemap.txt", AdaptiveNoteSpeedPreference)}
-    album1.appendChild(menubutton)
-  });
+    menubutton.onclick = function() {songSetup(parsedJson[albumName]['contents']['notemap-file-path'], AdaptiveNoteSpeedPreference)}
+    thisTile.appendChild(menubutton)
+  }
+
+  initializeTileEffects();
+
+  // try {
+  //   const json = 
+    
+  // } catch (error) {
+  //   console.error("Invalid JSON");
+  // }
 }
 
-addEventListener("DOMContentLoaded", () => {
+addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
-  loadAlbumMenu();
+  await loadAlbumMenu();
 });
