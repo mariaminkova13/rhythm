@@ -5,5 +5,12 @@
             "composer": "idk",
             "notemap-file-path": "notemaps/notemap.txt"
         }
+    },
+    "album2": {
+        "cover-image-path": "markup/covers/windowsdarkmode.jpg",
+        "contents": {
+            "composer": "idk",
+            "notemap-file-path": "notemaps/notemap2.txt"
+        }
     }
 }

@@ -5,16 +5,6 @@ Copyright (C) 2007 [Free Software Foundation, Inc.](https://fsf.org/)
 Everyone is permitted to copy and distribute verbatim copies
 of this license document, but changing it is not allowed.
 
-> TLDR:
->
-> 1.  Anyone can copy, modify and distribute this software.
-> 2.  You have to include the license and copyright notice with each and every distribution.
-> 3.  You can use this software privately as well as for commercial purposes.
-> 4.  If you modify it, you have to indicate changes made to the code.
-> 5.  Any modifications of this code base MUST be distributed with the same license, GPLv3. If you dare build your business solely from this code, you risk open-sourcing the whole code base.
-> 6.  This software is provided without warranty, and the software author or license can not be held liable for any damages inflicted by the software.
-> </br></br> (I must remind you that this overview is not proper legal advice, and that if you really care you should just read the whole thing.)
-
 # Preamble
 
 The GNU General Public License is a free, copyleft license for

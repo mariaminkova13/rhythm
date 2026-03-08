@@ -130,6 +130,10 @@ async function loadAlbumMenu() {
     menubutton.classList.add('menubutton')
     menubutton.onclick = function() {songSetup(parsedJson[albumName]['contents']['notemap-file-path'], AdaptiveNoteSpeedPreference)}
     thisTile.appendChild(menubutton)
+
+    const title = document.createElement('h1')
+    title.innerText = albumName
+    thisTile.appendChild(title)
   }
 
   initializeTileEffects();

@@ -14,13 +14,13 @@
 }
 
 @font-face {
-    font-family: "AtariGames";
-    src: url('style/fonts/AtariGames.ttf');
+    font-family: "Acme";
+    src: url('style/fonts/Grixel Acme 9 Regular Bold Regular.ttf')
 }
 
 @font-face {
-    font-family: "Acme";
-    src: url('style/fonts/Grixel Acme 9 Regular Bold Regular.ttf')
+    font-family: "starcrush";
+    src: url('style/fonts/Star Crush.otf')
 }
 
 @font-face {
@@ -52,68 +52,18 @@
     --cursor: none;
 
     --fontsize: 18px;
-    --bodyfont: Abaddon, DotGothic;
-    --headfont: AtariGames, Acme, CyrillicPixel;
+    --bodyfont: DotGothic, Abaddon, monospace;
+    --headfont: CyrillicPixel, Acme, serif;
     --radius: 3px;
 
-    --bgcolor: gray;
+    --bgcolor: rgb(100, 100, 100);
     --color1: rgb(0, 0, 255);
     --color2: red;
     --trackcolor: white;
     --hpcolor: darkolivegreen;
-    --textcolor: black;
+    --textcolor: white;
     --tickcolor: var(--color2);
     --titlebarcolor: var(--color2);
-}
-
-titlebar {
-    width: 100%;
-    height: var(--titlebarheight);
-    background: var(--titlebarcolor);
-    -webkit-app-region: drag;
-    z-index: 1000000000;
-    /* cursor: grab !important; */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: var(--fontsize)
-}
-
-titlebar:active {
-    cursor: grabbing !important;
-    /*TODO*/
-}
-
-controlButtonDiv {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    transition: var(--transitionspeed) all;
-    cursor: default;
-    box-sizing: border-box;
-    padding: 0px 5px 0px 5px;
-    opacity: 1;
-    background: var(--titlebarcolor);
-    height: 100%;
-}
-
-windowControlButton {
-    height: 100%;
-    width: 4ch;
-    cursor: pointer;
-    app-region: no-drag;
-}
-
-windowControlButton, #gameName {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-windowControlButton:hover {
-    filter: brightness(2);
-    border-bottom: 2px solid blue;
 }
 
 body {
@@ -123,7 +73,6 @@ body {
     min-height: 100vh;
     line-height: 0.9;
     font-size: var(--fontsize);
-    font-family: 'Times New Roman', monospace;
     overflow: hidden;
     cursor: var(--cursor);
     font-family: var(--bodyfont);
@@ -134,26 +83,6 @@ body {
 
     display: flex;
     flex-direction: column;
-}
-
-#appContainer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    border-color: var(--titlebarcolor);
-    box-sizing: border-box;
-}
-
-canvas, #allthestuff, #loading-screen{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100000000;
-    display: block;
-    pointer-events: none;
-    mix-blend-mode: normal;
 }
 
 button {
