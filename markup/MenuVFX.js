@@ -75,7 +75,7 @@ function initializeTileEffects() {
   };
 
   const handleMouseMove = (e) => {
-    if (!tileContainer.dataset.mouseDownAt) return;
+    if (tileContainer.dataset.mouseDownAt == 0) return;
 
     const mouseDelta =
       parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
@@ -90,7 +90,7 @@ function initializeTileEffects() {
     const viewportWidth = window.innerWidth;
     const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
     const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
-
+    console.log(nextPercentage)
     tileContainer.dataset.percentage = nextPercentage;
     tileContainer.animate({
       transform: `translateX(${nextPercentage}%)`
@@ -108,11 +108,12 @@ function initializeTileEffects() {
   };
 
   const handleMouseUp = () => {
-    tileContainer.dataset.mouseDownAt = null;
+    tileContainer.dataset.mouseDownAt = 0;
     tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
   };
 
   // Initialize prevPercentage
+  tileContainer.dataset.mouseDownAt = 0;
   tileContainer.dataset.prevPercentage = 0;
   tileContainer.dataset.percentage = 0;
   tileContainer.dataset.nextPercentage = 0;
