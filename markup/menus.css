@@ -20,7 +20,8 @@
     overflow: hidden;
     aspect-ratio: 5 / 7;
     /* aspect-ratio: 1 / 5; */
-    background: black;
+    padding: 10px;
+    box-sizing: border-box;
 
     text-orientation: upright;
     writing-mode: vertical-rl;
@@ -31,7 +32,7 @@
 }
 
 .tile:hover {
-    outline: 10px solid var(--color1);
+    outline: 5px solid var(--color1);
     margin: 0 10px
 }
 
@@ -106,4 +107,10 @@ loader:before {
     100% {
         transform: rotate(360deg) translate(-50px) rotate(-360deg);
     }
+}
+
+button.menubutton {
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }

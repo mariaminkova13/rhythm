@@ -7,6 +7,8 @@ let songFilePath;
 
 var cursor = new osuCursor();
 
+const AdaptiveNoteSpeedPreference = 'true'
+
 function audioFilter() {
   //TODO muffled & lo-fi echoey filter
 }
@@ -115,13 +117,15 @@ function loadAlbumMenu() {
   .then((html) => {
     document.getElementById("allthestuff").innerHTML = html;
     initializeTileEffects();
+
+    const menubutton = document.createElement('button')
+    menubutton.classList.add('menubutton')
+    menubutton.onclick = function () {songSetup("notemaps/notemap.txt", AdaptiveNoteSpeedPreference)}
+    album1.appendChild(menubutton)
   });
 }
-
-const AdaptiveNoteSpeedPreference = 'true'
 
 addEventListener("DOMContentLoaded", () => {
   initializeWindowControls();
   loadAlbumMenu();
-  // songSetup("notemaps/notemap.txt", AdaptiveNoteSpeedPreference);
 });

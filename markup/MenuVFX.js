@@ -90,7 +90,6 @@ function initializeTileEffects() {
     const viewportWidth = window.innerWidth;
     const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
     const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
-    console.log(nextPercentage)
     tileContainer.dataset.percentage = nextPercentage;
     tileContainer.animate({
       transform: `translateX(${nextPercentage}%)`
