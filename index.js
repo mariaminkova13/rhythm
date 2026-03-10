@@ -1,6 +1,7 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects } from "./markup/MenuVFX.js";
 import osuCursor from "./style/cursor/src/osu-cursor.js";
+export { avg, median }
 
 export { songFilePath };
 let songFilePath;
@@ -150,3 +151,25 @@ addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
   await loadAlbumMenu();
 });
+
+const avg = data => {
+  if (data.length < 1) {
+    return;
+  }
+  return data.reduce((prev, current) => prev + current) / data.length;
+};
+
+function median(array) {
+  var concat = array;
+  concat = concat.sort(
+    function (a, b) { return a - b });
+  var length = concat.length;
+  if (length % 2 == 1) {
+    return concat[(length / 2) - .5]
+
+  }
+  else {
+    return (concat[length / 2]
+      + concat[(length / 2) - 1]) / 2;
+  }
+}

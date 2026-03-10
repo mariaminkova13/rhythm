@@ -105,11 +105,11 @@ windowControlButton:hover {
     filter: contrast(0.8) brightness(0.8) saturate(0.8) blur(1px)
 }
 
-.tile [aria-selected = false] {
+/* .tile [aria-selected = false] {
     text-orientation: upright;
     writing-mode: vertical-rl;
     aspect-ratio: 1 / 5;
-}
+} */
 
 .photo {
     position: absolute;
@@ -122,7 +122,7 @@ windowControlButton:hover {
     background-size: cover;
     transition: transform var(--transitionspeed) ease-out;
     z-index: -1;
-    filter: contrast(0.9) brightness(0.9) saturate(1.1)
+    filter: contrast(0.9) brightness(0.9) saturate(1.1);
 }
 
 #loading-screen {

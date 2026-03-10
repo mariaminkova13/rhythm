@@ -1,28 +1,10 @@
 export { songSetup, handleNote, note };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
+import { avg, median } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
-const avg = data => {
-  if (data.length < 1) {
-    return;
-  }
-  return data.reduce((prev, current) => prev + current) / data.length;
-};
-
-function median(array) {
-  var concat = array;
-  concat = concat.sort(
-    function (a, b) { return a - b });
-  var length = concat.length;
-  if (length % 2 == 1) {
-    return concat[(length / 2) - .5]
-
-  }
-  else {
-    return (concat[length / 2]
-      + concat[(length / 2) - 1]) / 2;
-  }
-}
+//TODO when bpm 20 notes too close together, tweak adaptiveness factor.
+//TODO make it start with the first beat already there to allow for song intro
 
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
@@ -211,15 +193,7 @@ function handleBeat(beat, beatIndex, hitline, precision) {
 
 function handleNote(noteElement) {
   let distanceMoved = 0;
-  // Move the note down the track
-  // Get --bottompadding CSS variable and convert to pixels
   noteElement.setAttribute("aria-active", "true");
-  // const containerHeight = getComputedStyle(document.notecontainer)
-  //   .getPropertyValue("height")
-  //   .trim();
-  // const bottomPaddingPixels =
-  //   (parseFloat(bottomPaddingValue) * window.innerHeight) / 100; // Convert vh to pixels
-  // Calculate starting position: -(100vh - bottompadding) = bottompadding - 100vh
   let position = noteStartingPosition;
   const startPosition = position;
   const fallInterval = setInterval(() => {
@@ -291,10 +265,7 @@ function updatehp() {
 function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
 
   function checkHit(laneId) {
-    // const lane = document.getElementById(laneId);
     const lanenotes = laneId.querySelectorAll('note[aria-active="true"]');
-
-    // console.log(`Lane: ${laneId}, Notes found: ${lanenotes.length}`, lanenotes);
 
     if (lanenotes.length === 0) {
       return null;
@@ -351,8 +322,8 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
           noteSpacingPx = 100 * AdaptiveNoteSpeedPreference
         }
         noteStepSize = bps * noteSpacingPx / fps;
-        console.log("noteStepSize: " + noteStepSize);
-        console.log("noteSpacingPx: " + noteSpacingPx);
+        // console.log("noteStepSize: " + noteStepSize);
+        // console.log("noteSpacingPx: " + noteSpacingPx);
 
         hitline.appendChild(leftHand);
         leftHand.appendChild(Dlane);
@@ -378,10 +349,8 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
           tick.appendChild(document.createElement("track"));
         });
 
-        // Move code that depends on lanes here
-
         tickEventListeners();
-        countdown();
+        countdown(1000 / bps);
 
         createNotes(data);
       });
