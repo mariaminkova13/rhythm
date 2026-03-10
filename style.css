@@ -103,7 +103,7 @@ note {
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
-    opacity: 1
+    opacity: 100% /*FIXME*/
 }
 
 note[aria-active=false] {

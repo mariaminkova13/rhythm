@@ -1,4 +1,4 @@
-bpm: 20
+bpm: 60
 precision: 1
 beatsPerBar: 4
 sixLanes: true

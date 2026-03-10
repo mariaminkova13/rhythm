@@ -8,7 +8,7 @@ export function countdown(beatLength) {
   const svg = document.createElementNS(svgNS, "svg");
   const polygon = document.createElementNS(svgNS, "polygon");
 
-  const numbers = ["3", "2", "1", "GO", "GO", "GO", "GO", "GO", "GO", "GO", "GO", "GO", "GO"];
+  const numbers = ["3", "2", "1", "GO"];
   let index = 0;
   let startTime = Date.now();
   let animationFrame;
@@ -53,11 +53,11 @@ export function countdown(beatLength) {
     const percent = Math.min((elapsed / beatLength) * 100, 100);
 
     const rect = countdownElement.getBoundingClientRect();
-    polygon.setAttribute("points", getPoints(rect.width, rect.height, percent));
+    polygon.setAttribute("points", getPoints(rect.width, rect.height, percent)); //FIXME
 
     if (percent < 100) {
       animationFrame = requestAnimationFrame(animateSweep);
-      //FIXME fix spinner as well
+      //TODO fix spinner as well
     }
   }
 
@@ -86,7 +86,8 @@ export var paused = false;
 const blurring = document.createElement("blurring");
 
 export function pause() {
-  if (paused) return; // Don't pause if already paused
+  if (paused) return;
+  let countdowncircle = document.querySelector("countdowncircle")
   if (countdowncircle) {countdowncircle.remove();}
   paused = true;
   document.getElementById("allthestuff").appendChild(blurring);
@@ -97,7 +98,7 @@ export function pause() {
 }
 
 export function unpause() {
-  if (!paused) return; // Don't unpause if not paused
+  if (!paused) return;
   paused = false;
   hideModal("pausemodal");
   countdown();
