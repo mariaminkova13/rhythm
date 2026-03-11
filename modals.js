@@ -1,7 +1,9 @@
 //https://codepen.io/amit_sheen/pen/oKaabp
 //https://codepen.io/paulita_p/pen/gLqLZr
 
-export function countdown(beatLength) {
+import { beatLength } from "./song.js";
+
+export function countdown() {
   const countdowncircle = document.createElement("countdowncircle");
   const countdownElement = document.createElement("countdownnumber");
   const svgNS = "http://www.w3.org/2000/svg"; //TODO mirror somehow
@@ -57,7 +59,6 @@ export function countdown(beatLength) {
 
     if (percent < 100) {
       animationFrame = requestAnimationFrame(animateSweep);
-      //TODO fix spinner as well
     }
   }
 

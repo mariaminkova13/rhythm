@@ -1,4 +1,4 @@
-export { songSetup, handleNote, note };
+export { songSetup, handleNote, note, beatLength };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
@@ -29,7 +29,7 @@ var missCount = 0,
   hitResult = null,
   earlyOrLate = null;
 
-var noteSpacingPx, noteStepSize, bps;
+var noteSpacingPx, noteStepSize, bps, beatLength;
 var fps = 60;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
@@ -315,6 +315,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
       parseNotemap(songFilePath).then((data) => {
         const accuracyDiv = document.getElementById("accuracyDiv");
         bps = data.head.bpm / 60;
+        beatLength = 1000/bps
         if (AdaptiveNoteSpeedPreference === 'true') {
           noteSpacingPx = 100 * bps;
         }
@@ -350,7 +351,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
         });
 
         tickEventListeners();
-        countdown(1000 / bps);
+        countdown();
 
         createNotes(data);
       });
