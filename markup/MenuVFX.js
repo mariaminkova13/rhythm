@@ -15,62 +15,11 @@ function initializeTileEffects() {
   // Get all tile elements
   const tiles = document.querySelectorAll(".tile");
 
-  tiles.forEach(function (tile) {
-    // Skip if already initialized
-    if (tile.dataset.vfxInitialized) return;
-    tile.dataset.vfxInitialized = "true";
+  function initializeParallax() {
+    // no parallax scroll if no scroll
+    if (tileContainer.getBoundingClientRect().width <= tileContainer.parentElement.getBoundingClientRect().width) {tileContainer.style.justifyContent = "space-evenly"; return};
 
-    // Add a photo container
-    const photoDiv = document.createElement("div");
-    photoDiv.className = "photo";
-    tile.appendChild(photoDiv);
-
-    // Set up background image based on data-image attribute
-    const dataImage = tile.getAttribute("data-image");
-    if (dataImage) {
-      photoDiv.style.backgroundImage = "url(" + dataImage + ")";
-    }
-    const photo = tile.querySelector(".photo");
-
-    // Tile mouse actions
-    tile.addEventListener("mouseover", function () {
-      photo.style.transform = "scale(" + scaleMultiplier + ")";
-    });
-
-    tile.addEventListener("mouseout", function () {
-      photo.style.transform = "scale(1)";
-    });
-
-    tile.addEventListener("mousemove", function (e) {
-      const rect = this.getBoundingClientRect();
-      const x =
-        ((e.pageX - rect.left - window.scrollX) / this.offsetWidth) * 100;
-      const y =
-        ((e.pageY - rect.top - window.scrollY) / this.offsetHeight) * 100;
-      photo.style.transformOrigin = x + "% " + y + "%";
-    });
-  });
-
-  //// parallax scroll
-
-  // tileContainer.onmousedown = (e) => {
-  //   tileContainer.dataset.mouseDownAt = e.clientX;
-  // }
-  // tileContainer.onmousemove = (e) => {
-  //   if (!tileContainer.dataset.mouseDownAt) return;
-  //   const mouseDelta = parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
-  //     maxDelta = window.innerWidth / scrollFactor;
-  //   const percentage = (mouseDelta / maxDelta) * 100,
-  //     nextPercentage = parseFloat(tileContainer.dataset.prevPercentage) + percentage;
-  //   tileContainer.dataset.percentage = nextPercentage;
-  //   tileContainer.style.transform = `translateX(${nextPercentage * -1}%)`;
-  // }
-  // tileContainer.onmouseup = () => {
-  //   tileContainer.dataset.mouseDownAt = null;
-  //   tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
-  // }
-
-  const handleMouseDown = (e) => {
+    const handleMouseDown = (e) => {
     tileContainer.dataset.mouseDownAt = e.clientX;
   };
 
@@ -120,6 +69,46 @@ function initializeTileEffects() {
   window.addEventListener('mousedown', handleMouseDown);
   window.addEventListener('mousemove', handleMouseMove);
   window.addEventListener('mouseup', handleMouseUp);
+  }
+
+  tiles.forEach(function (tile) {
+    // Skip if already initialized
+    if (tile.dataset.vfxInitialized) return;
+    tile.dataset.vfxInitialized = "true";
+
+    // Add a photo container
+    const photoDiv = document.createElement("div");
+    photoDiv.className = "photo";
+    tile.appendChild(photoDiv);
+
+    // Set up background image based on data-image attribute
+    const dataImage = tile.getAttribute("data-image");
+    if (dataImage) {
+      photoDiv.style.backgroundImage = "url(" + dataImage + ")";
+    }
+    const photo = tile.querySelector(".photo");
+
+    // Tile mouse actions
+    tile.addEventListener("mouseover", function () {
+      photo.style.transform = "scale(" + scaleMultiplier + ")";
+    });
+
+    tile.addEventListener("mouseout", function () {
+      photo.style.transform = "scale(1)";
+    });
+
+    tile.addEventListener("mousemove", function (e) {
+      const rect = this.getBoundingClientRect();
+      const x =
+        ((e.pageX - rect.left - window.scrollX) / this.offsetWidth) * 100;
+      const y =
+        ((e.pageY - rect.top - window.scrollY) / this.offsetHeight) * 100;
+      photo.style.transformOrigin = x + "% " + y + "%";
+    });
+  });
+
+  initializeParallax()
+
   //TODO make the tiles behind border
 }
 
