@@ -55,7 +55,7 @@ export function countdown() {
     const percent = Math.min((elapsed / beatLength) * 100, 100);
 
     const rect = countdownElement.getBoundingClientRect();
-    polygon.setAttribute("points", getPoints(rect.width, rect.height, percent)); //FIXME
+    polygon.setAttribute("points", getPoints(rect.width, rect.height, percent));
 
     if (percent < 100) {
       animationFrame = requestAnimationFrame(animateSweep);

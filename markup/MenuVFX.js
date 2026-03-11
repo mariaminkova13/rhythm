@@ -2,8 +2,6 @@
 // https://www.youtube.com/watch?v=PkADl0HubMY
 // https://codepen.io/l422y/pen/ngpaGB
 
-//TODO fix when few tiles
-
 export { initializeTileEffects };
 
 const scaleMultiplier = "1.1";
@@ -16,59 +14,57 @@ function initializeTileEffects() {
   const tiles = document.querySelectorAll(".tile");
 
   function initializeParallax() {
-    // no parallax scroll if no scroll
-    if (tileContainer.getBoundingClientRect().width <= tileContainer.parentElement.getBoundingClientRect().width) {tileContainer.style.justifyContent = "space-evenly"; return};
 
     const handleMouseDown = (e) => {
-    tileContainer.dataset.mouseDownAt = e.clientX;
-  };
+      tileContainer.dataset.mouseDownAt = e.clientX;
+    };
 
-  const handleMouseMove = (e) => {
-    if (tileContainer.dataset.mouseDownAt == 0) return;
+    const handleMouseMove = (e) => {
+      if (tileContainer.dataset.mouseDownAt == 0) return;
 
-    const mouseDelta =
-      parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
-      maxDelta = window.innerWidth / scrollFactor;
+      const mouseDelta =
+        parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
+        maxDelta = window.innerWidth / scrollFactor;
 
-    const percentage = ((mouseDelta / maxDelta) * 100) * -1,
-      prevPercentage = parseFloat(tileContainer.dataset.prevPercentage) || 0,
-      nextPercentageUnclamped = prevPercentage + percentage;
+      const percentage = ((mouseDelta / maxDelta) * 100) * -1,
+        prevPercentage = parseFloat(tileContainer.dataset.prevPercentage) || 0,
+        nextPercentageUnclamped = prevPercentage + percentage;
 
-    // Calculate max scroll based on container width
-    const containerWidth = tileContainer.scrollWidth;
-    const viewportWidth = window.innerWidth;
-    const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
-    const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
-    tileContainer.dataset.percentage = nextPercentage;
-    tileContainer.animate({
-      transform: `translateX(${nextPercentage}%)`
-    }, {
-      duration: 1200, fill: "forwards"
-    });
-
-    Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
-      photo.animate({
-        backgroundPosition: `${100 + nextPercentage}% 50%`
+      // Calculate max scroll based on container width
+      const containerWidth = tileContainer.scrollWidth;
+      const viewportWidth = window.innerWidth;
+      const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
+      const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
+      tileContainer.dataset.percentage = nextPercentage;
+      tileContainer.animate({
+        transform: `translateX(${nextPercentage}%)`
       }, {
         duration: 1200, fill: "forwards"
       });
-    });
-  };
 
-  const handleMouseUp = () => {
+      Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
+        photo.animate({
+          backgroundPosition: `${100 + nextPercentage}% 50%`
+        }, {
+          duration: 1200, fill: "forwards"
+        });
+      });
+    };
+
+    const handleMouseUp = () => {
+      tileContainer.dataset.mouseDownAt = 0;
+      tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
+    };
+
+    // Initialize prevPercentage
     tileContainer.dataset.mouseDownAt = 0;
-    tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
-  };
+    tileContainer.dataset.prevPercentage = 0;
+    tileContainer.dataset.percentage = 0;
+    tileContainer.dataset.nextPercentage = 0;
 
-  // Initialize prevPercentage
-  tileContainer.dataset.mouseDownAt = 0;
-  tileContainer.dataset.prevPercentage = 0;
-  tileContainer.dataset.percentage = 0;
-  tileContainer.dataset.nextPercentage = 0;
-
-  window.addEventListener('mousedown', handleMouseDown);
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
   }
 
   tiles.forEach(function (tile) {
@@ -107,9 +103,9 @@ function initializeTileEffects() {
     });
   });
 
-  initializeParallax()
-
-  //TODO make the tiles behind border
+  // no parallax scroll if no scroll
+  if (tileContainer.getBoundingClientRect().width <= tileContainer.parentElement.getBoundingClientRect().width) { tileContainer.style.justifyContent = "space-evenly" }
+  else { initializeParallax() }
 }
 
 //TODO make title page https://codepen.io/iamryanyu/pen/OBORdo and shake on click like OvO

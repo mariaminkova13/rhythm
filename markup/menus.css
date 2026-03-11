@@ -16,6 +16,7 @@ canvas, #allthestuff, #loading-screen{
     display: block;
     pointer-events: none;
     mix-blend-mode: normal;
+    overflow: hidden
 }
 
 titlebar {
