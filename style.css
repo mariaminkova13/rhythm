@@ -98,7 +98,7 @@ note {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     background-color: wheat;
-    height: calc(var(--tickheight) * 0.8);
+    height: calc(var(--tickheight) * 0.6);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -198,7 +198,7 @@ accuracy {
 notecontainer {
     flex: 0.6;
     position: relative;
-    background-color: lightslategrey;
+    background-color: darkslategrey;
 }
 
 hitline {

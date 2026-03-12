@@ -380,7 +380,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
     // Event listeners - optimized using keymap
     document.addEventListener("keydown", (event) => {
       // Ignore repeated keydown events from holding the key
-      if (event.repeat) {
+      if (event.repeat||paused) {
         return;
       }
 
