@@ -138,7 +138,7 @@ function handleBeat(beat, beatIndex, hitline, precision) {
     // alert('lightup');
     const hitlinelight = document.querySelector("hitlinelight")
     hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
-    
+
     const lightanimation = anime({
       targets: hitlinelight,
       keyframes: [
@@ -183,8 +183,8 @@ function handleBeat(beat, beatIndex, hitline, precision) {
     }
 
     if (beat.getBoundingClientRect().bottom >= hitline.getBoundingClientRect().bottom) {
-        clearInterval(fallInterval);
-        beat.remove();
+      clearInterval(fallInterval);
+      beat.remove();
     }
 
   }, 1000 / fps);
@@ -315,7 +315,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
       parseNotemap(songFilePath).then((data) => {
         const accuracyDiv = document.getElementById("accuracyDiv");
         bps = data.head.bpm / 60;
-        beatLength = 1000/bps
+        beatLength = 1000 / bps
         if (AdaptiveNoteSpeedPreference === 'true') {
           noteSpacingPx = 100 * bps;
         }
@@ -380,7 +380,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
     // Event listeners - optimized using keymap
     document.addEventListener("keydown", (event) => {
       // Ignore repeated keydown events from holding the key
-      if (event.repeat||paused) {
+      if (event.repeat || paused) {
         return;
       }
 
@@ -457,22 +457,25 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
       }
     });
 
+    let countdowncircle = document.querySelector("countdowncircle")
+
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" || event.key === "Enter") {
-        if (paused) {
-          unpause();
-        } else {
-          pause();
+          if (paused) {
+            unpause()}
+          else {
+            pause()
+          }
         }
       }
-    });
+    );
 
     updatehp();
 
     let grades = {
       F: "You Suck",
       D: "Bruh",
-      C: "Meh",
+      C: "Mid",
       //mid and decent, phi is godlike
       B: "Nice",
       A: "Sick",

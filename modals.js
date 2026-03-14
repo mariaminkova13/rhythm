@@ -2,8 +2,10 @@
 //https://codepen.io/paulita_p/pen/gLqLZr
 
 import { beatLength } from "./song.js";
+export var paused = true;
 
 export function countdown() {
+  paused = true
   const countdowncircle = document.createElement("countdowncircle");
   const countdownElement = document.createElement("countdownnumber");
   const svgNS = "http://www.w3.org/2000/svg"; //TODO mirror somehow
@@ -79,11 +81,11 @@ export function countdown() {
       cancelAnimationFrame(animationFrame);
       countdowncircle.remove();
       clearInterval(countdownInterval);
+      paused = false
     }
   }, beatLength);
 }
 
-export var paused = false;
 const blurring = document.createElement("blurring");
 
 export function pause() {
@@ -92,7 +94,8 @@ export function pause() {
   if (countdowncircle) {countdowncircle.remove();}
   paused = true;
   document.getElementById("allthestuff").appendChild(blurring);
-  document.getElementById("pausemodal").style.visibility = "visible";
+  let pausemodal = document.getElementById("pausemodal")
+  if (pausemodal.style.visibility != "visible") pausemodal.style.visibility = "visible";
   // TODO make blurring not blur border
   //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
   document.body.style.cursor = "default";
@@ -100,6 +103,7 @@ export function pause() {
 
 export function unpause() {
   if (!paused) return;
+  if (document.querySelector("countdowncircle")) return;
   paused = false;
   hideModal("pausemodal");
   countdown();
