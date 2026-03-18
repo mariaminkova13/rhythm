@@ -1,8 +1,7 @@
-//https://codepen.io/ccrch/pen/yyaraz
-// https://www.youtube.com/watch?v=PkADl0HubMY
 // https://codepen.io/l422y/pen/ngpaGB
 
-export { initializeTileEffects };
+import anime from "/node_modules/animejs/lib/anime.es.js";
+export { initializeTileEffects, loadStartPage };
 
 const scaleMultiplier = "1.1";
 const scrollFactor = 1.2;
@@ -108,4 +107,35 @@ function initializeTileEffects() {
   else { initializeParallax() }
 }
 
-//TODO make title page https://codepen.io/iamryanyu/pen/OBORdo and shake on click like OvO
+async function loadStartPage() {
+  allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
+  const appContainer = document.getElementById("appContainer");
+  appContainer.style.cursor = "default"
+
+  const target = document.getElementById('title');
+  const targetObj = document.getElementById('title-obj')
+  var force = 40;
+  var speed = 300;
+  target.addEventListener('mousemove', function (e) {
+      var boundingRect = this.getBoundingClientRect();
+      var relX = e.pageX - boundingRect.left;
+      var relY = e.pageY - boundingRect.top;
+
+      anime({
+        targets: targetObj,
+        translateX: (relX - boundingRect.width / 2) / boundingRect.width * force,
+        translateY: (relY - boundingRect.height / 2) / boundingRect.height * force,
+        duration: speed
+      })
+  });
+
+  target.addEventListener('mouseout', function () {
+      anime({
+        targets: targetObj,
+        translateX: 0,
+        translateY: 0,
+        duration: speed,
+        // easings: 
+      })
+  });
+}

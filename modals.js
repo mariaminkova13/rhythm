@@ -1,6 +1,3 @@
-//https://codepen.io/amit_sheen/pen/oKaabp
-//https://codepen.io/paulita_p/pen/gLqLZr
-
 import { beatLength } from "./song.js";
 export var paused = true;
 

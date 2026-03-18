@@ -1,12 +1,12 @@
 import { songSetup } from "./song.js";
-import { initializeTileEffects } from "./markup/MenuVFX.js";
-import osuCursor from "./style/cursor/src/osu-cursor.js";
+import { initializeTileEffects, loadStartPage } from "./markup/MenuVFX.js";
+import osuCursor from "./style/cursor/osu-cursor.js";
 export { avg, median }
 
 export { songFilePath };
 let songFilePath;
 
-var cursor = new osuCursor();
+// var cursor = new osuCursor();
 
 const AdaptiveNoteSpeedPreference = 'true'
 
@@ -65,19 +65,12 @@ function initializeWindowControls() {
   };
 
   const win = remote.BrowserWindow.getFocusedWindow();
-  win.on("enter-full-screen", () => {
+
+  win.on("maximize" || "enter-full-screen", () => {
     songprogressUp();
   });
 
-  win.on("maximize", () => {
-    songprogressUp();
-  });
-
-  win.on("leave-full-screen", () => {
-    songprogressDown();
-  });
-
-  win.on("unmaximize", () => {
+  win.on("unmaximize" || "leave-full-screen", () => {
     songprogressDown();
   });
 
@@ -115,7 +108,6 @@ function initializeWindowControls() {
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
-  // album1.setAttribute("data-image", "markup/covers/windowsdarkmode.jpg");
 
   response = await fetch("markup/albums.json");
   const parsedJson = await response.json();
@@ -149,7 +141,7 @@ async function loadAlbumMenu() {
 
 addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
-  await loadAlbumMenu();
+  await loadStartPage()
 });
 
 const avg = data => {

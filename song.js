@@ -302,8 +302,6 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
     .then((html) => {
       document.getElementById("allthestuff").innerHTML = html;
 
-      // Initialize lane elements after HTML is loaded
-
       const rightHand = document.createElement("ticksection"),
         leftHand = document.createElement("ticksection"),
         hitline = document.querySelector("hitline");

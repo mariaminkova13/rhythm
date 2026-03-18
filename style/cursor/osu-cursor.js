@@ -1,4 +1,4 @@
-import anime from "../../../node_modules/animejs/lib/anime.es.js";
+import anime from "../../node_modules/animejs/lib/anime.es.js";
 
 // Direct paths for assets
 const cursorDefault = "./style/cursor/assets/cursor.png";

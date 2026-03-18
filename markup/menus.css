@@ -25,7 +25,6 @@ titlebar {
     background: var(--titlebarcolor);
     -webkit-app-region: drag;
     z-index: 1000000000;
-    /* cursor: grab !important; */
     display: flex;
     justify-content: space-between;
     align-items: center;
