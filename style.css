@@ -253,7 +253,8 @@ beatnumber {
     right: -100%;
     color: var(--trackcolor);
     font-size: small;
-    position: relative
+    position: relative;
+    margin-left: 5px
 }
 
 ticksection {

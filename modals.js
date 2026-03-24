@@ -78,7 +78,7 @@ export function countdown() {
       cancelAnimationFrame(animationFrame);
       countdowncircle.remove();
       clearInterval(countdownInterval);
-      paused = false
+      paused = false;
     }
   }, beatLength);
 }

@@ -121,7 +121,7 @@ async function loadAlbumMenu() {
 
     const menubutton = document.createElement('button')
     menubutton.classList.add('menubutton')
-    menubutton.onclick = function() {songSetup(parsedYaml[albumName]['contents']['notemap'], AdaptiveNoteSpeedPreference)}
+    menubutton.onclick = function() {songSetup(parsedYaml[albumName]['contents']['notemap'], parsedYaml[albumName]['contents']['audio'], AdaptiveNoteSpeedPreference)}
     thisTile.appendChild(menubutton)
 
     const title = document.createElement('h1')

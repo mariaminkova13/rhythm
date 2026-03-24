@@ -131,10 +131,10 @@ function handleBeat(beat, beatIndex, hitline, precision) {
   let distanceMoved = 0;
 
   const beatNumber = document.createElement('beatnumber')
-  beatNumber.textContent = beatIndex
+  beatNumber.textContent = beatIndex + 1
   beat.appendChild(beatNumber)
 
-  var lightduration = 800;
+  var lightduration = 400; 
   const peakOffset = 0.2
 
   const lightup = function () {
@@ -166,7 +166,7 @@ function handleBeat(beat, beatIndex, hitline, precision) {
     }
 
     position += noteStepSize;
-    let adjustedPosition = position + 11; //TODO make adaptive
+    let adjustedPosition = position + 11; //TODO make adaptive, why 11
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
@@ -188,6 +188,9 @@ function handleBeat(beat, beatIndex, hitline, precision) {
     if (beat.getBoundingClientRect().bottom >= hitline.getBoundingClientRect().bottom) {
       clearInterval(fallInterval);
       beat.remove();
+      if (beatIndex == 0) {
+         window.dispatchEvent(new Event('musicmaystart'));
+      }
     }
 
   }, 1000 / fps);
@@ -265,7 +268,7 @@ function updatehp() {
   }
 }
 
-function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
+function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
   function checkHit(laneId) {
     const lanenotes = laneId.querySelectorAll('note[aria-active="true"]');
@@ -313,7 +316,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
       Jlane = document.createElement("tick");
       Klane = document.createElement("tick");
 
-      parseNotemap(songFilePath).then((data) => {
+      parseNotemap(mapFilePath).then((data) => {
         const accuracyDiv = document.getElementById("accuracyDiv");
         bps = data.head.bpm / 60;
         beatLength = 1000 / bps
@@ -432,7 +435,12 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
               }
               missCount++;
             }
-          }
+          } else {
+              console.log("no note on screen");
+              missSound.play();
+              createHitComment("miss!");
+              hp -= missHpCost;
+            }
           updatehp();
 
           break; // Exit loop once we find a match
@@ -465,13 +473,25 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
 
     updatehp();
 
+    //  window.addEventListener("musicmaystart", startMusic);
+    //playmusic
+    (async () => {
+      await new Promise(resolve =>
+        window.addEventListener("musicmaystart", resolve, { once: true })
+      );
+      const audio = new Audio(musicFilePath);
+      audio.play();
+    })();
+
+    //TODO base score on ms offset, not px offset
+
     let grades = {
       F: "You Suck",
       D: "Bruh",
       C: "Mid",
       //mid and decent, phi is godlike
-      B: "Nice",
-      A: "Sick",
+      B: "ok",
+      A: "good",
     };
     const lettergrade = document.querySelector("lettergrade");
     const plusminus = document.querySelector("plusminus");
