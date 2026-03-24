@@ -14,7 +14,6 @@ var hp = 100,
   hitcommenttimeout = 1000;
 
 var missHpCost = 5,
-  badMissHpCost = 15,
   forgotNoteCost = 7,
   minHeal = 13,
   maxHeal = 30,
@@ -35,7 +34,7 @@ const noteStartingPosition = -10;
 var hitAccuracy = [];
 
 const perfectSound = new Audio("sfx/perfect.wav"),
-  badmissSound = new Audio("sfx/badmiss.mp3"),
+  missSound = new Audio("sfx/miss.mp3"),
   hitSound = new Audio("sfx/hit.wav"),
   shitSound = new Audio("sfx/shit.wav");
 
@@ -211,7 +210,7 @@ function handleNote(noteElement) {
       clearInterval(fallInterval);
       if (noteElement.getAttribute("aria-active") === "true") {
         console.log("Note offscreen, completely missed");
-        badmissSound.play();
+        missSound.play();
         earlyOrLate = "late.";
         createHitComment("miss!");
         hp -= forgotNoteCost;
@@ -370,7 +369,6 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
 
     if (difficulty === "relaxed") {
       missHpCost = 0;
-      badMissHpCost = 0;
     } else if (difficulty === "hard") {
 
     }
@@ -422,7 +420,7 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
               shitCount++;
             } else {
               console.log("miss");
-              badmissSound.play();
+              missSound.play();
               createHitComment("miss");
               hp -= missHpCost;
               if (absoluteDistance <= 200) {
@@ -430,13 +428,6 @@ function songSetup(songFilePath, AdaptiveNoteSpeedPreference) {
               }
               missCount++;
             }
-          } else {
-            console.log("No note present");
-            badmissSound.play();
-            createHitComment("miss!");
-            hp -= badMissHpCost;
-            missCount++;
-            updatehp();
           }
           updatehp();
 

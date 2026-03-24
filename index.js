@@ -2,6 +2,7 @@ import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./markup/MenuVFX.js";
 import osuCursor from "./style/cursor/osu-cursor.js";
 export { avg, median }
+const yaml = require("yaml");
 
 export { songFilePath };
 let songFilePath;
@@ -109,19 +110,18 @@ async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
 
-  response = await fetch("markup/albums.json");
-  const parsedJson = await response.json();
+  const parsedYaml = await yaml.parse(await (await fetch("markup/albums.yaml")).text());
 
-  for (const albumName in parsedJson) {
+  for (const albumName in parsedYaml) {
     const albumtile = document.createElement("div")
     albumtile.classList.add("tile")
     const thisTile = tileContainer.appendChild(albumtile)
     thisTile.setAttribute("id", albumName)
-    thisTile.setAttribute("data-image", parsedJson[albumName]['cover-image-path'])
+    thisTile.setAttribute("data-image", parsedYaml[albumName]['cover-image'])
 
     const menubutton = document.createElement('button')
     menubutton.classList.add('menubutton')
-    menubutton.onclick = function() {songSetup(parsedJson[albumName]['contents']['notemap-file-path'], AdaptiveNoteSpeedPreference)}
+    menubutton.onclick = function() {songSetup(parsedYaml[albumName]['contents']['notemap'], AdaptiveNoteSpeedPreference)}
     thisTile.appendChild(menubutton)
 
     const title = document.createElement('h1')
@@ -142,7 +142,6 @@ async function loadAlbumMenu() {
 addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
   await loadStartPage()
-  // document.getElementById("startsingleplayer").setAttribute('onclick', "await loadAlbumMenu()");
   document.getElementById("startsingleplayer").onclick = async function () {
     await loadAlbumMenu()};
 });
