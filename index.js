@@ -142,6 +142,9 @@ async function loadAlbumMenu() {
 addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
   await loadStartPage()
+  // document.getElementById("startsingleplayer").setAttribute('onclick', "await loadAlbumMenu()");
+  document.getElementById("startsingleplayer").onclick = async function () {
+    await loadAlbumMenu()};
 });
 
 const avg = data => {

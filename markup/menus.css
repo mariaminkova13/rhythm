@@ -182,3 +182,11 @@ button.menubutton {
     bottom: 0;
     width: 100%;
 }
+
+#title {
+    pointer-events: auto;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding-top: 5rem
+}
