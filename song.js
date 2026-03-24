@@ -130,6 +130,10 @@ function handleBeat(beat, beatIndex, hitline, precision) {
   let eventTriggered = false;
   let distanceMoved = 0;
 
+  const beatNumber = document.createElement('beatnumber')
+  beatNumber.textContent = beatIndex
+  beat.appendChild(beatNumber)
+
   var lightduration = 800;
   const peakOffset = 0.2
 
