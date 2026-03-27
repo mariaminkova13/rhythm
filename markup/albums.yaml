@@ -1,9 +1,10 @@
-album1:
+Special Thanks:
   cover-image: markup/covers/windowsdarkmode.jpg
   contents:
     composer: Akira Yamaoka
-    notemap: markup/notemaps/notemap.txt
     audio: songs/never forgive me never forget me.m4a
+    notemap: markup/notemaps/notemap.txt
+    description: was used for testing
 album2:
   cover-image: markup/covers/windowsdarkmode.jpg
   contents:
