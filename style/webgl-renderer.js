@@ -1,6 +1,5 @@
-// WebGL Renderer with Shader Support
-
 class WebGLRenderer {
+
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
     if (!this.canvas) {
@@ -19,16 +18,10 @@ class WebGLRenderer {
 
     this.program = null;
     this.startTime = Date.now();
-    this.resizeCanvas();
-    window.addEventListener("resize", () => this.resizeCanvas());
-  }
 
-  resizeCanvas() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    if (this.gl) {
-      this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-    }
+    window.addEventListener("vignetteRed", (e) => {
+      this.animateVignette();
+    });
   }
 
   async loadShader(url) {
@@ -117,11 +110,11 @@ class WebGLRenderer {
 
     // Get uniform locations
     this.timeLocation = this.gl.getUniformLocation(this.program, "u_time");
-    this.resolutionLocation = this.gl.getUniformLocation(
-      this.program,
-      "u_resolution"
-    );
-
+    this.resolutionLocation = this.gl.getUniformLocation(this.program, "u_resolution");
+    this.vignetteColor = this.gl.getUniformLocation(this.program, "u_vignetteColor");
+    this.red = this.gl.getUniformLocation(this.program, "u_red");
+    this.gl.uniform3f(this.vignetteColor, 0.0, 0.0, 0.0); // black
+    this.gl.uniform3f(this.red, 160.0, 45.0, 15.0); //red
     return true;
   }
 
@@ -152,6 +145,45 @@ class WebGLRenderer {
     if (success) {
       this.render();
     }
+  }
+
+  animateVignette() {
+    this.vignettePhase = this.gl.getUniformLocation(this.program, "u_vignetteRedness");
+    this.gl.uniform1f(this.vignettePhase, 0.0);
+
+    const duration = 200;
+    let timestampStart = Date.now()
+    let that = this
+    let elapsed, timestamp
+    this.render()
+    //FIXME
+    requestAnimationFrame(step);
+
+    function animateFlash() {
+      if (elapsed < duration) {
+        requestAnimationFrame(step);
+        that.render()
+        console.log('update')
+      } else {
+        that.gl.uniform1f(that.vignettePhase, 0.0); // ensure fully off
+        console.log('stop')
+      }
+    }
+
+    function step() {
+      timestamp = Date.now()
+      elapsed = timestamp - timestampStart;
+
+      that.gl.uniform1f(that.vignettePhase, Math.cos(elapsed / duration * -1 * Math.PI));
+      //cubic-bezier(0, 0.55, 0.45, 1)
+      console.log('step')
+
+      animateFlash()
+    };
+
+    animateFlash()
+
+    //TODO find cleaner way
   }
 }
 

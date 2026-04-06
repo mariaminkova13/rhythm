@@ -29,7 +29,7 @@ var missCount = 0,
   earlyOrLate = null;
 
 var noteSpacingPx, noteStepSize, bps, beatLength;
-var fps = 60;
+var fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
@@ -134,7 +134,7 @@ function handleBeat(beat, beatIndex, hitline, precision) {
   beatNumber.textContent = beatIndex + 1
   beat.appendChild(beatNumber)
 
-  var lightduration = 400; 
+  var lightduration = 400;
   const peakOffset = 0.2
 
   const lightup = function () {
@@ -189,7 +189,7 @@ function handleBeat(beat, beatIndex, hitline, precision) {
       clearInterval(fallInterval);
       beat.remove();
       if (beatIndex == 0) {
-         window.dispatchEvent(new Event('musicmaystart'));
+        window.dispatchEvent(new Event('musicmaystart'));
       }
     }
 
@@ -222,6 +222,7 @@ function handleNote(noteElement) {
         createHitComment("miss!");
         hp -= forgotNoteCost;
         missCount++;
+        window.dispatchEvent(new Event('vignetteRed'))
         updatehp();
       }
       noteElement.remove();
@@ -436,11 +437,11 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               missCount++;
             }
           } else {
-              console.log("no note on screen");
-              missSound.play();
-              createHitComment("miss!");
-              hp -= missHpCost;
-            }
+            console.log("no note on screen");
+            missSound.play();
+            createHitComment("miss!");
+            hp -= missHpCost;
+          }
           updatehp();
 
           break; // Exit loop once we find a match
@@ -462,13 +463,14 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" || event.key === "Enter") {
-          if (paused) {
-            unpause()}
-          else {
-            pause()
-          }
+        if (paused) {
+          unpause()
+        }
+        else {
+          pause()
         }
       }
+    }
     );
 
     updatehp();

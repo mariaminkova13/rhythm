@@ -15,14 +15,17 @@ precision mediump float;
 varying vec2 v_uv;
 uniform float u_time;
 uniform vec2 u_resolution;
+uniform vec3 u_vignetteColor;
+uniform vec3 red;
 
 // Vignette settings
-const float vignetteIntensity = 8.5;
+const float vignetteIntensity = 21.0; //higher is stronger
 const float vignetteExtent = 0.18; //higher is farther
-const vec3 vignetteColor = vec3(0.0/255.0, 0.0/255.0, 0.0/255.0);
-// const vec3 vignetteColor = vec3(47.0/255.0, 79.0/255.0, 79.0/255.0);
+uniform float u_vignetteRedness;
 
 void main() {
+    vec3 color = mix(u_vignetteColor, red, u_vignetteRedness);
+
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
     uv *=  1.0 - uv.yx;
     float vig = uv.x*uv.y * vignetteIntensity;
@@ -30,8 +33,11 @@ void main() {
 
     // Vignette: center bright (transparent), edges dark (opaque)
     // Alpha should be higher at edges, lower at center
+    
+    // different blend mode where as if vignette is layered on top- dark red on grey should no become pink
+
     float alpha = 1.0 - vig;
-    gl_FragColor = vec4(vignetteColor, alpha);
+    gl_FragColor = vec4(color, alpha);
 }
 
 #endif

@@ -5,6 +5,7 @@ Special Thanks:
     audio: songs/never forgive me never forget me.m4a
     notemap: markup/notemaps/notemap.txt
     description: was used for testing
+    preview-segment: [6, 21]
 album2:
   cover-image: markup/covers/windowsdarkmode.jpg
   contents:

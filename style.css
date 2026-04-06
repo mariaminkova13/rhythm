@@ -52,8 +52,8 @@
     --cursor: none;
 
     --fontsize: 18px;
-    --bodyfont: Abaddon, DotGothic, monospace;
-    --headfont: Raccoon, CyrillicPixel, Acme, serif;
+    --bodyfont: verdana, Abaddon, DotGothic, monospace;
+    --headfont: monospace, Raccoon, CyrillicPixel, Acme, serif;
     --radius: 3px;
 
     --bgcolor: rgb(100, 100, 100);
@@ -96,10 +96,11 @@ button {
 
 note {
     display: block;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
+    /* aspect-ratio: 3 / 1; */
+    border-radius: var(--radius);
     background-color: wheat;
-    height: calc(var(--tickheight) * 0.6);
+    height: 5px;
+    width: var(--tickheight);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -108,8 +109,19 @@ note {
 }
 
 note[aria-active=false] {
-    opacity: 0.2;
-    background-color: none;
+    opacity: 0;
+    animation: redden calc(var(--transitionspeed) * 0.75) ease-out;
+}
+
+@keyframes redden {
+    0% {
+        background-color: red;
+        opacity: 1
+    }
+
+    100% {
+        opacity: 0
+    }
 }
 
 column {
@@ -213,7 +225,7 @@ hitline {
     flex-direction: row;
     bottom: 0;
     box-sizing: border-box;
-    gap: var(--tickgap);
+    /* gap: var(--tickgap); */
     /* padding: 0 var(--tickgap) 0 var(--tickgap); */
 }
 
@@ -222,7 +234,8 @@ hitlinelight {
     height: 20px;
     width: 100%;
     position: absolute;
-    bottom: 1px; /*TODO z-index instead?*/
+    bottom: 1px;
+    /*TODO z-index instead?*/
     z-index: -3;
     opacity: 0;
     /* animation: var(--beatlength) infinite lightup; */
@@ -260,7 +273,7 @@ beatnumber {
 ticksection {
     display: flex;
     width: calc(var(--tickheight) * 5);
-    gap: calc(var(--tickheight) * 0.2);
+    /* gap: calc(var(--tickheight) * 0.2); */
     justify-content: space-between;
     align-items: center;
 }
@@ -271,21 +284,24 @@ tick {
     aspect-ratio: 1 / 1;
     position: relative;
     z-index: -2;
-    border: 1px solid var(--tickcolor);
+    /* border: 1px solid var(--tickcolor); */
     margin: 0 auto;
     border-radius: var(--radius);
     transition: var(--ticktransitionspeed) all;
 }
 
-#Slane, #Jlane {
+#Slane,
+#Jlane {
     order: 1
 }
 
-#Dlane, #Klane {
+#Dlane,
+#Klane {
     order: 2
 }
 
-#Flane, #Llane {
+#Flane,
+#Llane {
     order: 3
 }
 
@@ -494,7 +510,7 @@ hitcomment::after {
         transform: translateY(-20px);
         opacity: 0;
     }
-    
+
     100% {
         transform: none;
         opacity: 1
@@ -519,13 +535,20 @@ hitcomment::after {
     }
 }
 
-modal, blurring, body {
+modal,
+blurring,
+body {
     animation: fadeIn var(--transitionspeed) ease-in
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 overlay {
