@@ -1,4 +1,4 @@
-export { songSetup, handleNote, note, beatLength };
+export { songSetup, handleNote, note, beatLength, music };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
@@ -38,7 +38,7 @@ const perfectSound = new Audio("sfx/perfect.wav"),
   hitSound = new Audio("sfx/hit.wav"),
   shitSound = new Audio("sfx/shit.wav");
 
-let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane;
+let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
 
 async function parseNotemap(filePath) {
   try {
@@ -91,6 +91,7 @@ async function parseNotemap(filePath) {
 }
 
 async function createNotes(data) {
+
   let laneList = [];
   Array.from(document.querySelectorAll("track")).forEach((element) =>
     (laneList.push(element))
@@ -481,8 +482,15 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       await new Promise(resolve =>
         window.addEventListener("musicmaystart", resolve, { once: true })
       );
-      const audio = new Audio(musicFilePath);
-      audio.play();
+      music = new Audio(musicFilePath);
+      music.play();
+      const songprogress = document.querySelector('songprogress')
+      const timestamp = document.getElementById('timestamp')
+      setInterval(() => {
+        songprogress.style.width = `${music.currentTime / music.duration * 100}%`;
+        let secondsElapsed = Math.floor(music.duration - music.currentTime)
+        timestamp.textContent = `${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}`
+      }, 1000 / fps)
     })();
 
     //TODO base score on ms offset, not px offset

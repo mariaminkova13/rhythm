@@ -109,18 +109,19 @@ note {
 }
 
 note[aria-active=false] {
-    opacity: 0;
-    animation: redden calc(var(--transitionspeed) * 0.75) ease-out;
+    opacity: 0.1;
+    animation: redden 0.1s ease-out;
+    background-color: none;
+    box-shadow: 0 0 4px inset red;
 }
 
 @keyframes redden {
     0% {
-        background-color: red;
         opacity: 1
     }
 
     100% {
-        opacity: 0
+        opacity: 0.1;
     }
 }
 
@@ -310,8 +311,8 @@ tick {
 }
 
 tick[aria-pressed="true"] {
-    background-color: var(--tickcolor);
-    box-shadow: 0px 0px 10px magenta;
+    background-color: magenta;
+    background-blend-mode: difference;
 }
 
 track {
@@ -333,7 +334,6 @@ songprogress {
     position: absolute;
     opacity: 0.5;
     z-index: 999;
-    width: 90%;
     border-bottom-right-radius: var(--radius);
     transition: top var(--transitionspeed) ease;
 }

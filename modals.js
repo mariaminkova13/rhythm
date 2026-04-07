@@ -1,4 +1,4 @@
-import { beatLength } from "./song.js";
+import { beatLength, music } from "./song.js";
 export var paused = true;
 
 export function countdown() {
@@ -79,6 +79,9 @@ export function countdown() {
       countdowncircle.remove();
       clearInterval(countdownInterval);
       paused = false;
+      if (music.pause) {
+        music.play()
+      }
     }
   }, beatLength);
 }
@@ -88,7 +91,7 @@ const blurring = document.createElement("blurring");
 export function pause() {
   if (paused) return;
   let countdowncircle = document.querySelector("countdowncircle")
-  if (countdowncircle) {countdowncircle.remove();}
+  if (countdowncircle) { countdowncircle.remove(); }
   paused = true;
   document.getElementById("allthestuff").appendChild(blurring);
   let pausemodal = document.getElementById("pausemodal")
@@ -96,6 +99,7 @@ export function pause() {
   // TODO make blurring not blur border
   //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
   document.body.style.cursor = "default";
+  music.pause()
 }
 
 export function unpause() {
