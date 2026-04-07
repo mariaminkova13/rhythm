@@ -6,6 +6,7 @@ Special Thanks:
     notemap: markup/notemaps/notemap.txt
     description: was used for testing
     preview-segment: [6, 21]
+    lyrics:
 album2:
   cover-image: markup/covers/windowsdarkmode.jpg
   contents:

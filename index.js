@@ -1,7 +1,7 @@
 import { songSetup } from "./song.js";
-import { initializeTileEffects, loadStartPage } from "./markup/MenuVFX.js";
+import { initializeTileEffects, loadStartPage } from "./markup/MenuFX.js";
 import osuCursor from "./style/cursor/osu-cursor.js";
-export { avg, median }
+export { avg, median, audioFilter }
 const yaml = require("yaml");
 
 export { songFilePath };
@@ -11,8 +11,25 @@ let songFilePath;
 
 const AdaptiveNoteSpeedPreference = 'true'
 
-function audioFilter() {
-  //TODO muffled & lo-fi echoey filter
+/////////////AUDIO FILTER
+async function audioFilter(audio) {
+  const ctx = new AudioContext();
+  const src = ctx.createMediaElementSource(audio);
+
+  // Low-pass filter
+  const lowpass = ctx.createBiquadFilter();
+  lowpass.type = "lowpass";
+  lowpass.frequency.value = 800;
+
+  // Bitcrusher node
+  await ctx.audioWorklet.addModule("style/bitcrusher-processor.js");
+  const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {
+    parameterData: {
+      bits: 1050,
+      normFreq: 0.1
+    }
+  });
+  src.connect(lowpass).connect(crusher).connect(ctx.destination);
 }
 
 function initializeWindowControls() {
@@ -93,8 +110,6 @@ function initializeWindowControls() {
     remote.BrowserWindow.getFocusedWindow().close();
   });
 
-  /////////////AUDIO FILTER
-
   win.on("minimize", () => {
     //enable filter
   });
@@ -121,7 +136,7 @@ async function loadAlbumMenu() {
 
     const menubutton = document.createElement('button')
     menubutton.classList.add('menubutton')
-    menubutton.onclick = function() {songSetup(parsedYaml[albumName]['contents']['notemap'], parsedYaml[albumName]['contents']['audio'], AdaptiveNoteSpeedPreference)}
+    menubutton.onclick = function () { songSetup(parsedYaml[albumName]['contents']['notemap'], parsedYaml[albumName]['contents']['audio'], AdaptiveNoteSpeedPreference) }
     thisTile.appendChild(menubutton)
 
     const title = document.createElement('h1')
@@ -130,20 +145,33 @@ async function loadAlbumMenu() {
   }
 
   initializeTileEffects();
-
-  // try {
-  //   const json = 
-    
-  // } catch (error) {
-  //   console.error("Invalid JSON");
-  // }
 }
 
 addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
+
+  // FIXME connect all future audio to filter
+  // const filterInput = await audioFilter();
+  // function patchAudioElement(audio) {
+  //   const src = ctx.createMediaElementSource(audio);
+  //   src.connect(filterInput);
+  // }
+  // const observer = new MutationObserver(mutations => {
+  //   for (const m of mutations) {
+  //     for (const node of m.addedNodes) {
+  //       if (node.tagName === "AUDIO") {
+  //         patchAudioElement(node);
+  //       }
+  //     }
+  //   }
+  // });
+
+  // observer.observe(document.body, { childList: true, subtree: true });
+
   await loadStartPage()
   document.getElementById("startsingleplayer").onclick = async function () {
-    await loadAlbumMenu()};
+    await loadAlbumMenu()
+  };
 });
 
 const avg = data => {

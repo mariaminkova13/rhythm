@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="markup/menus.css" />
-    <meta name="author" content="sadgrl_07" />
-    <meta name="dir" content="ltr" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="license" content="GNU General Public License" />
-    <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> -->
-  </head>
 
-  <body>
-    <titlebar id="custom-titlebar">
-      <span style="margin-left: 4ch" id="gameName">Rhythm Game</span>
-      <controlButtonDiv>
-        <windowControlButton id="minimizeBtn">-</windowControlButton>
-        <windowControlButton id="maximizeBtn">0</windowControlButton>
-        <windowControlButton id="closeBtn">X</windowControlButton>
-      </controlButtonDiv>
-    </titlebar>
-    <div id="appContainer">
-      <!-- <div id="loading-screen">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="markup/menus.css" />
+  <meta name="author" content="sadgrl_07" />
+  <meta name="dir" content="ltr" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="license" content="GNU General Public License" />
+  <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> -->
+</head>
+
+<body>
+  <titlebar id="custom-titlebar">
+    <span style="margin-left: 4ch" id="gameName">Rhythm Game</span>
+    <controlButtonDiv>
+      <windowControlButton id="minimizeBtn">-</windowControlButton>
+      <windowControlButton id="maximizeBtn">0</windowControlButton>
+      <windowControlButton id="closeBtn">X</windowControlButton>
+    </controlButtonDiv>
+  </titlebar>
+  <div id="appContainer">
+    <!-- <div id="loading-screen">
         <loader></loader>
       </div> -->
-      <div id="allthestuff"></div>
-    </div>
-  </body>
+    <div id="allthestuff"></div>
+  </div>
+</body>
+
 </html>
 
 <script type="module" src="index.js"></script>
 <script type="module" src="style/webgl-renderer.js"></script>
 <script type="module" src="modals.js"></script>
-<script type="module" src="markup/MenuVFX.js"></script>
+<script type="module" src="markup/MenuFX.js"></script>

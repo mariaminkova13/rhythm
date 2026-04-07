@@ -1,6 +1,6 @@
 export { songSetup, handleNote, note, beatLength, music };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
-import { avg, median } from "./index.js"
+import { avg, median, audioFilter } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
@@ -484,6 +484,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       );
       music = new Audio(musicFilePath);
       music.play();
+      audioFilter(music);
       const songprogress = document.querySelector('songprogress')
       const timestamp = document.getElementById('timestamp')
       setInterval(() => {
