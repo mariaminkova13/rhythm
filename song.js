@@ -10,8 +10,7 @@ const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
 
 var hp = 100,
-  difficulty = "normal",
-  hitcommenttimeout = 1000;
+  difficulty = "normal"
 
 var missHpCost = 5,
   forgotNoteCost = 7,
@@ -19,12 +18,14 @@ var missHpCost = 5,
   maxHeal = 30,
   perfectThreshold = 8,
   hitThreshold = 40,
-  shitThreshold = 80;
+  shitThreshold = 80,
+  shitLoseComboChance = 0.5;
 
 var missCount = 0,
   hitCount = 0,
   shitCount = 0,
   perfectCount = 0,
+  combo = 0,
   hitResult = null,
   earlyOrLate = null;
 
@@ -220,37 +221,46 @@ function handleNote(noteElement) {
         console.log("Note offscreen, completely missed");
         missSound.play();
         earlyOrLate = "late.";
-        createHitComment("miss!");
         hp -= forgotNoteCost;
         missCount++;
         window.dispatchEvent(new Event('vignetteRed'))
         updatehp();
+        combo = 0
       }
       noteElement.remove();
+      updateCombo()
     }
   }, 1000 / fps);
 }
 
-function createHitComment(msg) {
-  if (hitResult && hitResult.distance > 0) {
-    earlyOrLate = "early";
-  }
-  else if (hitResult && hitResult.distance === 0) {
-    earlyOrLate = "exact!!!"
-  }
-  else if (hitResult) {
-    earlyOrLate = "late";
-  }
-  document.querySelectorAll("hitcomment").forEach(el => el.remove());
-  const newHitComment = document.createElement("hitcomment"),
-    container = document.querySelector("notecontainer");
-  newHitComment.textContent = msg;
-  container.appendChild(newHitComment);
-  newHitComment.style.setProperty("--after-hitcomment", `"${earlyOrLate}"`);
-  setTimeout(() => newHitComment.remove(), hitcommenttimeout);
-}
+function updateCombo() {
+  // if (hitResult && hitResult.distance > 0) {
+  //   earlyOrLate = "early";
+  // }
+  // else if (hitResult && hitResult.distance === 0) {
+  //   earlyOrLate = "exact!!!"
+  // }
+  // else if (hitResult) {
+  //   earlyOrLate = "late";
+  // }
 
-//TODO: make hitcomments appear for each lane individually eg robeats for higher difficulty
+  let comboCounter = document.querySelector('comboCounter')
+
+  if (comboCounter && combo == 0) {
+    comboCounter.remove()
+  }
+  else if (comboCounter && combo > 0) {
+    comboCounter.textContent = combo
+  }
+  else if (!comboCounter && combo > 0) {
+    let newCounter = document.createElement('comboCounter')
+    newCounter.textContent = combo;
+    document.querySelector('noteContainer').appendChild(newCounter)
+  }
+
+  // container.appendChild(newHitComment);
+  // newCounter.style.setProperty("--after-comboCounter", `"${earlyOrLate}"`);
+}
 
 function updatehp() {
   document.documentElement.style.setProperty(
@@ -412,26 +422,27 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
             if (absoluteDistance <= perfectThreshold) {
               console.log("perfect");
               perfectSound.play();
-              createHitComment("perfect!");
               hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
               hitResult.note.setAttribute("aria-active", "false");
               perfectCount++;
+              combo++
             } else if (absoluteDistance <= hitThreshold) {
               console.log("hit");
               hitSound.play();
               hitResult.note.setAttribute("aria-active", "false");
               hitCount++;
+              combo++
             } else if (absoluteDistance <= shitThreshold) {
               console.log("shit");
-              createHitComment("ok");
               shitSound.play();
               hitResult.note.setAttribute("aria-active", "false");
               shitCount++;
+              if (Math.random() >= shitLoseComboChance) { combo++ } else { combo = 0 }
             } else {
               console.log("miss");
               missSound.play();
-              createHitComment("miss");
               hp -= missHpCost;
+              combo = 0
               if (absoluteDistance <= 200) {
                 hitResult.note.setAttribute("aria-active", "false");
               }
@@ -440,10 +451,11 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
           } else {
             console.log("no note on screen");
             missSound.play();
-            createHitComment("miss!");
             hp -= missHpCost;
+            combo = 0
           }
           updatehp();
+          updateCombo()
 
           break; // Exit loop once we find a match
         }
@@ -487,10 +499,16 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       audioFilter(music);
       const songprogress = document.querySelector('songprogress')
       const timestamp = document.getElementById('timestamp')
-      setInterval(() => {
+      const progressUpdate = setInterval(() => {
         songprogress.style.width = `${music.currentTime / music.duration * 100}%`;
         let secondsElapsed = Math.floor(music.duration - music.currentTime)
+        //TODO only if not NaN
         timestamp.textContent = `${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}`
+        if (secondsElapsed == music.duration) {
+          clearInterval(progressUpdate)
+          timestamp.style.visibility = 'hidden'
+        }
+
       }, 1000 / fps)
     })();
 

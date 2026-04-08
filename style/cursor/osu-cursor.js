@@ -1,8 +1,11 @@
 import anime from "../../node_modules/animejs/lib/anime.es.js";
 
 // Direct paths for assets
-const cursorDefault = "./style/cursor/assets/cursor.png";
-const cursorAdditive = "./style/cursor/assets/cursor-additive.png";
+// const cursorDefault = "./style/cursor/assets/cursor.png";
+// const cursorAdditive = "./style/cursor/assets/cursor-additive.png";
+//FIXME where cursor
+const cursorDefault = "./style/cursor/aero_gray_tailless.png";
+const cursorAdditive = "./style/cursor/No-Shadow-Tailless-White.png";
 
 // Inline CSS
 const styleSheet = `#osu-cursor{
@@ -45,11 +48,11 @@ export default class osuCursor {
   init() {
     this.dragState = 0;
     /*
-	     -1 - native browser dragging
-		  0 - not dragging (default)
-		  1 - start dragging
-		  2 - dragging and rotating
-		  3 - pointer*/
+       -1 - native browser dragging
+      0 - not dragging (default)
+      1 - start dragging
+      2 - dragging and rotating
+      3 - pointer*/
     this.visible = false;
     this.dragStartPos = { x: 0, y: 0 };
     this.rotateState = {
@@ -147,16 +150,16 @@ export default class osuCursor {
       this.cursor.style.transform = `rotate(${this.rotateState.degrees}deg)`;
     }
 
-	// elementsWithCursorNone = Array.from(document.querySelectorAll("*")).filter((element) => {
+    // elementsWithCursorNone = Array.from(document.querySelectorAll("*")).filter((element) => {
     //   return window.getComputedStyle(element).cursor === "none";
     // });
 
-	// elementsWithCursorNone.forEach((element) => {
+    // elementsWithCursorNone.forEach((element) => {
     //   element.addEventListener("mouseover", () => {
     //     this.cursor.style.display = "none";
     //   });
-	// });
-	// this.cursor.style.display = 'none';
+    // });
+    // this.cursor.style.display = 'none';
   }
 
   mouseDown(e) {
@@ -211,7 +214,7 @@ export default class osuCursor {
             return function (t) {
               return (
                 Math.pow(2, -10 * t) *
-                  Math.sin((0.5 * t - 0.075) * 20.943951023931955) +
+                Math.sin((0.5 * t - 0.075) * 20.943951023931955) +
                 1 -
                 0.0004882812499999998 * t
               );
@@ -237,7 +240,7 @@ export default class osuCursor {
           return function (t) {
             return (
               Math.pow(2, -10 * t) *
-                Math.sin((t - 0.075) * 20.943951023931955) +
+              Math.sin((t - 0.075) * 20.943951023931955) +
               1 -
               0.00048828125 * t
             );
@@ -293,10 +296,10 @@ export default class osuCursor {
         });
       }
     }
-	else if (currentCursor == "none") {
-		this.cursor.style.display = "none" 
-	}
-	else if (currentCursor == "pointer") {
+    else if (currentCursor == "none") {
+      this.cursor.style.display = "none"
+    }
+    else if (currentCursor == "pointer") {
       this.visible = true;
       document.documentElement.style.cursor = "none";
       e.target.setAttribute("orig-cursor", currentCursor);

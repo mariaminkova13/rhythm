@@ -483,7 +483,7 @@ modal {
     visibility: hidden;
 }
 
-hitcomment {
+comboCounter {
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -499,7 +499,7 @@ hitcomment {
     animation: slidedown 0.1s ease;
 }
 
-hitcomment::after {
+comboCounter::after {
     content: var(--after-hitcomment);
     text-transform: lowercase;
     font-size: var(--fontsize);
@@ -586,3 +586,7 @@ flexcolumn {
 /* #creditsLink :hover {
     text-decoration: underline;
 } */
+
+#timestamp {
+    transition: var(--transitionspeed)
+}
