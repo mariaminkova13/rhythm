@@ -1,6 +1,7 @@
 // https://codepen.io/l422y/pen/ngpaGB
 
 import anime from "/node_modules/animejs/lib/anime.es.js";
+import { showModal } from "../modals.js"
 export { initializeTileEffects, loadStartPage };
 
 const scaleMultiplier = "1.1";
@@ -109,6 +110,14 @@ function initializeTileEffects() {
 
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
+
+  // document.getElementById('creditsLink').onclick = function () {
+  //   showModal('credits')
+  //   // allthestuff.addEventListener('click', () => {
+  //   //   document.getElementById('credits').style.visibility = "hidden"
+  //   // })
+  // }
+
   const appContainer = document.getElementById("appContainer");
   appContainer.style.cursor = "default"
 
@@ -117,25 +126,25 @@ async function loadStartPage() {
   var force = 40;
   var speed = 300;
   target.addEventListener('mousemove', function (e) {
-      var boundingRect = this.getBoundingClientRect();
-      var relX = e.pageX - boundingRect.left;
-      var relY = e.pageY - boundingRect.top;
+    var boundingRect = this.getBoundingClientRect();
+    var relX = e.pageX - boundingRect.left;
+    var relY = e.pageY - boundingRect.top;
 
-      anime({
-        targets: targetObj,
-        translateX: (relX - boundingRect.width / 2) / boundingRect.width * force,
-        translateY: (relY - boundingRect.height / 2) / boundingRect.height * force,
-        duration: speed
-      })
+    anime({
+      targets: targetObj,
+      translateX: (relX - boundingRect.width / 2) / boundingRect.width * force,
+      translateY: (relY - boundingRect.height / 2) / boundingRect.height * force,
+      duration: speed
+    })
   });
 
   target.addEventListener('mouseout', function () {
-      anime({
-        targets: targetObj,
-        translateX: 0,
-        translateY: 0,
-        duration: speed,
-        // easings: 
-      })
+    anime({
+      targets: targetObj,
+      translateX: 0,
+      translateY: 0,
+      duration: speed,
+      // easings: 
+    })
   });
 }

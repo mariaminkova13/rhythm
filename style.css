@@ -574,3 +574,15 @@ flexcolumn {
     display: flex;
     align-items: center;
 }
+
+#creditsLink {
+    position: fixed;
+    bottom: 2lh;
+    right: 2lh;
+    /* cursor: pointer;
+    pointer-events: all; */
+}
+
+/* #creditsLink :hover {
+    text-decoration: underline;
+} */

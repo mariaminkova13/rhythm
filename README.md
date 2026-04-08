@@ -4,7 +4,6 @@
 A simple vertical-scrolling rhythm game made with Electron, a Python server, and JS/HTML/CSS. Very generic and done more as an exercise for the process rather than for the finished product. But still play it if you want.
 Played casually; 100% skill-based with no levels, upgrades, in-game currency or progression. This game might not be suited for beginners- it's intended more as a hardcore challenge, reminiscent of Dark Souls... so don't be surprised if the 'relaxed' difficulty feels about right and 'normal' is difficult; I based it mostly on my personal experience and skill level.
 Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
-> Human-coded! much wow
 
 ## Usage / How to Play
 Connect to the website/IP Address. The source code here will be stored on the server, so no installation is necessary.

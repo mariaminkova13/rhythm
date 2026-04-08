@@ -1,8 +1,18 @@
 <span id="title">
-        <h1 id="title-obj" style="display: inline-block">trolololololololololo</h1>
-    </span>
+    <h1 id="title-obj" style="display: inline-block">trolololololololololo</h1>
+</span>
 <div style="display:flex; flex-direction:column; align-items: center; padding: 5rem">
     <button id="startsingleplayer" style="width: 500px">Independant sigma</button>
     <button style="width: 500px">Play with Friends</button>
 </div>
-<span style="position: fixed; bottom: 2lh; right: 2lh">by sadgrl_07</span>
+<span id="creditsLink">by sadgrl_07</span>
+<modal id="credits" style="visibility:hidden">
+    <img src="../sprites/mefr.jpg">
+</modal>
+
+<script>
+    import { showModal } from "../modals.js"
+    document.getElementById('creditsLink').onclick = function () {
+        showModal('credits')
+    }
+</script>

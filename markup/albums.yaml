@@ -4,11 +4,13 @@ Special Thanks:
     composer: Akira Yamaoka
     audio: songs/never forgive me never forget me.m4a
     notemap: markup/notemaps/notemap.txt
-    description: was used for testing
+    description: was used for synchronization testing because it has a simple repetitive melody
     preview-segment: [6, 21]
     lyrics:
 album2:
   cover-image: markup/covers/windowsdarkmode.jpg
   contents:
-    composer: idk
+    composer: Anson Seabra
+    audio: songs/Anson Seabra - Robin Hood.mp3
     notemap: markup/notemaps/notemap2.txt
+    description: personally, I think Mikrosis' taste in music is shit but I did promise to let each of my friends pick a song

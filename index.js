@@ -21,15 +21,14 @@ async function audioFilter(audio) {
   lowpass.type = "lowpass";
   lowpass.frequency.value = 1200;
 
+  const lowshelf = ctx.createBiquadFilter();
+  lowshelf.type = "lowshelf";
+  lowshelf.frequency.value = 200;
+
   // Bitcrusher node
   await ctx.audioWorklet.addModule("style/bitcrusher-processor.js");
-  const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {
-    parameterData: {
-      bits: 1050,
-      normFreq: 0.1
-    }
-  });
-  src.connect(lowpass).connect(crusher).connect(ctx.destination);
+  const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
+  src.connect(lowpass).connect(crusher).connect(lowshelf).connect(ctx.destination);
 }
 
 function initializeWindowControls() {

@@ -1,11 +1,12 @@
 import { beatLength, music } from "./song.js";
 export var paused = true;
+export { showModal }
 
 export function countdown() {
   paused = true
   const countdowncircle = document.createElement("countdowncircle");
   const countdownElement = document.createElement("countdownnumber");
-  const svgNS = "http://www.w3.org/2000/svg"; //TODO mirror somehow
+  const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
   const polygon = document.createElementNS(svgNS, "polygon");
 
@@ -79,7 +80,7 @@ export function countdown() {
       countdowncircle.remove();
       clearInterval(countdownInterval);
       paused = false;
-      if (music.paused) {
+      if (music && music.paused) {
         music.play()
       }
     }
