@@ -28,6 +28,9 @@ async function audioFilter(audio) {
   // Bitcrusher node
   await ctx.audioWorklet.addModule("style/bitcrusher-processor.js");
   const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
+  crusher.channelCount = 2
+  crusher.channelCountMode = "explicit"
+  crusher.channelInterpretation = "speakers"
   src.connect(lowpass).connect(crusher).connect(lowshelf).connect(ctx.destination);
 }
 
@@ -107,14 +110,6 @@ function initializeWindowControls() {
 
   document.getElementById("closeBtn").addEventListener("click", () => {
     remote.BrowserWindow.getFocusedWindow().close();
-  });
-
-  win.on("minimize", () => {
-    //enable filter
-  });
-
-  win.on("unminimize", () => {
-    //disable filter
   });
 
   songprogressDown();

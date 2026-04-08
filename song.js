@@ -503,7 +503,8 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
         songprogress.style.width = `${music.currentTime / music.duration * 100}%`;
         let secondsElapsed = Math.floor(music.duration - music.currentTime)
         //TODO only if not NaN
-        timestamp.textContent = `${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}`
+        if (Math.floor(secondsElapsed / 60) < 10) { timestamp.textContent = `0${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}` }
+        else { timestamp.textContent = `${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}` }
         if (secondsElapsed == music.duration) {
           clearInterval(progressUpdate)
           timestamp.style.visibility = 'hidden'

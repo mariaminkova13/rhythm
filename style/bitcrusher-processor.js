@@ -2,36 +2,50 @@ class BitcrusherProcessor extends AudioWorkletProcessor {
      static get parameterDescriptors() {
           return [
                { name: 'bits', defaultValue: 1024, minValue: 1024 },
-               { name: 'normFreq', defaultValue: 0.49, minValue: 0.0, maxValue: 1.0 }
+               { name: 'normFreq', defaultValue: 0.45, minValue: 0.0, maxValue: 1.0 }
           ];
      }
 
      constructor() {
           super();
-          this.phase = 0;
-          this.lastSample = 0;
+          this.phase = [0, 0];       // per-channel
+          this.lastSample = [0, 0];  // per-channel
      }
 
      process(inputs, outputs, parameters) {
-          const input = inputs[0][0];
-          const output = outputs[0][0];
-          if (!input) return true;
+          const input = inputs[0];
+          const output = outputs[0];
+
+          if (!input || input.length === 0) return true;
 
           const bits = parameters.bits[0];
           const normFreq = parameters.normFreq[0];
           const step = 1 / bits;
 
-          for (let i = 0; i < input.length; i++) {
-               this.phase += normFreq;
-               if (this.phase >= 1.0) {
-                    this.phase -= 1.0;
-                    this.lastSample = step * Math.floor(input[i] / step);
+          for (let channel = 0; channel < output.length; channel++) {
+               const inputChannel = input[channel];
+               const outputChannel = output[channel];
+
+               if (!inputChannel) continue;
+
+               let phase = this.phase[channel];
+               let lastSample = this.lastSample[channel];
+
+               for (let i = 0; i < inputChannel.length; i++) {
+                    phase += normFreq;
+                    if (phase >= 1.0) {
+                         phase -= 1.0;
+                         lastSample = step * Math.floor(inputChannel[i] / step);
+                    }
+                    outputChannel[i] = lastSample;
                }
-               output[i] = this.lastSample;
+
+               this.phase[channel] = phase;
+               this.lastSample[channel] = lastSample;
           }
 
           return true;
      }
 }
 
-registerProcessor("bitcrusher-processor", BitcrusherProcessor);   
+registerProcessor("bitcrusher-processor", BitcrusherProcessor);
