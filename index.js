@@ -19,7 +19,7 @@ async function audioFilter(audio) {
   // Low-pass filter
   const lowpass = ctx.createBiquadFilter();
   lowpass.type = "lowpass";
-  lowpass.frequency.value = 800;
+  lowpass.frequency.value = 1200;
 
   // Bitcrusher node
   await ctx.audioWorklet.addModule("style/bitcrusher-processor.js");

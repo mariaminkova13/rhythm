@@ -413,7 +413,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               console.log("perfect");
               perfectSound.play();
               createHitComment("perfect!");
-              hp += Math.random() * (maxHeal - minHeal) + minHeal;
+              hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
               hitResult.note.setAttribute("aria-active", "false");
               perfectCount++;
             } else if (absoluteDistance <= hitThreshold) {

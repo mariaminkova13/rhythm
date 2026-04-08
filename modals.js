@@ -79,7 +79,7 @@ export function countdown() {
       countdowncircle.remove();
       clearInterval(countdownInterval);
       paused = false;
-      if (music.pause) {
+      if (music.paused) {
         music.play()
       }
     }
