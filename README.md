@@ -12,6 +12,3 @@ Connect to the website/IP Address. The source code here will be stored on the se
 >Work in progress, not released yet.
 All other information may be viewed in the [wiki](https://github.com/mariaminkova13/rhythm/wiki).
 Report bugs or share suggestions in ['Issues'](https://github.com/mariaminkova13/rhythm/issues).
-
-## License
-Licensed under the newest version of the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), meaning that this project is completely free & open-source requiring no credit — with the condition that any derivative works are open-source as well. The full license may be viewed at [LICENSE.md](LICENSE.md).

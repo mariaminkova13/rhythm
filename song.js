@@ -1,6 +1,6 @@
 export { songSetup, handleNote, note, beatLength, music };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
-import { avg, median, audioFilter } from "./index.js"
+import { avg, median, audioFilter, loadAlbumMenu } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
@@ -30,6 +30,7 @@ var missCount = 0,
   earlyOrLate = null;
 
 var noteSpacingPx, noteStepSize, bps, beatLength;
+var displayComboAfter = 2
 var fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
@@ -246,13 +247,13 @@ function updateCombo() {
 
   let comboCounter = document.querySelector('comboCounter')
 
-  if (comboCounter && combo == 0) {
+  if (comboCounter && combo == displayComboAfter) {
     comboCounter.remove()
   }
-  else if (comboCounter && combo > 0) {
+  else if (comboCounter && combo > displayComboAfter) {
     comboCounter.textContent = combo
   }
-  else if (!comboCounter && combo > 0) {
+  else if (!comboCounter && combo > displayComboAfter) {
     let newCounter = document.createElement('comboCounter')
     newCounter.textContent = combo;
     document.querySelector('noteContainer').appendChild(newCounter)
@@ -281,6 +282,7 @@ function updatehp() {
 }
 
 function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
+  console.clear()
 
   function checkHit(laneId) {
     const lanenotes = laneId.querySelectorAll('note[aria-active="true"]');
@@ -319,6 +321,21 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
     .then((response) => response.text())
     .then((html) => {
       document.getElementById("allthestuff").innerHTML = html;
+
+      requestAnimationFrame(() => { //so that runs only after all is loaded
+        document.getElementById('restartButton').onclick = function () {
+          if (music) {
+            music.pause()
+            music.currentTime = 0
+          }
+          songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference)
+          //FIXME: on restart pause no work
+          //TODO also retry button
+        };
+        document.getElementById('quitButton').onclick = function () {
+          loadAlbumMenu()
+        };
+      });
 
       const rightHand = document.createElement("ticksection"),
         leftHand = document.createElement("ticksection"),
@@ -366,10 +383,11 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
           tick.appendChild(document.createElement("track"));
         });
 
-        tickEventListeners();
-        countdown();
-
-        createNotes(data);
+        requestAnimationFrame(() => { //so that runs only after all is loaded
+          tickEventListeners();
+          countdown();
+          createNotes(data);
+        });
       });
     });
 
@@ -472,8 +490,6 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       }
     });
 
-    let countdowncircle = document.querySelector("countdowncircle")
-
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" || event.key === "Enter") {
         if (paused) {
@@ -488,23 +504,27 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
     updatehp();
 
-    //  window.addEventListener("musicmaystart", startMusic);
-    //playmusic
+    //TODO do we need eventTriggered?
+
     (async () => {
-      await new Promise(resolve =>
-        window.addEventListener("musicmaystart", resolve, { once: true })
-      );
-      music = new Audio(musicFilePath);
+      async function waitForMusicStart() {
+        await Promise.resolve()
+        return new Promise(resolve => {
+          window.addEventListener("musicmaystart", resolve, { once: true });
+        });
+      }
+      await waitForMusicStart()
+      if (!music) { music = new Audio(musicFilePath); audioFilter(music); }
       music.play();
-      audioFilter(music);
       const songprogress = document.querySelector('songprogress')
       const timestamp = document.getElementById('timestamp')
       const progressUpdate = setInterval(() => {
         songprogress.style.width = `${music.currentTime / music.duration * 100}%`;
         let secondsElapsed = Math.floor(music.duration - music.currentTime)
+        let ss = (secondsElapsed % 60).toString().padStart(2, "0");
+        let mm = (Math.floor(secondsElapsed / 60)).toString().padStart(2, "0");
         //TODO only if not NaN
-        if (Math.floor(secondsElapsed / 60) < 10) { timestamp.textContent = `0${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}` }
-        else { timestamp.textContent = `${Math.floor(secondsElapsed / 60)}:${secondsElapsed % 60}` }
+        timestamp.textContent = `${mm}:${ss}`
         if (secondsElapsed == music.duration) {
           clearInterval(progressUpdate)
           timestamp.style.visibility = 'hidden'

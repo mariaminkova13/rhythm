@@ -174,7 +174,7 @@ class WebGLRenderer {
       timestamp = Date.now()
       elapsed = timestamp - timestampStart;
 
-      that.gl.uniform1f(that.vignettePhase, Math.cos(elapsed / duration * -1 * Math.PI));
+      that.gl.uniform1f(that.vignettePhase, 0.5 + (Math.cos(elapsed / duration * Math.PI))) / 2;
       //cubic-bezier(0, 0.55, 0.45, 1)
       console.log('step')
 

@@ -1,13 +1,13 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./markup/MenuFX.js";
-import osuCursor from "./style/cursor/osu-cursor.js";
-export { avg, median, audioFilter }
+import Cursor from "./style/cursor/cursor.js";
+export { avg, median, audioFilter, loadAlbumMenu }
 const yaml = require("yaml");
 
 export { songFilePath };
 let songFilePath;
 
-// var cursor = new osuCursor();
+var cursor = new Cursor();
 
 const AdaptiveNoteSpeedPreference = 'true'
 
@@ -23,14 +23,11 @@ async function audioFilter(audio) {
 
   const lowshelf = ctx.createBiquadFilter();
   lowshelf.type = "lowshelf";
-  lowshelf.frequency.value = 200;
+  lowshelf.frequency.value = 165;
 
   // Bitcrusher node
   await ctx.audioWorklet.addModule("style/bitcrusher-processor.js");
   const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
-  crusher.channelCount = 2
-  crusher.channelCountMode = "explicit"
-  crusher.channelInterpretation = "speakers"
   src.connect(lowpass).connect(crusher).connect(lowshelf).connect(ctx.destination);
 }
 
@@ -100,7 +97,6 @@ function initializeWindowControls() {
 
   document.getElementById("maximizeBtn").addEventListener("click", () => {
     const win = remote.BrowserWindow.getFocusedWindow();
-    console.log("maximize");
     if (win.isMaximized()) {
       win.unmaximize();
     } else {

@@ -1,34 +1,34 @@
-import anime from "../../node_modules/animejs/lib/anime.es.js";
+import anime from "/node_modules/animejs/lib/anime.es.js";
 
 // Direct paths for assets
-// const cursorDefault = "./style/cursor/assets/cursor.png";
-// const cursorAdditive = "./style/cursor/assets/cursor-additive.png";
-//FIXME where cursor
+//TODO where cursor when pause
+//TODO cursor tilt
+//TODO remove default cur
 const cursorDefault = "./style/cursor/aero_gray_tailless.png";
 const cursorAdditive = "./style/cursor/No-Shadow-Tailless-White.png";
 
 // Inline CSS
-const styleSheet = `#osu-cursor{
+const styleSheet = `#custom-cursor{
 	position: fixed;
 	pointer-events: none;
 	z-index: 2147483647;
 }
-#osu-cursor > .cursor-inner {
+#custom-cursor > .cursor-inner {
 	position: relative;
     will-change: transform;
     transform-origin: left top;
 }
-#osu-cursor > .cursor-inner > img{
+#custom-cursor > .cursor-inner > img{
 	width: 30px;
 	top: 0;
 	left: 0;
 	position: absolute;
 }
-#osu-cursor > .cursor-inner > img.cursor-additive{
+#custom-cursor > .cursor-inner > img.cursor-additive{
 	opacity: 0;
 }`;
 
-export default class osuCursor {
+export default class Cursor {
   constructor(options) {
     this.options = options || {};
     this.options.rotate ??= true;
@@ -65,12 +65,12 @@ export default class osuCursor {
     style.textContent = styleSheet;
     document.body.appendChild(style);
 
-    if (document.querySelector("#osu-cursor")) {
+    if (document.querySelector("#custom-cursor")) {
       return;
     }
     this.cursor = this.injectHtml(
       `
-		<div class='osu-cursor' id='osu-cursor'>
+		<div class='custom-cursor' id='custom-cursor'>
 			<div class='cursor-inner'>
 			<img class='cursor-fg' src='${cursorDefault}'/>
 			<img class='cursor-additive' src='${cursorAdditive}'/>

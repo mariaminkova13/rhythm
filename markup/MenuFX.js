@@ -20,7 +20,8 @@ function initializeTileEffects() {
     };
 
     const handleMouseMove = (e) => {
-      if (tileContainer.dataset.mouseDownAt == 0) return;
+      if (tileContainer.dataset.mouseDownAt == 0 || !tileContainer) return;
+      //TODO optimize; instead of return when !tilecontainer, remove event listener when not in album menu
 
       const mouseDelta =
         parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
@@ -110,13 +111,6 @@ function initializeTileEffects() {
 
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
-
-  // document.getElementById('creditsLink').onclick = function () {
-  //   showModal('credits')
-  //   // allthestuff.addEventListener('click', () => {
-  //   //   document.getElementById('credits').style.visibility = "hidden"
-  //   // })
-  // }
 
   const appContainer = document.getElementById("appContainer");
   appContainer.style.cursor = "default"

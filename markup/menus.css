@@ -6,7 +6,9 @@
     box-sizing: border-box;
 }
 
-canvas, #allthestuff, #loading-screen{
+canvas,
+#allthestuff,
+#loading-screen {
     position: absolute;
     top: 0;
     left: 0;
@@ -56,17 +58,18 @@ windowControlButton {
     app-region: no-drag;
 }
 
-windowControlButton, #gameName {
+windowControlButton,
+#gameName {
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     color: black;
+    font-weight: lighter
 }
 
 windowControlButton:hover {
-    filter: brightness(2);
-    border-bottom: 2px solid blue;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 #tileContainer {
@@ -133,23 +136,31 @@ windowControlButton:hover {
 
 /*LOADERRRRR from cssloaders.com*/
 loader {
-  width: fit-content;
-  padding-bottom: 5px;
-  font-weight: bold;
-  font-family: monospace;
-  font-size: 30px;
-  overflow: hidden;
-  color: #0000;
-  text-shadow: 0 0 0 #000,10ch 0 0 #000;
-  background: linear-gradient(#000 0 0) bottom left/0% 3px no-repeat;
-  animation: l14 1.5s infinite;
+    width: fit-content;
+    padding-bottom: 5px;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    overflow: hidden;
+    color: #0000;
+    text-shadow: 0 0 0 #000, 10ch 0 0 #000;
+    background: linear-gradient(#000 0 0) bottom left/0% 3px no-repeat;
+    animation: l14 1.5s infinite;
 }
+
 loader:before {
-  content: "Loading...";
+    content: "Loading...";
 }
+
 @keyframes l14 {
-    80%  {text-shadow:    0  0 0 #000,10ch 0 0 #000;background-size:100% 3px}
-    100% {text-shadow: -10ch 0 0 #000,0    0 0 #000}
+    80% {
+        text-shadow: 0 0 0 #000, 10ch 0 0 #000;
+        background-size: 100% 3px
+    }
+
+    100% {
+        text-shadow: -10ch 0 0 #000, 0 0 0 #000
+    }
 }
 
 @keyframes shimmy

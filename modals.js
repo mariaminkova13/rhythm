@@ -100,7 +100,7 @@ export function pause() {
   // TODO make blurring not blur border
   //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
   document.body.style.cursor = "default";
-  music.pause()
+  if (music) { music.pause() }
 }
 
 export function unpause() {
