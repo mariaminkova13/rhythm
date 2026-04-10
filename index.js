@@ -26,7 +26,7 @@ async function audioFilter(audio) {
   lowshelf.frequency.value = 165;
 
   // Bitcrusher node
-  await ctx.audioWorklet.addModule("style/bitcrusher-processor.js");
+  await ctx.audioWorklet.addModule("style/bitcrusher.js");
   const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
   src.connect(lowpass).connect(crusher).connect(lowshelf).connect(ctx.destination);
 }

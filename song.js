@@ -1,4 +1,4 @@
-export { songSetup, handleNote, note, beatLength, music };
+export { songSetup, handleNote, note, beatLength, music, musicstart };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median, audioFilter, loadAlbumMenu } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
@@ -41,6 +41,7 @@ const perfectSound = new Audio("sfx/perfect.wav"),
   shitSound = new Audio("sfx/shit.wav");
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
+let musicstart = false
 
 async function parseNotemap(filePath) {
   try {
@@ -93,6 +94,7 @@ async function parseNotemap(filePath) {
 }
 
 async function createNotes(data) {
+  musicstart = false
 
   let laneList = [];
   Array.from(document.querySelectorAll("track")).forEach((element) =>
@@ -192,6 +194,7 @@ function handleBeat(beat, beatIndex, hitline, precision) {
       clearInterval(fallInterval);
       beat.remove();
       if (beatIndex == 0) {
+        musicstart = true
         window.dispatchEvent(new Event('musicmaystart'));
       }
     }
@@ -506,16 +509,11 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
     //TODO do we need eventTriggered?
 
-    (async () => {
-      async function waitForMusicStart() {
-        await Promise.resolve()
-        return new Promise(resolve => {
-          window.addEventListener("musicmaystart", resolve, { once: true });
-        });
-      }
-      await waitForMusicStart()
+    function startMusic() {
       if (!music) { music = new Audio(musicFilePath); audioFilter(music); }
+      console.log('music play');
       music.play();
+
       const songprogress = document.querySelector('songprogress')
       const timestamp = document.getElementById('timestamp')
       const progressUpdate = setInterval(() => {
@@ -530,8 +528,11 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
           timestamp.style.visibility = 'hidden'
         }
 
-      }, 1000 / fps)
-    })();
+      }, 1000 / fps);
+    };
+
+    console.log('starting event listener musicmaystart');
+    window.addEventListener("musicmaystart", (event) => { console.log("musicmaystart heard"); startMusic(); }, { once: true });
 
     //TODO base score on ms offset, not px offset
 
