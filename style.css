@@ -63,6 +63,7 @@
     --textcolor: white;
     --tickcolor: var(--color2);
     --titlebarcolor: var(--color2);
+    --notecolor: wheat;
 }
 
 body {
@@ -97,7 +98,7 @@ note {
     display: block;
     /* aspect-ratio: 3 / 1; */
     border-radius: var(--radius);
-    background-color: wheat;
+    background-color: var(--notecolor);
     height: 5px;
     width: var(--tickheight);
     position: absolute;
@@ -112,6 +113,31 @@ note[aria-active=false] {
     animation: redden 0.1s ease-out;
     background-color: none;
     box-shadow: 0 0 4px inset red;
+}
+
+note.perc {
+    /*https://github.com/taigrr/spank
+    https://github.com/mithun-srinivasan/spank-for-windows adjust sensitivity*/
+    width: 30px;
+    background: none
+}
+
+note.perc:before,
+note.perc:after {
+    content: '';
+    position: absolute;
+    width: 36px;
+    height: 2px;
+    background-color: var(--notecolor);
+    border-radius: var(--radius);
+}
+
+note.perc:before {
+    transform: rotate(20deg);
+}
+
+note.perc:after {
+    transform: rotate(-20deg);
 }
 
 @keyframes redden {

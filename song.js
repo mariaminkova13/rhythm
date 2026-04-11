@@ -330,19 +330,24 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       document.getElementById("allthestuff").innerHTML = html;
 
       requestAnimationFrame(() => { //so that runs only after all is loaded
-        document.getElementById('restartButton').onclick = function () {
-          if (music) {
-            music.pause()
-            music.currentTime = 0
-          }
-          controller.abort()
-          songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference)
-          //FIXME: on restart pause no work
-          //TODO also retry button
-        };
-        document.getElementById('quitButton').onclick = function () {
-          loadAlbumMenu()
-        };
+        const redobuttons = ["restartButton", "retryButton"];
+        redobuttons.forEach(id => {
+          document.getElementById(id).onclick = function () {
+            if (music) {
+              music.pause()
+              music.currentTime = 0
+            }
+            controller.abort()
+            songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference)
+          };
+        });
+
+        const exitbuttons = ['quitButton', 'exitButton']
+        exitbuttons.forEach(id => {
+          document.getElementById(id).onclick = function () {
+            loadAlbumMenu()
+          };
+        })
       });
 
       const rightHand = document.createElement("ticksection"),

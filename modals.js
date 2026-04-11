@@ -86,7 +86,6 @@ function countdown() {
       }
 
       paused = false;
-      console.log('paused variable after countdown is over: ' + paused);
     }
   }, beatLength);
 }
