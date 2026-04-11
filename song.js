@@ -31,7 +31,7 @@ var missCount = 0,
   earlyOrLate = null;
 
 var noteSpacingPx, noteStepSize, bps, beatLength;
-var displayComboAfter = 2
+var displayComboAfter = 4
 var fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
@@ -274,7 +274,7 @@ function updatehp() {
     0.1 + hp * 0.007 + "s"
   );
   document.documentElement.style.setProperty("--hp", hp + "%");
-  console.log("HP updated to:", hp + "%");
+  console.log("HP:", hp + "%");
   if (difficulty != "relaxed") {
     if (hp > 100) {
       hp == 100;
@@ -285,41 +285,41 @@ function updatehp() {
   }
 }
 
+function checkHit(lane) {
+  const lanenotes = lane.querySelectorAll('note[aria-active="true"]');
+
+  if (lanenotes.length === 0) {
+    return null;
+  }
+
+  // Get the tick's center position (bottom of lane)
+  const laneRect = lane.getBoundingClientRect(),
+    tickCenterY = laneRect.bottom - (laneRect.height / 2);
+
+  let closestNote = null,
+    closestDistance = Infinity;
+
+  // Find the closest note to the tick
+  lanenotes.forEach((note) => {
+    const noteRect = note.getBoundingClientRect();
+    const noteCenterY = noteRect.top + (noteRect.height / 2);
+    const distance = noteCenterY - tickCenterY;
+    const absoluteDistance = Math.abs(distance)
+
+    if (absoluteDistance < closestDistance) {
+      closestDistance = absoluteDistance;
+      closestNote = note;
+    }
+  });
+
+  return {
+    note: closestNote,
+    distance: closestDistance,
+  };
+}
+
 function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
   console.clear()
-
-  function checkHit(laneId) {
-    const lanenotes = laneId.querySelectorAll('note[aria-active="true"]');
-
-    if (lanenotes.length === 0) {
-      return null;
-    }
-
-    // Get the tick's center position (bottom of lane)
-    const laneRect = laneId.getBoundingClientRect(),
-      tickCenterY = laneRect.bottom - (laneRect.height / 2);
-
-    let closestNote = null,
-      closestDistance = Infinity;
-
-    // Find the closest note to the tick
-    lanenotes.forEach((note) => {
-      const noteRect = note.getBoundingClientRect();
-      const noteCenterY = noteRect.top + (noteRect.height / 2);
-      const distance = noteCenterY - tickCenterY;
-      const absoluteDistance = Math.abs(distance)
-
-      if (absoluteDistance < closestDistance) {
-        closestDistance = absoluteDistance;
-        closestNote = note;
-      }
-    });
-
-    return {
-      note: closestNote,
-      distance: closestDistance,
-    };
-  }
 
   fetch("markup/song.html")
     .then((response) => response.text())
@@ -496,16 +496,11 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" || event.key === "Enter") {
-        if (paused) {
-          unpause()
-        }
-        else {
-          pause()
-        }
-      }
-    }
-    );
+      if (event.key !== "Escape" && event.key !== "Enter") return;
+
+      if (paused) unpause()
+      else pause();
+    });
 
     updatehp();
 
@@ -533,8 +528,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       }, 1000 / fps);
     };
 
-    console.log('starting event listener musicmaystart');
-    window.addEventListener("musicmaystart", (event) => { console.log("musicmaystart heard"); startMusic(); }, { once: true });
+    window.addEventListener("musicmaystart", (event) => { startMusic(); }, { once: true });
 
     //TODO base score on ms offset, not px offset
 

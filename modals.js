@@ -1,8 +1,8 @@
 import { beatLength, music, musicstart } from "./song.js";
 export var paused = true;
-export { showModal }
+export { showModal, countdown, pause, unpause }
 
-export function countdown() {
+function countdown() {
   paused = true
   const countdowncircle = document.createElement("countdowncircle");
   const countdownElement = document.createElement("countdownnumber");
@@ -10,7 +10,7 @@ export function countdown() {
   const svg = document.createElementNS(svgNS, "svg");
   const polygon = document.createElementNS(svgNS, "polygon");
 
-  const numbers = ["3", "2", "1", "GO"];
+  const numbers = ["3", "2", "1"];
   let index = 0;
   let startTime = Date.now();
   let animationFrame;
@@ -78,35 +78,36 @@ export function countdown() {
       cancelAnimationFrame(animationFrame);
       countdowncircle.remove();
       clearInterval(countdownInterval);
+
+      // Start music
       if (music && paused == true && musicstart == true) {
         console.log('music play from countdown interval');
         music.play()
       }
+
       paused = false;
     }
   }, beatLength);
 }
 
-const blurring = document.createElement("blurring");
+//TODO blur behind modal
 
-export function pause() {
-  if (paused) return;
-  let countdowncircle = document.querySelector("countdowncircle")
-  if (countdowncircle) { countdowncircle.remove(); }
-  paused = true;
-  document.getElementById("allthestuff").appendChild(blurring);
-  let pausemodal = document.getElementById("pausemodal")
-  if (pausemodal.style.visibility != "visible") pausemodal.style.visibility = "visible";
-  // TODO make blurring not blur border
-  //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
-  document.body.style.cursor = "default";
+function pauseMusic() {
   if (music) { music.pause() }
 }
 
-export function unpause() {
+function pause() {
+  if (paused) return;
+
+  document.querySelector("countdowncircle")?.remove();
+  pauseMusic();
+  showModal("pausemodal");
+  paused = true;
+}
+
+function unpause() {
   if (!paused) return;
-  if (document.querySelector("countdowncircle")) return;
-  paused = false;
+  console.log('unpause')
   hideModal("pausemodal");
   countdown();
 }
@@ -116,15 +117,13 @@ export function showDeathMsg() {
 }
 
 function showModal(modalId) {
-  document.getElementById("allthestuff").appendChild(blurring);
+  //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
   document.body.style.cursor = "default";
-  const modal = document.getElementById(modalId);
-  modal.style.visibility = "visible";
+  document.getElementById(modalId).style.visibility = "visible";
   // FIXME modal.style.animation = `fadeIn var(--transitionspeed) ease-in`;
 }
 
 function hideModal(modalId) {
-  document.getElementById("allthestuff").removeChild(blurring);
   document.getElementById(modalId).style.visibility = "hidden";
   document.body.style.cursor = "none";
 }

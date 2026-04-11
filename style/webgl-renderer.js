@@ -24,13 +24,10 @@ class WebGLRenderer {
     };
 
     window.addEventListener("vignetteRed", async (e) => {
-      // this.animateVignette();
-      // console.log(e);
       for (var i = 1.0; i >= 0.0; i -= 0.01) {
         this.gl.uniform1f(this.vignettePhase, i);
         this.render();
         await sleep(5);
-        console.log(i);
       }
     });
   }
@@ -176,20 +173,16 @@ class WebGLRenderer {
       if (elapsed < duration) {
         requestAnimationFrame(step);
         that.render()
-        //console.log('update')
       } else {
         that.gl.uniform1f(that.vignettePhase, 0.0); // ensure fully off
-        //console.log('stop')
       }
     }
 
     function step() {
       timestamp = Date.now()
       elapsed = timestamp - timestampStart;
-
       that.gl.uniform1f(that.vignettePhase, 0.5 + (Math.cos(elapsed / duration * Math.PI))) / 2;
       //cubic-bezier(0, 0.55, 0.45, 1)
-      //console.log('step')
 
       animateFlash()
     };
