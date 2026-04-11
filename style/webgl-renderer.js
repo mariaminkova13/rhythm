@@ -166,7 +166,6 @@ class WebGLRenderer {
     let that = this
     let elapsed, timestamp
     this.render()
-    //FIXME
     requestAnimationFrame(step);
 
     function animateFlash() {

@@ -1,6 +1,7 @@
 import { beatLength, music, musicstart } from "./song.js";
-export var paused = true;
-export { showModal, countdown, pause, unpause }
+export { showModal, countdown, pause, unpause, paused }
+
+var paused = true
 
 function countdown() {
   paused = true
@@ -81,11 +82,11 @@ function countdown() {
 
       // Start music
       if (music && paused == true && musicstart == true) {
-        console.log('music play from countdown interval');
         music.play()
       }
 
       paused = false;
+      console.log('paused variable after countdown is over: ' + paused);
     }
   }, beatLength);
 }

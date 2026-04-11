@@ -31,8 +31,8 @@ var missCount = 0,
   earlyOrLate = null;
 
 var noteSpacingPx, noteStepSize, bps, beatLength;
-var displayComboAfter = 4
-var fps = 80;
+const displayComboAfter = 4
+const fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
@@ -321,6 +321,9 @@ function checkHit(lane) {
 function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
   console.clear()
 
+  const controller = new AbortController()
+  const { signal } = controller
+
   fetch("markup/song.html")
     .then((response) => response.text())
     .then((html) => {
@@ -332,6 +335,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
             music.pause()
             music.currentTime = 0
           }
+          controller.abort()
           songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference)
           //FIXME: on restart pause no work
           //TODO also retry button
@@ -483,7 +487,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
           break; // Exit loop once we find a match
         }
       }
-    });
+    }, { signal });
 
     // remove 'pressed' on keyup
     document.addEventListener("keyup", (event) => {
@@ -493,14 +497,17 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
           break;
         }
       }
-    });
+    }, { signal });
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape" && event.key !== "Enter") return;
-
-      if (paused) unpause()
-      else pause();
-    });
+      if (paused) {
+        unpause();
+      }
+      else {
+        pause();
+      }
+    }, { signal });
 
     updatehp();
 
@@ -508,7 +515,6 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
     function startMusic() {
       if (!music) { music = new Audio(musicFilePath); audioFilter(music); }
-      console.log('music play');
       music.play();
 
       const songprogress = document.querySelector('songprogress')
