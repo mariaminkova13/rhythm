@@ -41,7 +41,6 @@
     --hpwidth: 1.5em;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
-    --countdownouterspinnerwidth: calc(var(--barwidth) * 2);
     --countdownsize: 50vh;
     --titlebarheight: 30px;
     --transitionspeed: 0.2s;
@@ -431,28 +430,6 @@ countdowncircle svg {
     top: 0;
     left: 0;
     clip-path: circle(50% at 50% 50%);
-}
-
-spinner {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: calc(var(--countdownsize) + var(--countdownouterspinnerwidth));
-    aspect-ratio: 1 / 0.5;
-    transform-origin: 0 0;
-    background-image: linear-gradient(transparent, black);
-    animation: spin 1s infinite linear;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 modal {

@@ -19,8 +19,19 @@ class WebGLRenderer {
     this.program = null;
     this.startTime = Date.now();
 
-    window.addEventListener("vignetteRed", (e) => {
-      this.animateVignette();
+    async function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    window.addEventListener("vignetteRed", async (e) => {
+      // this.animateVignette();
+      // console.log(e);
+      for (var i = 1.0; i >= 0.0; i -= 0.01) {
+        this.gl.uniform1f(this.vignettePhase, i);
+        this.render();
+        await sleep(5);
+        console.log(i);
+      }
     });
   }
 
@@ -112,9 +123,11 @@ class WebGLRenderer {
     this.timeLocation = this.gl.getUniformLocation(this.program, "u_time");
     this.resolutionLocation = this.gl.getUniformLocation(this.program, "u_resolution");
     this.vignetteColor = this.gl.getUniformLocation(this.program, "u_vignetteColor");
+    this.vignettePhase = this.gl.getUniformLocation(this.program, "u_vignetteRedness");
     this.red = this.gl.getUniformLocation(this.program, "u_red");
+    this.gl.uniform1f(this.vignettePhase, 0.0); // default black
     this.gl.uniform3f(this.vignetteColor, 0.0, 0.0, 0.0); // black
-    this.gl.uniform3f(this.red, 160.0, 45.0, 15.0); //red
+    this.gl.uniform3f(this.red, 0.65, 0.22, 0.14); //red
     return true;
   }
 
@@ -163,10 +176,10 @@ class WebGLRenderer {
       if (elapsed < duration) {
         requestAnimationFrame(step);
         that.render()
-        console.log('update')
+        //console.log('update')
       } else {
         that.gl.uniform1f(that.vignettePhase, 0.0); // ensure fully off
-        console.log('stop')
+        //console.log('stop')
       }
     }
 
@@ -176,7 +189,7 @@ class WebGLRenderer {
 
       that.gl.uniform1f(that.vignettePhase, 0.5 + (Math.cos(elapsed / duration * Math.PI))) / 2;
       //cubic-bezier(0, 0.55, 0.45, 1)
-      console.log('step')
+      //console.log('step')
 
       animateFlash()
     };

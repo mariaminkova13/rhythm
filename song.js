@@ -4,7 +4,8 @@ import { avg, median, audioFilter, loadAlbumMenu } from "./index.js"
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
-//TODO make it start with the first beat already there to allow for song intro
+//TODO make countdown be as first beat flies to hitlone
+//TODO modifiers, like practice mode with no death and lenient timings, hide area around judgement line modifier. Amount of points/score based on actual hits not categories of hits
 
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
@@ -474,6 +475,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
             missSound.play();
             hp -= missHpCost;
             combo = 0
+            window.dispatchEvent(new Event('vignetteRed'))
           }
           updatehp();
           updateCombo()

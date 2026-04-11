@@ -16,7 +16,7 @@ varying vec2 v_uv;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec3 u_vignetteColor;
-uniform vec3 red;
+uniform vec3 u_red;
 
 // Vignette settings
 const float vignetteIntensity = 21.0; //higher is stronger
@@ -24,7 +24,10 @@ const float vignetteExtent = 0.18; //higher is farther
 uniform float u_vignetteRedness;
 
 void main() {
-    vec3 color = mix(u_vignetteColor, red, u_vignetteRedness);
+    //vec3 pct = vec3(u_vignetteRedness);
+    float pct = u_vignetteRedness;
+    vec3 color = mix(u_vignetteColor, u_red, pct);
+    //vec3 color = u_red;
 
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
     uv *=  1.0 - uv.yx;

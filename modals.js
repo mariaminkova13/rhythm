@@ -21,7 +21,6 @@ export function countdown() {
   countdownElement.textContent = numbers[0];
   countdownElement.appendChild(svg);
   document.body.appendChild(countdowncircle);
-  countdowncircle.appendChild(document.createElement("spinner"))
   countdowncircle.appendChild(countdownElement);
 
   // Function to calculate polygon points based on percentage
