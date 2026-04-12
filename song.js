@@ -132,7 +132,7 @@ async function createNotes(data) {
 }
 
 
-function handleBeat(beat, beatIndex, hitline, precision) {
+function handleBeat(beat, beatIndex, hitline) {
   let eventTriggered = false;
   let distanceMoved = 0;
 
@@ -184,10 +184,8 @@ function handleBeat(beat, beatIndex, hitline, precision) {
     if (beat.getBoundingClientRect().bottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitline.getBoundingClientRect().bottom) {
       if (beat.getAttribute("aria-active") === "false") { }
       else {
-        if (beatIndex % precision == 0) {
-          lightup();
-          beat.setAttribute("aria-active", "false")
-        }
+        lightup();
+        beat.setAttribute("aria-active", "false")
       }
     }
 

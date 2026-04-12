@@ -96,9 +96,8 @@ button {
 
 note {
     display: block;
-    /* aspect-ratio: 3 / 1; */
     border-radius: var(--radius);
-    background-color: var(--notecolor);
+    background: var(--notecolor);
     height: 5px;
     width: var(--tickheight);
     position: absolute;
@@ -111,7 +110,7 @@ note {
 note[aria-active=false] {
     opacity: 0.1;
     animation: redden 0.1s ease-out;
-    background-color: none;
+    background: none;
     box-shadow: 0 0 4px inset red;
 }
 
@@ -119,25 +118,11 @@ note.perc {
     /*https://github.com/taigrr/spank
     https://github.com/mithun-srinivasan/spank-for-windows adjust sensitivity*/
     width: 30px;
-    background: none
-}
-
-note.perc:before,
-note.perc:after {
-    content: '';
-    position: absolute;
-    width: 36px;
-    height: 2px;
-    background-color: var(--notecolor);
-    border-radius: var(--radius);
-}
-
-note.perc:before {
-    transform: rotate(20deg);
-}
-
-note.perc:after {
-    transform: rotate(-20deg);
+    height: 10px;
+    mask-image: url('style/icons/cross.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 100% 100%;
 }
 
 @keyframes redden {
@@ -478,10 +463,18 @@ modal {
     background-color: wheat;
 }
 
-#pausemodal {
-    visibility: hidden;
+#quitButton,
+#restartButton {
+    background: none;
+    aspect-ratio: 1 / 1;
+    width: 150px;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
+#pausemodal,
 #deathmsg {
     visibility: hidden;
 }
@@ -506,6 +499,12 @@ comboCounter::after {
     content: var(--after-hitcomment);
     text-transform: lowercase;
     font-size: var(--fontsize);
+}
+
+img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 @keyframes slidedown {

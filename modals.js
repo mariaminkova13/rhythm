@@ -1,7 +1,7 @@
 import { beatLength, music, musicstart } from "./song.js";
 export { showModal, countdown, pause, unpause, paused }
 
-var paused = true
+var paused
 
 function countdown() {
   paused = true

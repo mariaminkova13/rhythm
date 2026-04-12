@@ -1,11 +1,12 @@
-bpm: 100
-precision: 1
+bpm: 140
 beatsPerBar: 4
 sixLanes: true
 centerLane: false
+root: 440
 
 --------------------------------------
 
+......
 0.....
 .0....
 ..0...

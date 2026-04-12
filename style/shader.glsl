@@ -18,6 +18,8 @@ uniform vec2 u_resolution;
 uniform vec3 u_vignetteColor;
 uniform vec3 u_red;
 
+//TODO jpeg shader, filter based on time of day
+
 // Vignette settings
 const float vignetteIntensity = 21.0; //higher is stronger
 const float vignetteExtent = 0.18; //higher is farther
