@@ -1,4 +1,5 @@
 import { beatLength, music, musicstart } from "./song.js";
+import anime from "/node_modules/animejs/lib/anime.es.js";
 export { showModal, countdown, pause, unpause, paused }
 
 var paused
@@ -119,8 +120,14 @@ export function showDeathMsg() {
 function showModal(modalId) {
   //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
   document.body.style.cursor = "default";
-  document.getElementById(modalId).style.visibility = "visible";
-  // FIXME modal.style.animation = `fadeIn var(--transitionspeed) ease-in`;
+  const modal = document.getElementById(modalId)
+  modal.style.visibility = "visible"
+  anime({
+    targets: modal,
+    opacity: [0.5, 1],
+    duration: 150,
+    easing: 'linear'
+  });
 }
 
 function hideModal(modalId) {

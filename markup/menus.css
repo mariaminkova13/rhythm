@@ -2,7 +2,7 @@
     position: absolute;
     width: 100%;
     bottom: 0;
-    border-color: var(--titlebarcolor);
+    border: 2px var(--titlebarcolor);
     box-sizing: border-box;
 }
 

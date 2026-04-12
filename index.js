@@ -140,24 +140,6 @@ async function loadAlbumMenu() {
 addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
 
-  // FIXME connect all future audio to filter
-  // const filterInput = await audioFilter();
-  // function patchAudioElement(audio) {
-  //   const src = ctx.createMediaElementSource(audio);
-  //   src.connect(filterInput);
-  // }
-  // const observer = new MutationObserver(mutations => {
-  //   for (const m of mutations) {
-  //     for (const node of m.addedNodes) {
-  //       if (node.tagName === "AUDIO") {
-  //         patchAudioElement(node);
-  //       }
-  //     }
-  //   }
-  // });
-
-  // observer.observe(document.body, { childList: true, subtree: true });
-
   await loadStartPage()
   document.getElementById("startsingleplayer").onclick = async function () {
     await loadAlbumMenu()
