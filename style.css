@@ -467,7 +467,7 @@ modal {
 #quitButton,
 #restartButton {
     aspect-ratio: 1 / 1;
-    width: 150px;
+    width: 80px;
     border: none;
     mask-repeat: no-repeat;
     mask-position: center;
@@ -486,9 +486,9 @@ modal {
     border: none;
     width: 100%;
     height: 100%;
-    margin: 0 2px 2px 2px;
     /*TODO dont blur appcontainer border*/
     backdrop-filter: blur(8px) brightness(0.5);
+    position: absolute
 }
 
 comboCounter {

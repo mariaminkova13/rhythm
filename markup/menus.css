@@ -35,7 +35,6 @@ titlebar {
 
 titlebar:active {
     cursor: grabbing !important;
-    /*TODO*/
 }
 
 controlButtonDiv {
@@ -45,10 +44,10 @@ controlButtonDiv {
     transition: var(--transitionspeed) all;
     cursor: default;
     box-sizing: border-box;
-    padding: 0px 5px 0px 5px;
     opacity: 1;
     background: var(--titlebarcolor);
     height: 100%;
+    margin-right: 2px
 }
 
 windowControlButton {

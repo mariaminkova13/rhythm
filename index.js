@@ -141,6 +141,7 @@ addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
 
   await loadStartPage()
+  document.body.style.cursor = "default";
   document.getElementById("startsingleplayer").onclick = async function () {
     await loadAlbumMenu()
   };

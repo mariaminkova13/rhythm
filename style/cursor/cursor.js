@@ -1,7 +1,6 @@
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
 // Direct paths for assets
-//TODO where cursor when pause
 //TODO cursor tilt
 //TODO remove default cur
 const cursorDefault = "./style/cursor/aero_gray_tailless.png";

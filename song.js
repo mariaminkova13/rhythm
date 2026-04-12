@@ -318,6 +318,7 @@ function checkHit(lane) {
 
 function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
   console.clear()
+  document.body.style.cursor = "none";
 
   const controller = new AbortController()
   const { signal } = controller

@@ -91,8 +91,6 @@ function countdown() {
   }, beatLength);
 }
 
-//TODO blur behind modal
-
 function pauseMusic() {
   if (music) { music.pause() }
 }
