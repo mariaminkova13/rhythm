@@ -1,6 +1,6 @@
 import { beatLength, music, musicstart } from "./song.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
-export { showModal, countdown, pause, unpause, paused }
+export { showModal, countdown, pause, unpause, paused, showDeathMsg }
 
 var paused
 
@@ -97,7 +97,6 @@ function pauseMusic() {
 
 function pause() {
   if (paused) return;
-
   document.querySelector("countdowncircle")?.remove();
   pauseMusic();
   showModal("pausemodal");
@@ -105,19 +104,21 @@ function pause() {
 }
 
 function unpause() {
+  document.body.style.cursor = "none";
   if (!paused) return;
   console.log('unpause')
   hideModal("pausemodal");
   countdown();
 }
 
-export function showDeathMsg() {
+function showDeathMsg() {
+  document.getElementById('hpbar').remove()
   showModal("deathmsg")
 }
 
 function showModal(modalId) {
   //TODO why so much lag when change cursor. also remove actual cursor when cursor pointer
-  document.body.style.cursor = "default";
+  document.body.style.cursor = "default"; //TODO fix customcursor at first
   const modal = document.getElementById(modalId)
   modal.style.visibility = "visible"
   anime({

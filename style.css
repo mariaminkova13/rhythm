@@ -38,7 +38,7 @@
     --barwidth: 10px;
     --tickheight: 18px;
     --tickgap: calc(var(--tickheight) * 1.5);
-    --hpwidth: 1.5em;
+    --hpwidth: 20px;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
     --countdownsize: 50vh;
@@ -348,16 +348,31 @@ songprogress {
     transition: top var(--transitionspeed) ease;
 }
 
+gutter {
+    bottom: 0;
+    width: 100%;
+    height: var(--bottompadding);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    z-index: 4;
+    backdrop-filter: blur(5px);
+}
+
 hpbar {
     height: var(--hpwidth);
-    border: 2px solid var(--color1);
-    width: 80%;
+    border: 1px solid var(--color1);
+    box-sizing: border-box;
+    width: 100%;
     position: relative;
     display: flex;
     z-index: 2;
     background-color: var(--hpcolor);
     border-bottom-right-radius: var(--radius);
     border-top-right-radius: var(--radius);
+    margin-right: 15%;
+    margin-left: calc(15% + calc(var(--heartsize)/2));
+    align-items: center
 }
 
 hpbar::after {
@@ -372,33 +387,25 @@ hpbar::after {
     transition: width var(--transitionspeed) ease;
     opacity: 1;
     background-color: var(--hpcolor);
-    filter: brightness(1.2) saturate(1.9) hue-rotate(40deg);
-    border-bottom-right-radius: var(--radius);
-    border-top-right-radius: var(--radius);
+    background: forestgreen
 }
 
-hpbar::before {
+#heart {
     content: '';
-    display: block;
+    display: flex;
     position: absolute;
     aspect-ratio: 1 / 1;
     height: var(--heartsize);
-    left: calc(var(--heartsize) / -2);
     z-index: 3;
-    top: calc(calc(calc(var(--heartsize) - var(--hpwidth)) / 2) * -1);
     animation: pulse var(--pulsespeed) ease-in-out infinite;
-    /* fill: #FF5252;
-    background-image: url('icons/heart.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center; */
-    background: #FF5252;
-    border-radius: 10px;
-    clip-path: polygon(50% 15%,
-            61% 6%, 75% 0%, 89% 6%, 95% 20%,
-            95% 35%, 50% 85%,
-            5% 35%, 5% 20%, 11% 6%, 25% 0%, 39% 6%);
     /* clip-path: path("M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z"); */
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    background-image: url('style/icons/heart.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    left: calc(var(--heartsize) / -2)
 }
 
 countdownnumber {
@@ -513,7 +520,7 @@ comboCounter::after {
     font-size: var(--fontsize);
 }
 
-img {
+modal img {
     width: 100%;
     height: auto;
     display: block;
@@ -549,18 +556,6 @@ img {
     }
 }
 
-overlay {
-    bottom: 0;
-    width: 100%;
-    height: var(--bottompadding);
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 4;
-    backdrop-filter: blur(5px);
-}
-
 blurring {
     backdrop-filter: blur(8px);
     z-index: 68;
@@ -586,5 +581,8 @@ flexcolumn {
 } */
 
 #timestamp {
-    transition: var(--transitionspeed)
+    transition: var(--transitionspeed);
+    position: absolute;
+    display: block;
+    right: 1ch;
 }

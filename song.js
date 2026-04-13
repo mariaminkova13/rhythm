@@ -266,6 +266,10 @@ function updateCombo() {
 }
 
 function updatehp() {
+  let heart = document.getElementById('heart')
+  console.log(heart)
+  console.log(heart.firstChild)
+  heart.firstChild.innerText = hp
   document.documentElement.style.setProperty(
     "--pulsespeed",
     //linear interpolation
@@ -319,6 +323,8 @@ function checkHit(lane) {
 function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
   console.clear()
   document.body.style.cursor = "none";
+  musicstart = false;
+  hp = 100;
 
   const controller = new AbortController()
   const { signal } = controller
@@ -345,6 +351,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
         exitbuttons.forEach(id => {
           document.getElementById(id).onclick = function () {
             loadAlbumMenu()
+            controller.abort()
           };
         })
       });
@@ -399,6 +406,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
           tickEventListeners();
           countdown();
           createNotes(data);
+          updatehp()
         });
       });
     });

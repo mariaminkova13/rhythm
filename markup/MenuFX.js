@@ -1,7 +1,6 @@
 // https://codepen.io/l422y/pen/ngpaGB
 
 import anime from "/node_modules/animejs/lib/anime.es.js";
-import { showModal } from "../modals.js"
 export { initializeTileEffects, loadStartPage };
 
 const scaleMultiplier = "1.1";
