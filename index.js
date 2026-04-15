@@ -7,7 +7,7 @@ const yaml = require("yaml");
 export { songFilePath };
 let songFilePath;
 
-var cursor = new Cursor();
+new Cursor();
 
 const AdaptiveNoteSpeedPreference = 'true'
 
@@ -32,7 +32,7 @@ async function audioFilter(audio) {
 }
 
 function initializeWindowControls() {
-  function songprogressUp() {
+  function fullscreenLayout() {
     titlebar.style.visibility = "hidden";
     controlButtonDiv.style.visibility = "visible";
     titlebar.style.position = "fixed";
@@ -45,15 +45,15 @@ function initializeWindowControls() {
     controlButtonDiv.addEventListener("mouseout", mouseoutHandler);
   }
 
-  function songprogressDown() {
+  function partscreenLayout() {
     titlebar.style.opacity = "1";
     titlebar.style.visibility = "visible";
     titlebar.style.cursor = "default";
     titlebar.style.position = "absolute";
     controlButtonDiv.style.opacity = "1";
-    appContainer.style.height = "calc(100% - var(--titlebarheight))";
+    appContainer.style.height = "calc(100% - 30px)";
 
-    appContainer.style.border = "4px solid var(--titlebarcolor)";
+    appContainer.style.border = "4px solid var(--bordercolor)";
     appContainer.style.borderTop = "none";
 
     controlButtonDiv.removeEventListener("mouseover", mouseoverHandler);
@@ -68,8 +68,7 @@ function initializeWindowControls() {
 
   // Window control buttons
   const remote = require("@electron/remote");
-  const titlebar = document.querySelector("titlebar");
-  const songprogress = document.querySelector("songprogress");
+  const titlebar = document.getElementById("titlebar");
   const controlButtonDiv = document.querySelector("controlbuttondiv");
   const appContainer = document.getElementById("appContainer");
 
@@ -84,11 +83,11 @@ function initializeWindowControls() {
   const win = remote.BrowserWindow.getFocusedWindow();
 
   win.on("maximize" || "enter-full-screen", () => {
-    songprogressUp();
+    fullscreenLayout();
   });
 
   win.on("unmaximize" || "leave-full-screen", () => {
-    songprogressDown();
+    partscreenLayout();
   });
 
   document.getElementById("minimizeBtn").addEventListener("click", () => {
@@ -108,7 +107,7 @@ function initializeWindowControls() {
     remote.BrowserWindow.getFocusedWindow().close();
   });
 
-  songprogressDown();
+  partscreenLayout();
 }
 
 async function loadAlbumMenu() {

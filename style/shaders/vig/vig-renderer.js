@@ -2,19 +2,10 @@ class WebGLRenderer {
 
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
-    if (!this.canvas) {
-      console.error("Canvas not found:", canvasId);
-      return;
-    }
 
     this.gl =
       this.canvas.getContext("webgl") ||
       this.canvas.getContext("experimental-webgl");
-
-    if (!this.gl) {
-      alert("Unable to initialize WebGL. Your browser may not support it.");
-      return;
-    }
 
     this.program = null;
     this.startTime = Date.now();
@@ -71,23 +62,10 @@ class WebGLRenderer {
       "FRAGMENT_SHADER"
     );
 
-    if (!vertexShader || !fragmentShader) {
-      console.error("Failed to compile shaders");
-      return false;
-    }
-
     this.program = this.gl.createProgram();
     this.gl.attachShader(this.program, vertexShader);
     this.gl.attachShader(this.program, fragmentShader);
     this.gl.linkProgram(this.program);
-
-    if (!this.gl.getProgramParameter(this.program, this.gl.LINK_STATUS)) {
-      console.error(
-        "Program linking error:",
-        this.gl.getProgramInfoLog(this.program)
-      );
-      return false;
-    }
 
     this.gl.useProgram(this.program);
 
@@ -194,11 +172,6 @@ class WebGLRenderer {
 
 // Initialize the renderer when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.createElement("canvas");
-  canvas.id = "webgl-canvas";
-  document.getElementById("appContainer").appendChild(canvas);
-  const renderer = new WebGLRenderer("webgl-canvas");
-  renderer.start("style/shader.glsl");
+  const renderer = new WebGLRenderer("vig-canvas");
+  renderer.start("style/shaders/vig/vig.glsl");
 });
-
-export default WebGLRenderer;

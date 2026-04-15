@@ -7,7 +7,6 @@
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="markup/menus.css" />
   <meta name="author" content="sadgrl_07" />
   <meta name="dir" content="ltr" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,15 +15,17 @@
 </head>
 
 <body>
-  <titlebar id="custom-titlebar">
+  <canvas id="jpg-canvas"></canvas>
+  <div id="titlebar">
     <span style="margin-left: 4ch" id="gameName">Rhythm Game</span>
     <controlButtonDiv>
       <windowControlButton id="minimizeBtn">-</windowControlButton>
       <windowControlButton id="maximizeBtn">0</windowControlButton>
       <windowControlButton id="closeBtn">X</windowControlButton>
     </controlButtonDiv>
-  </titlebar>
+  </div>
   <div id="appContainer">
+    <canvas id="vig-canvas"></canvas>
     <!-- <div id="loading-screen">
         <loader></loader>
       </div> -->
@@ -35,6 +36,7 @@
 </html>
 
 <script type="module" src="index.js"></script>
-<script type="module" src="style/webgl-renderer.js"></script>
+<script type="module" src="style/shaders/jpg/jpg-renderer.js"></script>
+<script type="module" src="style/shaders/vig/vig-renderer.js"></script>
 <script type="module" src="modals.js"></script>
 <script type="module" src="markup/MenuFX.js"></script>
