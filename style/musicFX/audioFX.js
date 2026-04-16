@@ -61,6 +61,7 @@ function visualizeAudio(ctx, src, canvasCtx, canvas) {
           // Finish the line
           canvasCtx.lineTo(canvas.width, canvas.height / 2);
           canvasCtx.stroke();
+          sleep(5)
      }
 
      draw();

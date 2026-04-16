@@ -1,5 +1,3 @@
-// https://codepen.io/l422y/pen/ngpaGB
-
 import anime from "/node_modules/animejs/lib/anime.es.js";
 export { initializeTileEffects, loadStartPage };
 
@@ -118,6 +116,7 @@ async function loadStartPage() {
   const targetObj = document.getElementById('title-obj')
   var force = 40;
   var speed = 300;
+
   target.addEventListener('mousemove', function (e) {
     var boundingRect = this.getBoundingClientRect();
     var relX = e.pageX - boundingRect.left;

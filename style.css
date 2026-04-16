@@ -124,8 +124,6 @@ canvas,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* font-size: var(--fontsize); */
-    font-weight: bolder;
 }
 
 /* #titlebar:active {
@@ -142,7 +140,9 @@ controlButtonDiv {
     opacity: 1;
     background: var(--bordercolor);
     height: 100%;
-    margin-right: 2px
+    margin-right: 2px;
+    z-index: 10000000000000000
+        /*TODO fix fullscreen time span covering it*/
 }
 
 windowControlButton {
@@ -159,7 +159,10 @@ windowControlButton,
     align-items: center;
     justify-content: center;
     color: black;
-    font-weight: lighter
+}
+
+#gameName {
+    margin-left: 2ch
 }
 
 windowControlButton:hover {

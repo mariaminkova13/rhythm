@@ -66,6 +66,8 @@ function countdown() {
   animateSweep();
 
   // Cycle through numbers
+  const countsound = new Audio('sfx/countdown.ogg')
+  const countend = new Audio('sfx/countdownend.ogg')
   const countdownInterval = setInterval(() => {
     index++;
 
@@ -75,7 +77,9 @@ function countdown() {
       countdownElement.textContent = numbers[index];
       countdownElement.appendChild(svg);
       animateSweep();
+      countsound.play()
     } else {
+      countend.play()
       // Clean up
       cancelAnimationFrame(animationFrame);
       countdowncircle.remove();

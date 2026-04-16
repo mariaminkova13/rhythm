@@ -1,5 +1,5 @@
 import { songSetup } from "./song.js";
-import { initializeTileEffects, loadStartPage } from "./markup/MenuFX.js";
+import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
 import Cursor from "./style/cursor/cursor.js";
 export { avg, median, loadAlbumMenu }
 const yaml = require("yaml");
