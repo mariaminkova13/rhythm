@@ -1,7 +1,7 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./markup/MenuFX.js";
 import Cursor from "./style/cursor/cursor.js";
-export { avg, median, audioFilter, loadAlbumMenu }
+export { avg, median, loadAlbumMenu }
 const yaml = require("yaml");
 
 export { songFilePath };
@@ -11,25 +11,6 @@ new Cursor();
 
 const AdaptiveNoteSpeedPreference = 'true'
 
-/////////////AUDIO FILTER
-async function audioFilter(audio) {
-  const ctx = new AudioContext();
-  const src = ctx.createMediaElementSource(audio);
-
-  // Low-pass filter
-  const lowpass = ctx.createBiquadFilter();
-  lowpass.type = "lowpass";
-  lowpass.frequency.value = 1200;
-
-  const lowshelf = ctx.createBiquadFilter();
-  lowshelf.type = "lowshelf";
-  lowshelf.frequency.value = 165;
-
-  // Bitcrusher node
-  await ctx.audioWorklet.addModule("style/bitcrusher.js");
-  const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
-  src.connect(lowpass).connect(crusher).connect(lowshelf).connect(ctx.destination);
-}
 
 function initializeWindowControls() {
   function fullscreenLayout() {
@@ -61,7 +42,7 @@ function initializeWindowControls() {
   }
 
   /// titling
-  var appTitle = "Rhythmata!";
+  const appTitle = "Rhythmata!";
   const gameName = document.getElementById("gameName");
   gameName.innerText = appTitle;
   document.title = appTitle;

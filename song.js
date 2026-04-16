@@ -1,6 +1,7 @@
 export { songSetup, handleNote, note, beatLength, music, musicstart };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
-import { avg, median, audioFilter, loadAlbumMenu } from "./index.js"
+import { avg, median, loadAlbumMenu } from "./index.js"
+import { audioFX } from "./style/musicFX/audioFX.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
@@ -267,8 +268,6 @@ function updateCombo() {
 
 function updatehp() {
   let heart = document.getElementById('heart')
-  console.log(heart)
-  console.log(heart.firstChild)
   heart.firstChild.innerText = hp
   document.documentElement.style.setProperty(
     "--pulsespeed",
@@ -525,8 +524,8 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
     //TODO do we need eventTriggered?
 
-    function startMusic() {
-      if (!music) { music = new Audio(musicFilePath); audioFilter(music); }
+    async function startMusic() {
+      if (!music) { music = new Audio(musicFilePath); await audioFX(music); }
       music.play();
 
       const songprogress = document.querySelector('songprogress')
@@ -546,7 +545,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       }, 1000 / fps);
     };
 
-    window.addEventListener("musicmaystart", (event) => { startMusic(); }, { once: true });
+    window.addEventListener("musicmaystart", async (event) => { await startMusic(); }, { once: true });
 
     //TODO base score on ms offset, not px offset
 

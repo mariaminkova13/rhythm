@@ -41,7 +41,6 @@
     --hpwidth: 20px;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
-    --countdownsize: 50vh;
     --transitionspeed: 0.2s;
 
     --beatlength: 0.5s;
@@ -100,11 +99,20 @@ canvas,
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 100000000;
     display: block;
     pointer-events: none;
     mix-blend-mode: normal;
     overflow: hidden
+}
+
+#wave-canvas {
+    opacity: 0.1
+}
+
+#allthestuff,
+#loading-screen,
+#jpg-canvas {
+    z-index: 1000000000
 }
 
 #titlebar {
@@ -425,7 +433,7 @@ accuracy {
 notecontainer {
     flex: 0.6;
     position: relative;
-    background-color: lightslategray;
+    background-color: rgba(119, 136, 153, 0.4);
 }
 
 hitline {
@@ -545,7 +553,7 @@ songprogress {
     height: var(--barwidth);
     background-color: var(--color1);
     position: absolute;
-    opacity: 0.5;
+    opacity: 0.8;
     z-index: 999;
     border-bottom-right-radius: var(--radius);
     transition: top var(--transitionspeed) ease;
@@ -624,7 +632,7 @@ countdownnumber {
     font-family: var(--headfont);
     border: 4px solid var(--textcolor);
     border-radius: 50%;
-    width: var(--countdownsize);
+    width: 100%;
     aspect-ratio: 1 / 1;
     background-color: var(--bgcolor);
     box-shadow: 0px 0px 50px 10px black inset;
@@ -635,13 +643,14 @@ countdownnumber {
 countdowncircle {
     border-radius: 50%;
     aspect-ratio: 1 / 1;
-    width: calc(var(--countdownsize) + 90px);
+    width: 50vh;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: hidden;
-    z-index: 100000000;
+    z-index: 100000000000;
+    border: 5px solid var(--textcolor)
 }
 
 countdowncircle svg {
