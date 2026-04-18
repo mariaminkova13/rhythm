@@ -32,8 +32,6 @@ class UTF8Handler(http.server.SimpleHTTPRequestHandler):
 Handler = UTF8Handler
 
 print(f"Starting server on http://localhost:{PORT}")
-print(f"Serving files from: {os.getcwd()}")
-print("Press Ctrl+C to stop the server\n")
 
 try:
     with socketserver.TCPServer(("", PORT), Handler) as httpd:

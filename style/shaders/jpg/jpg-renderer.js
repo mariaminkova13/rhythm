@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
      const canvas = document.getElementById('jpg-canvas')
      const gl = canvas.getContext('webgl');
-     const fragmentShaderSrc = await (await fetch('style/shaders/jpg/fragment-shader.glsl')).text()
-     const vertexShaderSrc = await (await fetch('style/shaders/jpg/vertex-shader.glsl')).text()
+     const fragmentShaderSrc = await (await fetch('style/shaders/jpg/jpg.glsl')).text()
+     const vertexShaderSrc = `attribute vec2 aPosition;
+     varying vec2 vUv;
+     
+     void main() {
+         vUv = (aPosition + 1.0) * 0.5;
+         gl_Position = vec4(aPosition, 0.0, 1.0);
+     }`
 
      async function compileShader(source, type) {
           const shader = gl.createShader(type);
