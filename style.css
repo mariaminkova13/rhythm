@@ -556,7 +556,7 @@ songprogress {
     height: var(--barwidth);
     background-color: var(--color1);
     position: absolute;
-    opacity: 0.8;
+    opacity: 0.75;
     z-index: 999;
     border-bottom-right-radius: var(--radius);
     transition: top var(--transitionspeed) ease;

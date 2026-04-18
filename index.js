@@ -1,9 +1,9 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
 import Cursor from "./style/cursor/cursor.js";
-export { avg, median, loadAlbumMenu }
+export { avg, median, loadAlbumMenu, sleep }
 const yaml = require("yaml");
-
+//FIXME controlbuttondiv when leave back to menu
 export { songFilePath };
 let songFilePath;
 
@@ -11,6 +11,9 @@ new Cursor();
 
 const AdaptiveNoteSpeedPreference = 'true'
 
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
 
 function initializeWindowControls() {
   function fullscreenLayout() {

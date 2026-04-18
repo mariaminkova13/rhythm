@@ -1,18 +1,15 @@
+import { sleep } from '../../../index.js'
+
 class WebGLRenderer {
 
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
 
-    this.gl =
-      this.canvas.getContext("webgl") ||
-      this.canvas.getContext("experimental-webgl");
+    this.gl = this.canvas.getContext("webgl")
 
     this.program = null;
     this.startTime = Date.now();
 
-    async function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    };
 
     window.addEventListener("vignetteRed", async (e) => {
       for (var i = 1.0; i >= 0.0; i -= 0.01) {
@@ -66,7 +63,6 @@ class WebGLRenderer {
     this.gl.attachShader(this.program, vertexShader);
     this.gl.attachShader(this.program, fragmentShader);
     this.gl.linkProgram(this.program);
-
     this.gl.useProgram(this.program);
 
     // Enable blending for vignette overlay

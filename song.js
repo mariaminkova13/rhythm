@@ -268,21 +268,19 @@ function updateCombo() {
 
 function updatehp() {
   let heart = document.getElementById('heart')
-  heart.firstChild.innerText = hp
+  heart.firstChild.innerText = Math.round(hp)
   document.documentElement.style.setProperty(
     "--pulsespeed",
-    //linear interpolation
-    0.1 + hp * 0.007 + "s"
+    0.1 + hp * 0.007 + "s"  //linear interpolation
   );
   document.documentElement.style.setProperty("--hp", hp + "%");
   console.log("HP:", hp + "%");
-  if (difficulty != "relaxed") {
-    if (hp > 100) {
-      hp == 100;
-    }
+  if (hp > 100) {
+    hp == 100;
   }
   if (hp <= 0) {
     showDeathMsg();
+    music.pause()
   }
 }
 

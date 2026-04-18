@@ -1,3 +1,5 @@
+import { sleep } from '../../index.js'
+
 export async function audioFX(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
@@ -10,19 +12,28 @@ export async function audioFX(audio) {
 }
 
 async function audioFilter(ctx, src) {
-     // Low-pass filter
      const lowpass = ctx.createBiquadFilter();
-     lowpass.type = "lowpass";
-     lowpass.frequency.value = 1500;
+     lowpass.type = "highshelf";
+     lowpass.frequency.value = 1200;
+     lowpass.gain.value = -15;
 
      const lowshelf = ctx.createBiquadFilter();
      lowshelf.type = "lowshelf";
      lowshelf.frequency.value = 165;
+     lowshelf.gain.value = 30;
 
-     // Bitcrusher node
+     const reverb = ctx.createConvolver()
+
+     const compression = ctx.createAnalyser()
+
+     const distortion = ctx.createAnalyser()
+
+     const chorus = ctx.createConvolver()
+
      await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
      const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
-     src.connect(lowpass).connect(crusher).connect(lowshelf).connect(ctx.destination);
+
+     src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
 }
 
 function visualizeAudio(ctx, src, canvasCtx, canvas) {
@@ -34,7 +45,7 @@ function visualizeAudio(ctx, src, canvasCtx, canvas) {
      analyser.getByteTimeDomainData(dataArray);
 
      function draw() {
-          requestAnimationFrame(() => draw());
+          requestAnimationFrame(() => { setTimeout(draw, 1); });
           analyser.getByteTimeDomainData(dataArray);
 
           // Begin the path
@@ -61,7 +72,6 @@ function visualizeAudio(ctx, src, canvasCtx, canvas) {
           // Finish the line
           canvasCtx.lineTo(canvas.width, canvas.height / 2);
           canvasCtx.stroke();
-          sleep(5)
      }
 
      draw();

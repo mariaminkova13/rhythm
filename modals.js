@@ -2,9 +2,10 @@ import { beatLength, music, musicstart } from "./song.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
 export { showModal, countdown, pause, unpause, paused, showDeathMsg }
 
-var paused
+var paused, waveCanvas
 
 function countdown() {
+  waveCanvas = document.getElementById('wave-canvas')
   paused = true
   const countdowncircle = document.createElement("countdowncircle");
   const countdownElement = document.createElement("countdownnumber");
@@ -77,14 +78,15 @@ function countdown() {
       countdownElement.textContent = numbers[index];
       countdownElement.appendChild(svg);
       animateSweep();
-      countsound.play()
+      // countsound.play()
     } else {
-      countend.play()
+      // countend.play()
       // Clean up
       cancelAnimationFrame(animationFrame);
       countdowncircle.remove();
       clearInterval(countdownInterval);
 
+      waveCanvas.style.visibility = 'visible'
       // Start music
       if (music && paused == true && musicstart == true) {
         music.play()
@@ -105,6 +107,7 @@ function pause() {
   pauseMusic();
   showModal("pausemodal");
   paused = true;
+  waveCanvas.style.visibility = 'hidden'
 }
 
 function unpause() {
@@ -117,6 +120,7 @@ function unpause() {
 
 function showDeathMsg() {
   document.getElementById('hpbar').remove()
+  document.getElementById('wave-canvas').remove()
   showModal("deathmsg")
 }
 
