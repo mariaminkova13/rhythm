@@ -82,7 +82,10 @@ function createWindow() {
   require("@electron/remote/main").enable(mainWindow.webContents);
   mainWindow.loadURL(`http://localhost:${PORT}`);
   mainWindow.on("closed", function () {
-    mainWindow = null;
+    if (nodeServer) {
+      nodeServer.close();
+    }
+    app.quit();
   });
 
   //development stuff
@@ -105,7 +108,7 @@ app.on("window-all-closed", function () {
   if (nodeServer) {
     nodeServer.close();
   }
-  if (process.platform !== "darwin") app.quit();
+  app.quit();
 });
 
 app.on("activate", function () {
