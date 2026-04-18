@@ -1,50 +1,62 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const { spawn } = require("child_process");
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
 require("@electron/remote/main").initialize();
 
 let mainWindow;
-let pythonServer = null;
+let nodeServer = null;
 const PORT = 8000;
 
-// Function to start the Python server
-function startPythonServer() {
-  if (pythonServer) {
-    pythonServer.kill();
-  }
+const MIME_TYPES = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "application/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".svg": "image/svg+xml",
+  ".wav": "audio/wav",
+  ".mp3": "audio/mpeg",
+  ".ogg": "audio/ogg",
+  ".ttf": "font/ttf",
+  ".otf": "font/otf",
+  ".yaml": "text/yaml",
+  ".txt": "text/plain",
+};
 
+function startNodeServer() {
   return new Promise((resolve, reject) => {
-    console.log("Starting Python server...");
+    console.log("Starting Node server...");
 
-    // Spawn the Python server process
-    pythonServer = spawn("python", ["server.py", PORT.toString()], {
-      cwd: __dirname,
-      stdio: "pipe",
+    nodeServer = http.createServer((req, res) => {
+      const urlPath = decodeURIComponent(req.url === "/" ? "index.html" : req.url).split("?")[0];
+      const filePath = path.join(__dirname, urlPath);
+
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = MIME_TYPES[ext] || "application/octet-stream";
+
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end("Not found");
+          return;
+        }
+        res.writeHead(200, { "Content-Type": contentType });
+        res.end(data);
+      });
     });
 
-    pythonServer.stdout.on("data", (data) => {
-      console.log(`Python server: ${data}`);
-      // When we see the server is running message, resolve the promise
-      if (data.toString().includes("Server is running")) {
-        resolve();
-      }
+    nodeServer.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`);
+      resolve();
     });
 
-    pythonServer.stderr.on("data", (data) => {
-      console.error(`Python server error: ${data}`);
+    nodeServer.on("error", (err) => {
+      console.error("Node server error:", err);
+      reject(err);
     });
-
-    pythonServer.on("error", (error) => {
-      console.error("Failed to start Python server:", error);
-      reject(error);
-    });
-
-    pythonServer.on("close", (code) => {
-      console.log(`Python server exited with code ${code}`);
-    });
-
-    // Timeout if server doesn't start in 5 seconds
-    setTimeout(() => resolve(), 5000);
   });
 }
 
@@ -78,10 +90,10 @@ function createWindow() {
   mainWindow.webContents.session.clearCache();
 }
 
-// Start the app: first start Python server, then create window
+// Start the app: first start Node server, then create window
 app.whenReady().then(async () => {
   try {
-    await startPythonServer();
+    await startNodeServer();
     createWindow();
   } catch (error) {
     console.error("Failed to start server:", error);
@@ -90,9 +102,8 @@ app.whenReady().then(async () => {
 });
 
 app.on("window-all-closed", function () {
-  // Kill the Python server when closing
-  if (pythonServer) {
-    pythonServer.kill();
+  if (nodeServer) {
+    nodeServer.close();
   }
   if (process.platform !== "darwin") app.quit();
 });
@@ -104,7 +115,7 @@ app.on("activate", function () {
 });
 
 app.on("before-quit", () => {
-  if (pythonServer) {
-    pythonServer.kill();
+  if (nodeServer) {
+    nodeServer.close();
   }
 });
