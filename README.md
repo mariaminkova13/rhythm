@@ -1,15 +1,44 @@
 <img alt="Static Badge" align="right" src="https://img.shields.io/badge/github-repo-steelblue?style=for-the-badge&logo=github"> <a href="https://github.com/mariaminkova13/rhythm/issues">
 
 # Description
-A simple vertical-scrolling rhythm game made with JS/HTML/CSS, Electron, and a Python server, plus WebGL and anime.js for visual effects. Very generic and done more as an exercise for the process rather than for the product. But still play it if you want.
-Played casually; 100% skill-based with no levels, upgrades, in-game currency or progression. Intended to be challenging.
+A simple vertical-scrolling rhythm game made with JS/HTML/CSS, Electron, and a Node.js server, plus WebGL and anime.js for visual effects. Very generic and done more as an exercise for the process rather than for the product. But still play it if you want.
+Intended to be challenging yet played casually.
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
-## Usage / How to Play
-Connect to the website/IP Address. The source code here will be stored on the server, so no installation is necessary.
-Controls: SDFJKL & spacebar (123456 and arrow keys also work)
+## How to Play
+Run the app.
+Controls:
+- arrow keys and mouse to navigate UI
+- <kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>spacebar</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> during songs. Number and arrow keys also work, cuz why not.
+- <kbd>esc</kbd> or <kbd>enter</kbd> to pause a song
 
 ## See Also
->Work in progress, not released yet.
-All other information may be viewed in the [wiki](https://github.com/mariaminkova13/rhythm/wiki).
+> Work in progress, not released yet.
+More specific info is in the [wiki](https://github.com/mariaminkova13/rhythm/wiki).
 Report bugs or share suggestions in ['Issues'](https://github.com/mariaminkova13/rhythm/issues).
+
+## License
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <https://unlicense.org/>
