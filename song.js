@@ -204,34 +204,37 @@ function handleBeat(beat, beatIndex, hitline) {
 //TODO add transition time for ticks if low bpm
 
 function handleNote(noteElement) {
-  let distanceMoved = 0;
-  noteElement.setAttribute("aria-active", "true");
-  let position = noteStartingPosition;
-  const startPosition = position;
-  const fallInterval = setInterval(() => {
-
+  function moveNote() {
     if (paused) {
       return;
     }
 
-    position += noteStepSize;
-    distanceMoved = position - startPosition;
+    let elapsedms = Date.now() - startTime
+    position = elapsedms * noteStepSize //FIXME
     noteElement.style.top = position + "px";
 
     // Delete the note when it goes offscreen
     if (position > window.innerHeight) {
       clearInterval(fallInterval);
-      if (noteElement.getAttribute("aria-active") === "true") {
-        console.log("Note offscreen, completely missed");
-        missSound.play();
-        earlyOrLate = "late.";
-        hp -= forgotNoteCost;
-        missCount++;
-        window.dispatchEvent(new Event('vignetteRed'))
-        updatehp();
-        combo = 0
-      }
       noteElement.remove();
+    }
+  }
+  let position, distanceMoved = 0
+  let startTime = Date.now();
+  noteElement.setAttribute("aria-active", "true");
+  const fallInterval = setInterval(() => {
+    requestAnimationFrame(moveNote)
+
+    //FIXME
+    if (noteElement.getAttribute("aria-active") === "true" && distance > shitThreshold) {
+      console.log("Note offscreen, completely missed");
+      missSound.play();
+      earlyOrLate = "late.";
+      hp -= forgotNoteCost;
+      missCount++;
+      window.dispatchEvent(new Event('vignetteRed'))
+      updatehp();
+      combo = 0
       updateCombo()
     }
   }, 1000 / fps);

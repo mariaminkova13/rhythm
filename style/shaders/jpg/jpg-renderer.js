@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
      gl.attachShader(program, vertexShader);
      gl.linkProgram(program);
      gl.useProgram(program);
-     
-     gl.uniform1f(gl.getUniformLocation(program, "uQuality"), 0.07); // Setting the jpeg quality from 0.001 (lowest) to 0.1 (best)
-     gl.uniform1f(gl.getUniformLocation(program, "uBlockSize"), 3.0); // set the size of a block
+
+     gl.uniform1f(gl.getUniformLocation(program, "uQuality"), 0.1); // Setting the jpeg quality from 0.001 (lowest) to 0.1 (best). TODO make bit depth number
+     gl.uniform1f(gl.getUniformLocation(program, "uBlockSize"), 1.0); // set the size of a block TODO make it the value in pixels
 
      // Two triangles cover the entire space (-1..1), so the shader runs on every pixel of the canvas
      const vertices = new Float32Array([
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      gl.enableVertexAttribArray(posLoc);
      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-     // Fetch the background image and decode it into a GPU-ready bitmap
+     // Fetch the background image and decode it into a GPU-ready bitmap TODO make it real-time on everything onscreen including text
      const imgBlob = await (await fetch('markup/covers/windowsdarkmode.jpg')).blob();
      const img = await createImageBitmap(imgBlob, { imageOrientation: 'flipY' });
 

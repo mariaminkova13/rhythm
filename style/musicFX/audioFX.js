@@ -7,7 +7,7 @@ export async function audioFX(audio) {
      const canvas = document.getElementById('wave-canvas')
      const canvasCtx = canvas.getContext('2d')
 
-     await audioFilter(ctx, src);
+     // await audioFilter(ctx, src);
      visualizeAudio(ctx, src, canvasCtx, canvas);
 }
 

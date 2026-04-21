@@ -318,7 +318,12 @@ note {
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
-    opacity: 100%
+    opacity: 100%;
+    top: 0px
+}
+
+note.hold {
+    height: 30px
 }
 
 note[aria-active=false] {
