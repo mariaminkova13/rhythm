@@ -2,7 +2,7 @@
 
 # Description
 A simple vertical-scrolling rhythm game made with JS/HTML/CSS, Electron, and a Node.js server, plus WebGL and anime.js for visual effects. Very generic and done more as an exercise for the process rather than for the product. But still play it if you want.
-Intended to be challenging yet played casually.
+Intended to be challenging yet played casually. The difficulty should be rooted more in precision than in key-spamming.
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
 ## How to Play

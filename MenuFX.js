@@ -1,7 +1,8 @@
 import anime from "/node_modules/animejs/lib/anime.es.js";
 export { initializeTileEffects, loadStartPage };
 
-//TODO ok it works but why is nextPercentage more than 100 or less than 0
+//TODO ok it works but why is nextPercentage more than 100 or less than 0\
+//TODO make it normal scrolling and not press and hold. maybe use rellax.js
 
 const scaleMultiplier = "1.1";
 const scrollFactor = 1.2;

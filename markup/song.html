@@ -13,14 +13,7 @@
 <canvas id="wave-canvas"></canvas>
 <songprogress></songprogress>
 <column>
-  <sidecolumn></sidecolumn>
-  <notecontainer>
-    <hitline>
-      <hitlinelight>
-    </hitline>
-  </notecontainer>
-  <sidecolumn style="padding-top: var(--barwidth)">
-    <span id="timestamp"></span>
+  <sidecolumn>
     <div id="infobox">
       <div id="scorebox">
         <div>
@@ -32,11 +25,24 @@
       <scorebar></scorebar>
     </div>
   </sidecolumn>
+  <div style="flex: 0.6; display: flex; flex-direction: column; align-items: end; bottom: 0">
+    <notecontainer>
+      <comboCounter>
+        <span id="counterAfter"></span>
+      </comboCounter>
+      <hitline>
+        <hitlinelight>
+      </hitline>
+    </notecontainer>
+    <gutter></gutter>
+  </div>
+  <sidecolumn style="padding-top: var(--barwidth)">
+    <span id="timestamp"></span>
+    <hpbar id="hpbar">
+      <div id="heart"><span></span></div>
+      <!-- TODO remove animation from hearttext-->
+      <!-- TODO change svg path for bottom to be bottom of div -->
+    </hpbar>
+  </sidecolumn>
 </column>
-<gutter>
-  <hpbar id="hpbar">
-    <div id="heart"><span></span></div>
-    <!-- TODO remove animation from hearttext-->
-    <!-- TODO change svg path for bottom to be bottom of div -->
-  </hpbar>
-</gutter>
+<!--TODO add container showing where top & bottom of note would be when center on hitline. maybe use negative coloring on note when over-->

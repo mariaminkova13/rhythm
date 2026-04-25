@@ -38,7 +38,7 @@
     --barwidth: 10px;
     --tickheight: 18px;
     --tickgap: calc(var(--tickheight) * 1.5);
-    --hpwidth: 20px;
+    --hpwidth: 10px;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
     --transitionspeed: 0.2s;
@@ -112,7 +112,7 @@ canvas,
 #allthestuff,
 #loading-screen,
 #jpg-canvas {
-    z-index: 1000000000
+    z-index: 10000000
 }
 
 #titlebar {
@@ -175,7 +175,7 @@ windowControlButton:hover {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 12vw 8vw;
+    padding: 3em;
     box-sizing: border-box;
     gap: 10px;
     justify-content: left;
@@ -188,7 +188,7 @@ windowControlButton:hover {
 .tile {
     position: relative;
     height: 100px;
-    width: 80%;
+    width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: space-between;
@@ -198,6 +198,14 @@ windowControlButton:hover {
     border: 2px solid var(--color1);
     transition: all var(--transitionspeed);
     border-radius: var(--radius);
+}
+
+#songInfo {
+    height: 100%;
+    background: var(--notecolor);
+    flex: 50%;
+    z-index: -3
+        /*TODO why no vignette*/
 }
 
 @keyframes glow {
@@ -396,7 +404,7 @@ column {
     display: flex;
     flex-direction: row;
     gap: 0;
-    height: calc(100% - (var(--bottompadding)));
+    height: 100%
 }
 
 marquee {
@@ -477,8 +485,9 @@ accuracy {
 }
 
 notecontainer {
-    flex: 0.6;
     position: relative;
+    height: 100%;
+    width: 100%;
     background-color: rgba(119, 136, 153, 0.4);
 }
 
@@ -527,7 +536,6 @@ beat {
     opacity: 0.3;
     display: flex;
     align-items: center;
-    /*FIXME out of sync when hover devtools. make all notes and beats move at once or pause when click off*/
 }
 
 beatnumber {
@@ -609,19 +617,20 @@ gutter {
     bottom: 0;
     width: 100%;
     height: var(--bottompadding);
-    position: absolute;
+    position: relative;
     display: flex;
     align-items: center;
     z-index: 4;
-    backdrop-filter: blur(5px);
+    order: 2;
+    /* backdrop-filter: blur(5px); */
 }
 
 hpbar {
     height: var(--hpwidth);
-    border: 1px solid var(--color1);
+    /* border: 1px solid var(--color1); */
     box-sizing: border-box;
-    width: 100%;
-    position: relative;
+    width: 80%;
+    position: absolute;
     display: flex;
     z-index: 2;
     background-color: var(--hpcolor);
@@ -629,7 +638,8 @@ hpbar {
     border-top-right-radius: var(--radius);
     margin-right: 15%;
     margin-left: calc(15% + calc(var(--heartsize)/2));
-    align-items: center
+    align-items: center;
+    bottom: var(--bottompadding);
 }
 
 hpbar::after {
@@ -771,10 +781,21 @@ comboCounter {
     animation: slidedown 0.1s ease;
 }
 
-comboCounter::after {
-    content: var(--after-hitcomment);
+#counterAfter {
     text-transform: lowercase;
     font-size: var(--fontsize);
+    /* opacity: 0;
+    animation: fade-out 0.2s ease */
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0
+    }
 }
 
 modal img {
