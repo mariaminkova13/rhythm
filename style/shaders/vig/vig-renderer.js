@@ -1,4 +1,6 @@
-import { sleep } from '../../../index.js'
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
 
 class WebGLRenderer {
 

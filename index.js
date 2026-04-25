@@ -1,19 +1,14 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
 import Cursor from "./style/cursor/cursor.js";
-export { avg, median, loadAlbumMenu, sleep }
+export { avg, median, loadAlbumMenu }
 const yaml = require("yaml");
 //FIXME controlbuttondiv when leave back to menu
 export { songFilePath };
 let songFilePath;
 
 new Cursor();
-
 const AdaptiveNoteSpeedPreference = 'true'
-
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-};
 
 function initializeWindowControls() {
   function fullscreenLayout() {
@@ -21,6 +16,7 @@ function initializeWindowControls() {
     controlButtonDiv.style.visibility = "visible";
     titlebar.style.position = "fixed";
     titlebar.style.cursor = "none";
+    controlButtonDiv.style.cursor = "pointer"
     controlButtonDiv.style.opacity = "0";
     appContainer.style.border = "none";
     appContainer.style.height = "100%";
@@ -58,6 +54,7 @@ function initializeWindowControls() {
 
   // Store event listeners for removal
   const mouseoverHandler = () => {
+    console.log('hoverrrrrrrrr')
     controlButtonDiv.style.opacity = "1";
   };
   const mouseoutHandler = () => {

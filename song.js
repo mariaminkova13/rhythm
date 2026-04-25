@@ -20,12 +20,12 @@ var missHpCost = 5,
   maxHeal = 30,
   perfectThreshold = 8,
   hitThreshold = 40,
-  shitThreshold = 80,
-  shitLoseComboChance = 0.5;
+  badThreshold = 80,
+  badLoseComboChance = 0.5;
 
 var missCount = 0,
   hitCount = 0,
-  shitCount = 0,
+  badCount = 0,
   perfectCount = 0,
   combo = 0,
   hitResult = null,
@@ -40,7 +40,7 @@ var hitAccuracy = [];
 const perfectSound = new Audio("sfx/perfect.wav"),
   missSound = new Audio("sfx/miss.mp3"),
   hitSound = new Audio("sfx/hit.wav"),
-  shitSound = new Audio("sfx/shit.wav");
+  badSound = new Audio("sfx/bad.wav");
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
 let musicstart = false
@@ -210,7 +210,7 @@ function handleNote(noteElement) {
     }
 
     let elapsedms = Date.now() - startTime
-    position = elapsedms * noteStepSize //FIXME
+    position = elapsedms / (1000 / fps) * noteStepSize
     noteElement.style.top = position + "px";
 
     // Delete the note when it goes offscreen
@@ -222,12 +222,17 @@ function handleNote(noteElement) {
   let position, distanceMoved = 0
   let startTime = Date.now();
   noteElement.setAttribute("aria-active", "true");
+
   const fallInterval = setInterval(() => {
     requestAnimationFrame(moveNote)
+    let noteBottom = noteElement.getBoundingClientRect().bottom
+    let hitlineBottom = noteElement.parentElement.getBoundingClientRect().bottom
+    console.log(noteBottom - hitlineBottom > badThreshold)
+    if (noteBottom - hitlineBottom > badThreshold) { console.log('AAAAAAAAAAAAAAAAAA') }
 
     //FIXME
-    if (noteElement.getAttribute("aria-active") === "true" && distance > shitThreshold) {
-      console.log("Note offscreen, completely missed");
+    if (noteElement.getAttribute("aria-active") === "true" && noteBottom - hitlineBottom > badThreshold) {
+      console.log("didn't press note");
       missSound.play();
       earlyOrLate = "late.";
       hp -= forgotNoteCost;
@@ -236,6 +241,7 @@ function handleNote(noteElement) {
       updatehp();
       combo = 0
       updateCombo()
+      noteElement.setAttribute('aria-active', false)
     }
   }, 1000 / fps);
 }
@@ -244,9 +250,9 @@ function updateCombo() {
   // if (hitResult && hitResult.distance > 0) {
   //   earlyOrLate = "early";
   // }
-  // else if (hitResult && hitResult.distance === 0) {
-  //   earlyOrLate = "exact!!!"
-  // }
+  if (hitResult && hitResult.distance === 0) {
+    earlyOrLate = "exact!!!"
+  }
   // else if (hitResult) {
   //   earlyOrLate = "late";
   // }
@@ -266,11 +272,12 @@ function updateCombo() {
   }
 
   // container.appendChild(newHitComment);
-  // newCounter.style.setProperty("--after-comboCounter", `"${earlyOrLate}"`);
+  // newCounter.style.setProperty("--after-comboCounter", `"${earlyOrLate}"`); FIXME
 }
 
 function updatehp() {
   let heart = document.getElementById('heart')
+  if (!heart) return
   heart.firstChild.innerText = Math.round(hp)
   document.documentElement.style.setProperty(
     "--pulsespeed",
@@ -470,12 +477,12 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               hitResult.note.setAttribute("aria-active", "false");
               hitCount++;
               combo++
-            } else if (absoluteDistance <= shitThreshold) {
-              console.log("shit");
-              shitSound.play();
+            } else if (absoluteDistance <= badThreshold) {
+              console.log("bad");
+              badSound.play();
               hitResult.note.setAttribute("aria-active", "false");
-              shitCount++;
-              if (Math.random() >= shitLoseComboChance) { combo++ } else { combo = 0 }
+              badCount++;
+              if (Math.random() >= badLoseComboChance) { combo++ } else { combo = 0 }
             } else {
               console.log("miss");
               missSound.play();
@@ -565,7 +572,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       if ((missCount = 0)) {
         lettergrade.innerText = "β";
         plusminus.innerText = "-";
-        if ((shitCount = 0)) {
+        if ((badCount = 0)) {
           plusminus.innerText = "";
           if ((hitCount = 0)) {
             plusminus.innerText = "+";

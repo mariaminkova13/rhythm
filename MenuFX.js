@@ -1,48 +1,47 @@
 import anime from "/node_modules/animejs/lib/anime.es.js";
 export { initializeTileEffects, loadStartPage };
 
+//TODO ok it works but why is nextPercentage more than 100 or less than 0
+
 const scaleMultiplier = "1.1";
 const scrollFactor = 1.2;
 
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
-
-  // Get all tile elements
   const tiles = document.querySelectorAll(".tile");
-
   function initializeParallax() {
 
     const handleMouseDown = (e) => {
-      tileContainer.dataset.mouseDownAt = e.clientX;
+      tileContainer.dataset.mouseDownAt = e.clientY;
     };
 
     const handleMouseMove = (e) => {
       if (tileContainer.dataset.mouseDownAt == 0 || !tileContainer) return;
       //TODO optimize; instead of return when !tilecontainer, remove event listener when not in album menu
 
+      const containerHeight = tileContainer.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      const maxScroll = containerHeight - viewportHeight;
+
       const mouseDelta =
-        parseFloat(tileContainer.dataset.mouseDownAt) - e.clientX,
-        maxDelta = window.innerWidth / scrollFactor;
+        parseFloat(tileContainer.dataset.mouseDownAt) - e.clientY,
+        maxDelta = containerHeight / scrollFactor;
 
-      const percentage = ((mouseDelta / maxDelta) * 100) * -1,
-        prevPercentage = parseFloat(tileContainer.dataset.prevPercentage) || 0,
-        nextPercentageUnclamped = prevPercentage + percentage;
+      const moveBy = (mouseDelta * scrollFactor),
+        prevScroll = (tileContainer.dataset.percentage / 100) * maxScroll || 0,
+        nextPercentageUnclamped = ((prevScroll + moveBy) / maxScroll) * 100;
 
-      // Calculate max scroll based on container width
-      const containerWidth = tileContainer.scrollWidth;
-      const viewportWidth = window.innerWidth;
-      const maxScroll = -((containerWidth - viewportWidth) / containerWidth) * 100;
-      const nextPercentage = Math.max(Math.min(nextPercentageUnclamped, 0), maxScroll);
+      const nextPercentage = Math.min(Math.max(nextPercentageUnclamped, 0), 100);
       tileContainer.dataset.percentage = nextPercentage;
       tileContainer.animate({
-        transform: `translateX(${nextPercentage}%)`
+        transform: `translateY(${(((nextPercentage / 100) * maxScroll * -1) || 0) + 'px'})`
       }, {
         duration: 1200, fill: "forwards"
       });
 
       Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
         photo.animate({
-          backgroundPosition: `${100 + nextPercentage}% 50%`
+          backgroundPosition: `50% ${nextPercentage}%`
         }, {
           duration: 1200, fill: "forwards"
         });
@@ -102,7 +101,7 @@ function initializeTileEffects() {
   });
 
   // no parallax scroll if no scroll
-  if (tileContainer.getBoundingClientRect().width <= tileContainer.parentElement.getBoundingClientRect().width) { tileContainer.style.justifyContent = "space-evenly" }
+  if (tileContainer.getBoundingClientRect().height <= tileContainer.parentElement.getBoundingClientRect().height) { tileContainer.style.justifyContent = "space-evenly" }
   else { initializeParallax() }
 }
 

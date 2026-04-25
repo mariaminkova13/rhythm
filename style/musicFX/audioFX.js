@@ -1,5 +1,3 @@
-import { sleep } from '../../index.js'
-
 export async function audioFX(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
