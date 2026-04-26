@@ -5,64 +5,47 @@ export { initializeTileEffects, loadStartPage };
 //TODO make it normal scrolling and not press and hold. maybe use rellax.js
 
 const scaleMultiplier = "1.1";
-const scrollFactor = 1.2;
 
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
   const tiles = document.querySelectorAll(".tile");
+
   function initializeParallax() {
-
-    const handleMouseDown = (e) => {
-      tileContainer.dataset.mouseDownAt = e.clientY;
-    };
-
-    const handleMouseMove = (e) => {
-      if (tileContainer.dataset.mouseDownAt == 0 || !tileContainer) return;
-      //TODO optimize; instead of return when !tilecontainer, remove event listener when not in album menu
-
-      const containerHeight = tileContainer.scrollHeight;
-      const viewportHeight = window.innerHeight;
-      const maxScroll = containerHeight - viewportHeight;
-
-      const mouseDelta =
-        parseFloat(tileContainer.dataset.mouseDownAt) - e.clientY,
-        maxDelta = containerHeight / scrollFactor;
-
-      const moveBy = (mouseDelta * scrollFactor),
-        prevScroll = (tileContainer.dataset.percentage / 100) * maxScroll || 0,
-        nextPercentageUnclamped = ((prevScroll + moveBy) / maxScroll) * 100;
-
-      const nextPercentage = Math.min(Math.max(nextPercentageUnclamped, 0), 100);
-      tileContainer.dataset.percentage = nextPercentage;
-      tileContainer.animate({
-        transform: `translateY(${(((nextPercentage / 100) * maxScroll * -1) || 0) + 'px'})`
-      }, {
-        duration: 1200, fill: "forwards"
-      });
-
+    tileContainer.onscroll = (e) => {
+      requestAnimationFrame(updateCenteredTile);
+      let percentage = (tileContainer.scrollTop / (tileContainer.scrollHeight - tileContainer.clientHeight)) * 100
       Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
         photo.animate({
-          backgroundPosition: `50% ${nextPercentage}%`
+          backgroundPosition: `50% ${percentage}%`
         }, {
-          duration: 1200, fill: "forwards"
+          duration: 300, fill: "forwards"
         });
       });
-    };
+    }
+  };
 
-    const handleMouseUp = () => {
-      tileContainer.dataset.mouseDownAt = 0;
-      tileContainer.dataset.prevPercentage = tileContainer.dataset.percentage;
-    };
+  function updateCenteredTile() {
+    let closest = null;
+    let closestDistance = Infinity;
 
-    // Initialize prevPercentage
-    tileContainer.dataset.mouseDownAt = 0;
-    tileContainer.dataset.prevPercentage = 0;
-    tileContainer.dataset.percentage = 0;
-    tileContainer.dataset.nextPercentage = 0;
+    const appContainerRect = document.getElementById('appContainer').getBoundingClientRect();
+    const appCenter = appContainerRect.y + appContainerRect.height / 2;
 
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    tiles.forEach(tile => {
+      const rect = tile.getBoundingClientRect();
+      const center = rect.y + rect.height / 2;
+      const distance = Math.abs(center - appCenter);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closest = tile;
+      }
+    });
+
+    if (closest) {
+      tiles.forEach(t => t.removeAttribute('selected'));
+      closest.setAttribute('selected', '');
+    }
   }
 
   tiles.forEach(function (tile) {
@@ -99,11 +82,21 @@ function initializeTileEffects() {
         ((e.pageY - rect.top - window.scrollY) / this.offsetHeight) * 100;
       photo.style.transformOrigin = x + "% " + y + "%";
     });
+
+    tile.onclick = (e) => {
+      tile.scrollIntoView({
+        behavior: "smooth", //make faster
+        block: "center"
+      });
+      tiles.forEach(tile => tile.removeAttribute('selected'));
+      tile.setAttribute('selected', '');
+    }
   });
 
-  // no parallax scroll if no scroll
-  if (tileContainer.getBoundingClientRect().height <= tileContainer.parentElement.getBoundingClientRect().height) { tileContainer.style.justifyContent = "space-evenly" }
-  else { initializeParallax() }
+  // no parallax scroll if no scroll FIXME also moving songinfo when click
+  // if (tileContainer.getBoundingClientRect().height <= tileContainer.parentElement.getBoundingClientRect().height) { tileContainer.style.justifyContent = "space-evenly" }
+  // else { initializeParallax() }
+  initializeParallax()
 }
 
 async function loadStartPage() {
@@ -136,7 +129,6 @@ async function loadStartPage() {
       translateX: 0,
       translateY: 0,
       duration: speed,
-      // easings: 
     })
   });
 }

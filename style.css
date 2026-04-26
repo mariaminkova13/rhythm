@@ -170,19 +170,21 @@ windowControlButton:hover {
 }
 
 #tileContainer {
-    height: max-content;
-    min-height: 100%;
-    width: 100%;
+    min-height: 0;
+
     display: flex;
     flex-direction: column;
-    padding: 3em;
+    padding: 50vh 3em 50vh 3em;
     box-sizing: border-box;
     gap: 10px;
     justify-content: left;
     align-items: center;
     cursor: default;
-    overflow: hidden;
     pointer-events: auto;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
 }
 
 .tile {
@@ -190,10 +192,13 @@ windowControlButton:hover {
     height: 100px;
     width: 100%;
     overflow: hidden;
+    scroll-snap-align: center;
+    min-height: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    flex-shrink: 0;
     box-sizing: border-box;
     border: 2px solid var(--color1);
     transition: all var(--transitionspeed);
@@ -203,7 +208,8 @@ windowControlButton:hover {
 #songInfo {
     height: 100%;
     background: var(--notecolor);
-    flex: 50%;
+    flex: 40%;
+    /*TODO fixme*/
     z-index: -3
         /*TODO why no vignette*/
 }
@@ -218,10 +224,11 @@ windowControlButton:hover {
     }
 }
 
-.tile:hover {
+.tile[selected] {
     outline: 5px solid var(--color1);
-    margin: 0 10px;
+    margin: 0 20px;
     animation: glow 2s infinite alternate, flickerglow 3s infinite;
+    margin: 1ch
 }
 
 @keyframes flickerglow {
@@ -243,7 +250,7 @@ windowControlButton:hover {
     }
 }
 
-.tile:not(:hover) .photo {
+.tile:not([selected]) .photo {
     filter: contrast(0.8) blur(1px);
     opacity: 0.5
 }
