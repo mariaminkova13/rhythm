@@ -20,7 +20,7 @@ var missHpCost = 5,
   maxHeal = 30,
   perfectThreshold = 8,
   hitThreshold = 40,
-  offbeatThreshold = 80,
+  offbeatThreshold = 40,
   offbeatLoseComboChance = 0.5;
 
 var missCount = 0,
@@ -214,43 +214,42 @@ function handleNote(noteElement) {
     noteElement.style.top = position + "px";
 
     // Delete the note when it goes offscreen
-    if (position > window.innerHeight) {
-      clearInterval(fallInterval);
-      noteElement.remove();
-    }
+    // if (position > window.innerHeight) {
+    //   clearInterval(fallInterval);
+    //   noteElement.remove();
+    // }
   }
   let position, distanceMoved = 0
   let startTime = Date.now();
   noteElement.setAttribute("aria-active", "true");
 
   const fallInterval = setInterval(() => {
+    //clearInterval(fallInterval);
     requestAnimationFrame(moveNote)
-    let noteBottom = noteElement.getBoundingClientRect().bottom
-    let hitlineBottom = noteElement.parentElement.getBoundingClientRect().bottom
-    // console.log(noteBottom - hitlineBottom > offbeatThreshold)
-    // if (noteBottom - hitlineBottom > offbeatThreshold) { console.log('AAAAAAAAAAAAAAAAAA') }
+    let noteRect = noteElement.getBoundingClientRect()
+    let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
+    let hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
 
-    // //FIXME
-    // if (noteElement.getAttribute("aria-active") === "true" && noteBottom - hitlineBottom > offbeatThreshold) {
-    //   console.log("didn't press note");
-    //   missSound.play();
-    //   hp -= forgotNoteCost;
-    //   missCount++;
-    //   window.dispatchEvent(new Event('vignetteRed'))
-    //   updatehp();
-    //   combo = 0
-    //   earlyOrLate = "late.";
-    //   updateCombo()
-    //   noteElement.setAttribute('aria-active', false)
-    // }
+    //FIXME
+    // greater distance than offbeatThreshhold= miss
+    if (noteElement.getAttribute("aria-active") === "true" && noteCenter - hitlineBottom > offbeatThreshold) {
+      console.log("didn't press note");
+      missSound.play();
+      hp -= forgotNoteCost;
+      missCount++;
+      window.dispatchEvent(new Event('vignetteRed'))
+      updatehp();
+      combo = 0
+      earlyOrLate = "late.";
+      updateCombo()
+      noteElement.remove()
+    }
   }, 1000 / fps);
 }
 
 function updateCombo() {
-  let comboCounter = document.querySelector('comboCounter')
+  let comboCounter = document.getElementById('comboCounter')
   let counterAfter = document.getElementById('counterAfter')
-  console.log(counterAfter)
-  counterAfter.textContent = null
 
   if (combo == displayComboAfter) {
     comboCounter.textContent = null
@@ -259,6 +258,7 @@ function updateCombo() {
     comboCounter.textContent = combo
   }
   counterAfter.textContent = earlyOrLate
+  // TODO fade after 500 ms
 }
 
 function updatehp() {
@@ -494,13 +494,13 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               earlyOrLate = "exact!"
             }
             else {
-              earlyOrLate = "late";
+              earlyOrLate = "late"; //FIXME is the math wrong is it switched
             }
           }
           updatehp();
           updateCombo()
 
-          break; // Exit loop once we find a match
+          break;
         }
       }
     }, { signal });

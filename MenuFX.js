@@ -4,7 +4,7 @@ export { initializeTileEffects, loadStartPage };
 //TODO ok it works but why is nextPercentage more than 100 or less than 0\
 //TODO make it normal scrolling and not press and hold. maybe use rellax.js
 
-const scaleMultiplier = "1.1";
+const scaleMultiplier = "1.15";
 
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
@@ -15,11 +15,12 @@ function initializeTileEffects() {
       requestAnimationFrame(updateCenteredTile);
       let percentage = (tileContainer.scrollTop / (tileContainer.scrollHeight - tileContainer.clientHeight)) * 100
       Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
-        photo.animate({
-          backgroundPosition: `50% ${percentage}%`
-        }, {
-          duration: 300, fill: "forwards"
-        });
+        photo.style.backgroundPosition = `50% ${percentage}%`
+        // photo.animate({
+        //   backgroundPosition: `50% ${percentage}%`
+        // }, {
+        //   duration: 300, fill: "forwards"
+        // }); Too laggy
       });
     }
   };
@@ -30,6 +31,8 @@ function initializeTileEffects() {
 
     const appContainerRect = document.getElementById('appContainer').getBoundingClientRect();
     const appCenter = appContainerRect.y + appContainerRect.height / 2;
+
+    //TODO prevent holding up or down arrow and fix focus
 
     tiles.forEach(tile => {
       const rect = tile.getBoundingClientRect();
@@ -93,9 +96,6 @@ function initializeTileEffects() {
     }
   });
 
-  // no parallax scroll if no scroll FIXME also moving songinfo when click
-  // if (tileContainer.getBoundingClientRect().height <= tileContainer.parentElement.getBoundingClientRect().height) { tileContainer.style.justifyContent = "space-evenly" }
-  // else { initializeParallax() }
   initializeParallax()
 }
 

@@ -184,7 +184,7 @@ windowControlButton:hover {
 
     overflow-y: auto;
     overflow-x: hidden;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
 }
 
 .tile {
@@ -772,12 +772,15 @@ modal {
     position: absolute
 }
 
-comboCounter {
+#comboCounterContainer {
     display: flex;
     flex-direction: column;
     align-content: center;
     position: absolute;
     width: 100%;
+}
+
+#comboCounter {
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
@@ -785,24 +788,13 @@ comboCounter {
     font-size: calc(var(--fontsize) * 2);
     z-index: 10;
     margin-top: 2lh;
-    animation: slidedown 0.1s ease;
+    /* animation: slidedown 0.1s ease; */
 }
 
 #counterAfter {
     text-transform: lowercase;
     font-size: var(--fontsize);
-    /* opacity: 0;
-    animation: fade-out 0.2s ease */
-}
-
-@keyframes fade-out {
-    from {
-        opacity: 1
-    }
-
-    to {
-        opacity: 0
-    }
+    text-align: center;
 }
 
 modal img {
