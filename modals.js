@@ -93,6 +93,7 @@ function countdown() {
       }
 
       paused = false;
+      window.dispatchEvent(new CustomEvent('playStarted'))
     }
   }, beatLength);
 }

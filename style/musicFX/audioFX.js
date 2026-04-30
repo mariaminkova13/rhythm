@@ -1,15 +1,7 @@
-export async function audioFX(audio) {
+async function muffleAudio() {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
 
-     const canvas = document.getElementById('wave-canvas')
-     const canvasCtx = canvas.getContext('2d')
-
-     // await audioFilter(ctx, src);
-     visualizeAudio(ctx, src, canvasCtx, canvas);
-}
-
-async function audioFilter(ctx, src) {
      const lowpass = ctx.createBiquadFilter();
      lowpass.type = "highshelf";
      lowpass.frequency.value = 1200;
@@ -20,21 +12,44 @@ async function audioFilter(ctx, src) {
      lowshelf.frequency.value = 165;
      lowshelf.gain.value = 30;
 
-     const reverb = ctx.createConvolver()
-
-     const compression = ctx.createAnalyser()
-
-     const distortion = ctx.createAnalyser()
-
-     const chorus = ctx.createConvolver()
-
      await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
      const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
 
      src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
 }
 
-function visualizeAudio(ctx, src, canvasCtx, canvas) {
+// async function audioFilter(ctx, src) {
+//      const lowpass = ctx.createBiquadFilter();
+//      lowpass.type = "highshelf";
+//      lowpass.frequency.value = 1200;
+//      lowpass.gain.value = -15;
+
+//      const lowshelf = ctx.createBiquadFilter();
+//      lowshelf.type = "lowshelf";
+//      lowshelf.frequency.value = 165;
+//      lowshelf.gain.value = 30;
+
+//      const reverb = ctx.createConvolver()
+
+//      const compression = ctx.createAnalyser()
+
+//      const distortion = ctx.createAnalyser()
+
+//      const chorus = ctx.createConvolver()
+
+//      await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
+//      const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
+
+//      src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
+// }
+
+export function visualizeAudio(audio) {
+     const ctx = new AudioContext();
+     const src = ctx.createMediaElementSource(audio);
+
+     const canvas = document.getElementById('wave-canvas')
+     const canvasCtx = canvas.getContext('2d')
+
      const analyser = ctx.createAnalyser();
      src.connect(analyser).connect(ctx.destination);
 

@@ -2,7 +2,7 @@ Special Thanks:
   cover-image: markup/covers/windowsdarkmode.jpg
   contents:
     composer: Akira Yamaoka
-    audio: songs/Never Forgive Me, Never Forget Me.mp3
+    audio: songAudio/Never Forgive Me, Never Forget Me.mp3
     notemap: markup/notemaps/notemap.txt
     description: was used for synchronization testing because it has a simple repetitive melody
     preview-segment: [6, 21]

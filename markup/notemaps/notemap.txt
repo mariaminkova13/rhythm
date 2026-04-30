@@ -1,4 +1,4 @@
-bpm: 140
+bpm: 120
 beatsPerBar: 4
 sixLanes: true
 centerLane: false

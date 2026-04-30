@@ -130,6 +130,8 @@ canvas,
     cursor: grabbing !important;
 } */
 
+/*TODO show lane lines even under hitline but have them fade out downward from there*/
+
 controlButtonDiv {
     display: flex;
     flex-direction: row;
@@ -229,6 +231,10 @@ windowControlButton:hover {
     margin: 0 20px;
     animation: glow 2s infinite alternate, flickerglow 3s infinite;
     margin: 1ch
+}
+
+.tile:not([selected]) {
+    transform: scale(0.9);
 }
 
 @keyframes flickerglow {
@@ -379,7 +385,7 @@ note.hold {
 }
 
 note[aria-active=false] {
-    opacity: 0.1;
+    opacity: 0;
     animation: redden 0.1s ease-out;
     background: red;
 }

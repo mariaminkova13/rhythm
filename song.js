@@ -1,7 +1,7 @@
 export { songSetup, handleNote, note, beatLength, music, musicstart };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median, loadAlbumMenu } from "./index.js"
-import { audioFX } from "./style/musicFX/audioFX.js";
+import { visualizeAudio } from "./style/musicFX/audioFX.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
@@ -72,7 +72,7 @@ async function parseNotemap(filePath) {
         }
       });
     } else {
-      throw new Error("header not found, check your syntax");
+      throw new Error("header not found, check syntax");
     }
 
     // Parse body
@@ -85,7 +85,7 @@ async function parseNotemap(filePath) {
         }
       });
     } else {
-      throw new Error("body not found, check your syntax");
+      throw new Error("body not found, check syntax");
     }
 
     return { head, body };
@@ -106,17 +106,21 @@ async function createNotes(data) {
   var linesCounter = 0;
   const hitline = document.querySelector('hitline');
 
-  for (const line of data.body) {
+  await new Promise(resolve => {
+    window.addEventListener('playStarted', resolve, { once: true });
+  });
 
+  for (const line of data.body) {
     const newBeat = document.createElement("beat");
     handleBeat(newBeat, linesCounter, hitline, data.head.precision);
 
     const notesInLine = [];
 
     for (let i = 0; i < Math.min(line.length, laneList.length); i++) {
-      if (line[i] === "0") {
+      if (line[i] != ".") {
         const newNote = document.createElement("note");
         newNote.style.top = noteStartingPosition + "px";
+        newNote.setAttribute('pitch', line[i])
         laneList[i].appendChild(newNote);
         handleNote(newNote);
         notesInLine.push(newNote);
@@ -167,13 +171,17 @@ function handleBeat(beat, beatIndex, hitline) {
 
   let position = noteStartingPosition;
   const startPosition = position;
-  const fallInterval = setInterval(() => {
+  let startTime = Date.now();
+
+  function moveBeat() {
     if (paused) {
       return;
     }
 
-    position += noteStepSize;
-    let adjustedPosition = position + 11; //TODO make adaptive, why 11
+    let elapsedms = Date.now() - startTime
+    position = elapsedms / (1000 / fps) * noteStepSize
+
+    let adjustedPosition = position + 23; //TODO make adaptive, why this num
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
@@ -198,7 +206,10 @@ function handleBeat(beat, beatIndex, hitline) {
         window.dispatchEvent(new Event('musicmaystart'));
       }
     }
+  }
 
+  const fallInterval = setInterval(() => {
+    requestAnimationFrame(moveBeat)
   }, 1000 / fps);
 }
 //TODO add transition time for ticks if low bpm
@@ -213,27 +224,12 @@ function handleNote(noteElement) {
     position = elapsedms / (1000 / fps) * noteStepSize
     noteElement.style.top = position + "px";
 
-    // Delete the note when it goes offscreen
-    // if (position > window.innerHeight) {
-    //   clearInterval(fallInterval);
-    //   noteElement.remove();
-    // }
-  }
-  let position, distanceMoved = 0
-  let startTime = Date.now();
-  noteElement.setAttribute("aria-active", "true");
-
-  const fallInterval = setInterval(() => {
-    //clearInterval(fallInterval);
-    requestAnimationFrame(moveNote)
     let noteRect = noteElement.getBoundingClientRect()
     let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
     let hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
 
-    //FIXME
-    // greater distance than offbeatThreshhold= miss
     if (noteElement.getAttribute("aria-active") === "true" && noteCenter - hitlineBottom > offbeatThreshold) {
-      console.log("didn't press note");
+      // console.log("didn't press note");
       missSound.play();
       hp -= forgotNoteCost;
       missCount++;
@@ -242,8 +238,16 @@ function handleNote(noteElement) {
       combo = 0
       earlyOrLate = "late.";
       updateCombo()
-      noteElement.remove()
+      noteElement.setAttribute('aria-active', false)
     }
+  }
+  let position, distanceMoved = 0
+  let startTime = Date.now();
+  noteElement.setAttribute("aria-active", "true");
+
+  const fallInterval = setInterval(() => {
+    //clearInterval(fallInterval);
+    requestAnimationFrame(moveNote)
   }, 1000 / fps);
 }
 
@@ -270,7 +274,7 @@ function updatehp() {
     0.1 + hp * 0.007 + "s"  //linear interpolation
   );
   document.documentElement.style.setProperty("--hp", hp + "%");
-  console.log("HP:", hp + "%");
+  // console.log("HP:", hp + "%");
   if (hp > 100) {
     hp == 100;
   }
@@ -454,21 +458,27 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               console.log("perfect");
               perfectSound.play();
               hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
-              hitResult.note.setAttribute("aria-active", "false");
               perfectCount++;
               combo++
+
+              hitResult.note.setAttribute("aria-active", "false");
+              console.log(hitResult.note.getAttribute('pitch'))
             } else if (absoluteDistance <= hitThreshold) {
               console.log("hit");
-              hitSound.play();
-              hitResult.note.setAttribute("aria-active", "false");
+              // hitSound.play();
               hitCount++;
               combo++
+
+              hitResult.note.setAttribute("aria-active", "false");
+              console.log(hitResult.note.getAttribute('pitch'))
             } else if (absoluteDistance <= offbeatThreshold) {
               console.log("offbeat");
               offbeatSound.play();
-              hitResult.note.setAttribute("aria-active", "false");
               offbeatCount++;
               if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
+
+              hitResult.note.setAttribute("aria-active", "false");
+              console.log(hitResult.note.getAttribute('pitch'))
             } else {
               console.log("miss");
               missSound.play();
@@ -527,10 +537,8 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
     updatehp();
 
-    //TODO do we need eventTriggered?
-
     async function startMusic() {
-      if (!music) { music = new Audio(musicFilePath); await audioFX(music); }
+      if (!music) { music = new Audio(musicFilePath); await visualizeAudio(music); }
       music.play();
 
       const songprogress = document.querySelector('songprogress')
@@ -540,8 +548,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
         let secondsElapsed = Math.floor(music.duration - music.currentTime)
         let ss = (secondsElapsed % 60).toString().padStart(2, "0");
         let mm = (Math.floor(secondsElapsed / 60)).toString().padStart(2, "0");
-        //TODO only if not NaN
-        timestamp.textContent = `${mm}:${ss}`
+        if (!isNaN(mm) && !isNaN(ss)) { timestamp.textContent = `${mm}:${ss}` }
         if (secondsElapsed == music.duration) {
           clearInterval(progressUpdate)
           timestamp.style.visibility = 'hidden'

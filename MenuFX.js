@@ -52,7 +52,6 @@ function initializeTileEffects() {
   }
 
   tiles.forEach(function (tile) {
-    // Skip if already initialized
     if (tile.dataset.vfxInitialized) return;
     tile.dataset.vfxInitialized = "true";
 

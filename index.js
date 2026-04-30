@@ -1,5 +1,6 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
+import { voice } from "./soundfonts/soundfonts.js"
 import Cursor from "./style/cursor/cursor.js";
 export { avg, median, loadAlbumMenu }
 const yaml = require("yaml");
@@ -54,7 +55,6 @@ function initializeWindowControls() {
 
   // Store event listeners for removal
   const mouseoverHandler = () => {
-    console.log('hoverrrrrrrrr')
     controlButtonDiv.style.opacity = "1";
   };
   const mouseoutHandler = () => {
@@ -92,6 +92,7 @@ function initializeWindowControls() {
 }
 
 async function loadAlbumMenu() {
+  voice()
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
 
