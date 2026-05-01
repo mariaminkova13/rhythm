@@ -1,5 +1,4 @@
 node_modules
 sprites
-soundfonts/*
-!soundfonts/soundfonts.js
+soundfonts-src
 songAudio

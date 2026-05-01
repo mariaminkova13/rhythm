@@ -1,0 +1,260 @@
+// Sfz exported from a sf2 file with Polyphone
+// Name      : FNF Senpai/Spirit
+// Author    : 
+// Copyright : 
+// Date      : 2026/05/01
+// Comment   : fnf senpie funni guys look i made funni fnf sounfont haha looool
+
+<group>
+lokey=127 hikey=0
+amp_veltrack=100
+ampeg_attack=0.000999969
+cutoff=4978
+fil_type=lpf_2p
+fil_veltrack=2400
+loop_mode=no_loop
+
+<region> sample=samples/A2L.wav
+lokey=34 hikey=0
+loop_end=20840
+loop_mode=loop_continuous
+loop_start=9482
+pitch_keycenter=33
+
+<region> sample=samples/B2L.wav
+key=35
+loop_end=18407
+loop_mode=loop_continuous
+loop_start=9829
+pitch_keycenter=35
+
+<region> sample=samples/C3L.wav
+lokey=37 hikey=36
+loop_end=11543
+loop_mode=loop_continuous
+loop_start=7146
+pitch_keycenter=36
+
+<region> sample=samples/D3L.wav
+lokey=39 hikey=38
+loop_end=16940
+loop_mode=loop_continuous
+loop_start=11058
+pitch_keycenter=38
+
+<region> sample=samples/E3L.wav
+key=40
+loop_end=14542
+loop_mode=loop_continuous
+loop_start=10455
+pitch_keycenter=40
+
+<region> sample=samples/F3L.wav
+lokey=42 hikey=41
+loop_end=8631
+loop_mode=loop_continuous
+loop_start=6429
+pitch_keycenter=41
+
+<region> sample=samples/G3L.wav
+lokey=44 hikey=43
+loop_end=14310
+loop_mode=loop_continuous
+loop_start=8919
+pitch_keycenter=43
+
+<region> sample=samples/A3L.wav
+lokey=46 hikey=45
+loop_end=18967
+loop_mode=loop_continuous
+loop_start=11109
+pitch_keycenter=45
+
+<region> sample=samples/B3L.wav
+key=47
+loop_end=20980
+loop_mode=loop_continuous
+loop_start=12040
+pitch_keycenter=47
+
+<region> sample=samples/C4L.wav
+lokey=49 hikey=48
+loop_end=18654
+loop_mode=loop_continuous
+loop_start=13888
+pitch_keycenter=48
+
+<region> sample=samples/D4L.wav
+lokey=51 hikey=50
+loop_end=15476
+loop_mode=loop_continuous
+loop_start=10252
+pitch_keycenter=50
+
+<region> sample=samples/E4L.wav
+key=52
+loop_end=15296
+loop_mode=loop_continuous
+loop_start=10045
+pitch_keycenter=52
+
+<region> sample=samples/F4L.wav
+lokey=54 hikey=53
+loop_end=7665
+loop_mode=loop_continuous
+loop_start=5189
+pitch_keycenter=53
+
+<region> sample=samples/G4L.wav
+key=55
+loop_end=31929
+loop_mode=loop_continuous
+loop_start=21151
+pitch_keycenter=55
+
+<region> sample=samples/G#4L.wav
+key=56
+loop_end=10617
+loop_mode=loop_continuous
+loop_start=6904
+pitch_keycenter=56
+
+<region> sample=samples/A4L.wav
+key=57
+loop_end=4940
+loop_mode=loop_continuous
+loop_start=3535
+pitch_keycenter=57
+
+<region> sample=samples/A#4L.wav
+key=58
+loop_end=8614
+loop_mode=loop_continuous
+loop_start=4916
+pitch_keycenter=58
+
+<region> sample=samples/B4L.wav
+key=59
+loop_end=8261
+loop_mode=loop_continuous
+loop_start=5933
+pitch_keycenter=59
+
+<region> sample=samples/C5L.wav
+key=60
+loop_end=3563
+loop_mode=loop_continuous
+loop_start=25874
+pitch_keycenter=60
+
+<region> sample=samples/C#5L.wav
+key=61
+loop_end=11900
+loop_mode=loop_continuous
+loop_start=6364
+pitch_keycenter=61
+
+<region> sample=samples/D5L.wav
+key=62
+loop_end=21289
+loop_mode=loop_continuous
+loop_start=13771
+pitch_keycenter=62
+
+<region> sample=samples/D#5L.wav
+key=63
+loop_end=8478
+loop_mode=loop_continuous
+loop_start=2624
+pitch_keycenter=63
+
+<region> sample=samples/E5L.wav
+key=64
+loop_end=18809
+loop_mode=loop_continuous
+loop_start=12693
+pitch_keycenter=64
+
+<region> sample=samples/F5L.wav
+lokey=66 hikey=65
+loop_end=4110
+loop_mode=loop_continuous
+loop_start=2739
+pitch_keycenter=65
+
+<region> sample=samples/G5L.wav
+lokey=68 hikey=67
+loop_end=17317
+loop_mode=loop_continuous
+loop_start=3727
+pitch_keycenter=67
+
+<region> sample=samples/A5L.wav
+key=69
+loop_end=877
+loop_mode=loop_continuous
+loop_start=27177
+pitch_keycenter=69
+
+<region> sample=samples/A#5L.wav
+key=70
+loop_end=10028
+loop_mode=loop_sustain
+loop_start=4365
+pitch_keycenter=70
+
+<region> sample=samples/B5L.wav
+key=71
+loop_end=8706
+loop_mode=loop_continuous
+loop_start=6189
+pitch_keycenter=71
+
+<region> sample=samples/C6L.wav
+key=72
+loop_end=19083
+loop_mode=loop_continuous
+loop_start=14038
+pitch_keycenter=72
+
+<region> sample=samples/C#6L.wav
+key=73
+loop_end=13643
+loop_mode=loop_continuous
+loop_start=6198
+pitch_keycenter=73
+
+<region> sample=samples/D6L.wav
+key=74
+loop_end=14728
+loop_mode=loop_continuous
+loop_start=9825
+pitch_keycenter=74
+
+<region> sample=samples/D#6L.wav
+key=75
+loop_end=3320
+loop_mode=loop_continuous
+loop_start=1386
+pitch_keycenter=75
+
+<region> sample=samples/E6L.wav
+key=76
+loop_end=12222
+loop_mode=loop_continuous
+loop_start=9968
+pitch_keycenter=76
+
+<region> sample=samples/F6L.wav
+lokey=78 hikey=77
+loop_end=5130
+loop_mode=loop_continuous
+loop_start=3342
+pitch_keycenter=77
+
+<region> sample=samples/G6L.wav
+lokey=127 hikey=79
+loop_end=11949
+loop_mode=loop_continuous
+loop_start=8950
+pitch_keycenter=79

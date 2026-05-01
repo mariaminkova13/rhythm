@@ -1,0 +1,486 @@
+// Sfz exported from a sf2 file with Polyphone
+// Name      : Tankman Soundfont!
+// Author    : LoganMcOof
+// Copyright : 
+// Date      : 2021/07/05
+// Comment   : 
+
+<group>
+lokey=C4 hikey=B?7
+loop_mode=loop_sustain
+ampeg_attack=0.001
+amplfo_freq=8.176
+fillfo_freq=8.176
+pitchlfo_freq=8.176
+fil_type=lpf_2p
+cutoff=19913
+
+<region>
+sample=samples\TANKMAN - 1.wav
+volume=3
+lokey=C4 hikey=C4
+pitch_keycenter=C4
+offset=0
+end=108742
+loop_start=72860
+loop_end=102975
+
+<region>
+sample=samples\TANKMAN - 2.wav
+volume=3
+lokey=D?4 hikey=D?4
+pitch_keycenter=D?4
+offset=0
+end=98292
+loop_start=32637
+loop_end=91253
+
+<region>
+sample=samples\TANKMAN - 3.wav
+volume=3
+lokey=D4 hikey=D4
+pitch_keycenter=D4
+offset=0
+end=88060
+loop_start=51153
+loop_end=60948
+
+<region>
+sample=samples\TANKMAN - 4.wav
+volume=3
+lokey=E?4 hikey=E?4
+pitch_keycenter=E?4
+offset=0
+end=98292
+loop_start=32674
+loop_end=91088
+
+<region>
+sample=samples\TANKMAN - 5.wav
+volume=3
+lokey=E4 hikey=E4
+pitch_keycenter=E4
+offset=0
+end=108742
+loop_start=72220
+loop_end=104287
+
+<region>
+sample=samples\TANKMAN - 6.wav
+volume=3
+lokey=F4 hikey=F4
+pitch_keycenter=F4
+offset=0
+end=98292
+loop_start=61827
+loop_end=91118
+
+<region>
+sample=samples\TANKMAN - 7.wav
+volume=3
+lokey=G?4 hikey=G?4
+pitch_keycenter=G?4
+offset=0
+end=88060
+loop_start=51153
+loop_end=61004
+
+<region>
+sample=samples\TANKMAN - 8.wav
+volume=3
+lokey=G4 hikey=G4
+pitch_keycenter=G4
+offset=0
+end=100944
+loop_start=77970
+loop_end=93715
+
+<region>
+sample=samples\TANKMAN - 9.wav
+volume=3
+lokey=A?4 hikey=A?4
+pitch_keycenter=A?4
+offset=0
+end=98292
+loop_start=62342
+loop_end=91122
+
+<region>
+sample=samples\TANKMAN - 10.wav
+volume=3
+lokey=A4 hikey=A4
+pitch_keycenter=A4
+offset=0
+end=85186
+loop_start=55099
+loop_end=76106
+
+<region>
+sample=samples\TANKMAN - 11.wav
+volume=3
+lokey=B?4 hikey=B?4
+pitch_keycenter=B?4
+offset=0
+end=99671
+loop_start=62342
+loop_end=91280
+
+<region>
+sample=samples\TANKMAN - 12.wav
+volume=3
+lokey=B4 hikey=B4
+pitch_keycenter=B4
+offset=0
+end=98350
+loop_start=75744
+loop_end=92415
+
+<region>
+sample=samples\TANKMAN - 13.wav
+volume=3
+lokey=C5 hikey=C5
+pitch_keycenter=C5
+offset=0
+end=98481
+loop_start=73064
+loop_end=91429
+
+<region>
+sample=samples\TANKMAN - 14.wav
+volume=3
+lokey=D?5 hikey=D?5
+pitch_keycenter=D?5
+offset=0
+end=62965
+loop_start=10370
+loop_end=37000
+
+<region>
+sample=samples\TANKMAN - 15.wav
+volume=3
+lokey=D5 hikey=D5
+pitch_keycenter=D5
+offset=0
+end=64766
+loop_start=47264
+loop_end=57711
+
+<region>
+sample=samples\TANKMAN - 16.wav
+volume=3
+lokey=E?5 hikey=E?5
+pitch_keycenter=E?5
+offset=0
+end=98481
+loop_start=73248
+loop_end=91456
+
+<region>
+sample=samples\TANKMAN - 17.wav
+volume=3
+lokey=E5 hikey=E5
+pitch_keycenter=E5
+offset=0
+end=92595
+loop_start=52840
+loop_end=64156
+
+<region>
+sample=samples\TANKMAN - 18.wav
+volume=3
+lokey=F5 hikey=F5
+pitch_keycenter=F5
+offset=0
+end=71068
+loop_start=13293
+loop_end=39959
+
+<region>
+sample=samples\TANKMAN - 19.wav
+volume=3
+lokey=G?5 hikey=G?5
+pitch_keycenter=G?5
+offset=0
+end=92780
+loop_start=42567
+loop_end=63444
+
+<region>
+sample=samples\TANKMAN - 20.wav
+volume=3
+lokey=G5 hikey=G5
+pitch_keycenter=G5
+offset=0
+end=85186
+loop_start=53969
+loop_end=76569
+
+<region>
+sample=samples\TANKMAN - 21.wav
+volume=3
+lokey=A?5 hikey=A?5
+pitch_keycenter=A?5
+offset=0
+end=72332
+loop_start=28198
+loop_end=46997
+
+<region>
+sample=samples\TANKMAN - 22.wav
+volume=3
+lokey=A5 hikey=A5
+pitch_keycenter=A5
+offset=0
+end=67067
+loop_start=16364
+loop_end=31112
+
+<region>
+sample=samples\TANKMAN - 23.wav
+volume=3
+lokey=B?5 hikey=B?5
+pitch_keycenter=B?5
+offset=0
+end=110420
+loop_start=73249
+loop_end=91570
+
+<region>
+sample=samples\TANKMAN - 24.wav
+volume=3
+lokey=B5 hikey=B5
+pitch_keycenter=B5
+offset=0
+end=60879
+loop_start=11736
+loop_end=39093
+
+<region>
+sample=samples\TANKMAN - 25.wav
+volume=3
+lokey=C6 hikey=C6
+pitch_keycenter=C6
+offset=0
+end=67986
+loop_start=34985
+loop_end=63865
+
+<region>
+sample=samples\TANKMAN - 26.wav
+volume=3
+lokey=D?6 hikey=D?6
+pitch_keycenter=D?6
+offset=0
+end=54271
+loop_start=37247
+loop_end=49786
+
+<region>
+sample=samples\TANKMAN - 27.wav
+volume=3
+lokey=D6 hikey=D6
+pitch_keycenter=D6
+offset=0
+end=57309
+loop_start=28037
+loop_end=46879
+
+<region>
+sample=samples\TANKMAN - 28.wav
+volume=3
+lokey=E?6 hikey=E?6
+pitch_keycenter=E?6
+offset=0
+end=54271
+loop_start=36736
+loop_end=49751
+
+<region>
+sample=samples\TANKMAN - 29.wav
+volume=3
+lokey=E6 hikey=E6
+pitch_keycenter=E6
+offset=0
+end=48859
+loop_start=32987
+loop_end=47242
+
+<region>
+sample=samples\TANKMAN - 30.wav
+volume=3
+lokey=F6 hikey=F6
+pitch_keycenter=F6
+offset=0
+end=60879
+loop_start=11716
+loop_end=39093
+
+<region>
+sample=samples\TANKMAN - 31.wav
+volume=3
+lokey=G?6 hikey=G?6
+pitch_keycenter=G?6
+offset=0
+end=68751
+loop_start=35060
+loop_end=63865
+
+<region>
+sample=samples\TANKMAN - 32.wav
+volume=3
+lokey=G6 hikey=G6
+pitch_keycenter=G6
+offset=0
+end=64867
+loop_start=38384
+loop_end=60969
+
+<region>
+sample=samples\TANKMAN - 33.wav
+volume=3
+lokey=A?6 hikey=A?6
+pitch_keycenter=A?6
+offset=0
+end=68751
+loop_start=35043
+loop_end=63865
+
+<region>
+sample=samples\TANKMAN - 34.wav
+volume=3
+lokey=A6 hikey=A6
+pitch_keycenter=A6
+offset=0
+end=60879
+loop_start=11964
+loop_end=39488
+
+<region>
+sample=samples\TANKMAN - 35.wav
+volume=3
+lokey=B?6 hikey=B?6
+pitch_keycenter=B?6
+offset=0
+end=48859
+loop_start=32826
+loop_end=47242
+
+<region>
+sample=samples\TANKMAN - 36.wav
+volume=3
+lokey=B6 hikey=B6
+pitch_keycenter=B6
+offset=0
+end=63469
+loop_start=19462
+loop_end=34458
+
+<region>
+sample=samples\TANKMAN - 37.wav
+volume=3
+lokey=C7 hikey=C7
+pitch_keycenter=C7
+offset=0
+end=62694
+loop_start=44119
+loop_end=60827
+
+<region>
+sample=samples\TANKMAN - 38.wav
+volume=3
+lokey=D?7 hikey=D?7
+pitch_keycenter=D?7
+offset=0
+end=63469
+loop_start=19440
+loop_end=34458
+
+<region>
+sample=samples\TANKMAN - 39.wav
+volume=3
+lokey=D7 hikey=D7
+pitch_keycenter=D7
+offset=0
+end=72012
+loop_start=59731
+loop_end=68269
+
+<region>
+sample=samples\TANKMAN - 40.wav
+volume=3
+lokey=E?7 hikey=E?7
+pitch_keycenter=E?7
+offset=0
+end=71761
+loop_start=44146
+loop_end=60827
+
+<region>
+sample=samples\TANKMAN - 41.wav
+volume=3
+lokey=E7 hikey=E7
+pitch_keycenter=E7
+offset=0
+end=60879
+loop_start=16798
+loop_end=39622
+
+<region>
+sample=samples\TANKMAN - 42.wav
+volume=3
+lokey=F7 hikey=F7
+pitch_keycenter=F7
+offset=0
+end=71700
+loop_start=52634
+loop_end=67670
+
+<region>
+sample=samples\TANKMAN - 43.wav
+volume=3
+lokey=G?7 hikey=G?7
+pitch_keycenter=G?7
+offset=0
+end=71700
+loop_start=52653
+loop_end=67670
+
+<region>
+sample=samples\TANKMAN - 44.wav
+volume=3
+lokey=G7 hikey=G7
+pitch_keycenter=G7
+offset=0
+end=71761
+loop_start=44253
+loop_end=69091
+
+<region>
+sample=samples\TANKMAN - ugh.wav
+volume=3
+lokey=A?7 hikey=A?7
+pitch_keycenter=A?7
+offset=0
+end=18082
+loop_start=0
+loop_end=18081
+
+<region>
+sample=samples\TANKMAN - Heh.wav
+volume=3
+lokey=A7 hikey=A7
+pitch_keycenter=A7
+offset=0
+end=13361
+loop_start=0
+loop_end=13360
+
+<region>
+sample=samples\TANKMAN - pretty go.wav
+volume=3
+lokey=B?7 hikey=B?7
+pitch_keycenter=B?7
+offset=0
+end=36361
+loop_start=0
+loop_end=36360

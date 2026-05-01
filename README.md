@@ -1,7 +1,5 @@
-<img alt="Static Badge" align="right" src="https://img.shields.io/badge/github-repo-steelblue?style=for-the-badge&logo=github"> <a href="https://github.com/mariaminkova13/rhythm/issues">
-
 # Description
-A simple vertical-scrolling rhythm game made with JS/HTML/CSS, Electron, and a Node.js server, plus WebGL and anime.js for visual effects. Very generic and done more as an exercise for the process rather than for the product. But still play it if you want.
+A simple vertical-scrolling rhythm game. Very generic and done more as an exercise for the process rather than for the product. But still play it if you want.
 Intended to be challenging yet played casually. The difficulty should be rooted more in precision than in key-spamming.
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 

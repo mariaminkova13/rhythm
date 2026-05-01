@@ -12,6 +12,7 @@ const PORT = 8000;
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
   ".js": "application/javascript",
+  ".mjs": "text/javascript",
   ".css": "text/css",
   ".json": "application/json",
   ".png": "image/png",

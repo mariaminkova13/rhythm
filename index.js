@@ -1,6 +1,6 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
-import { voice } from "./soundfonts/soundfonts.js"
+import { voice } from "./soundfonts-dist/soundfonts.js"
 import Cursor from "./style/cursor/cursor.js";
 export { avg, median, loadAlbumMenu }
 const yaml = require("yaml");
@@ -92,7 +92,7 @@ function initializeWindowControls() {
 }
 
 async function loadAlbumMenu() {
-  voice()
+  await voice()
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
 

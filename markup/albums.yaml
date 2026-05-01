@@ -3,7 +3,7 @@ Special Thanks:
   contents:
     composer: Akira Yamaoka
     audio: songAudio/Never Forgive Me, Never Forget Me.mp3
-    notemap: markup/notemaps/notemap.txt
+    notemap: markup/notemaps/notemap.nm
     description: was used for synchronization testing because it has a simple repetitive melody
     preview-segment: [6, 21]
 Phonk:
