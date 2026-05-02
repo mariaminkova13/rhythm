@@ -1,14 +1,8 @@
-import { Sampler } from "../node_modules/smplr/dist/index.mjs";
+// import { Sampler, Soundfont2Sampler } from "../node_modules/smplr/dist/index.mjs";
+// const SoundFont2 = require("soundfont2")
 
 export async function voice() {
-     const ac = new window.AudioContext();
-     await ac.resume();
+     const ctx = new window.AudioContext();
 
-     const voice = new Sampler(ac, {
-          baseUrl: "./tankman/",
-          instrument: "000_TANKMAN.sfz"
-     });
-     await voice.load;
 
-     voice.start("A4");
 }
