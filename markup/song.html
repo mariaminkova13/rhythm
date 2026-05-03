@@ -1,8 +1,8 @@
 <modal id="pausemodal">
   <!-- <span style="width: 100%; text-align: center; bottom: 0; margin-bottom: 3lh;">esc or enter to unpause</span> -->
   <div style="display: flex; flex-direction: row; justify-content: center; gap: 50px; align-items: center">
-    <button id="quitButton" style="mask-image: url('./style/icons/quit.svg');"></button>
-    <button id="restartButton" style="mask-image:url('./style/icons/restart.svg')"></button>
+    <button id="quitButton" style="mask-image: url('./assets/icons/quit.svg');"></button>
+    <button id="restartButton" style="mask-image:url('./assets/icons/restart.svg')"></button>
   </div>
 </modal>
 <modal id="deathmsg">
@@ -14,6 +14,7 @@
 <songprogress></songprogress>
 <column>
   <sidecolumn>
+    <span id="timestamp"></span>
     <div id="infobox">
       <div id="scorebox">
         <div>
@@ -37,8 +38,7 @@
     </notecontainer>
     <gutter></gutter>
   </div>
-  <sidecolumn style="padding-top: var(--barwidth)">
-    <span id="timestamp"></span>
+  <sidecolumn>
     <hpbar id="hpbar">
       <div id="heart"><span></span></div>
       <!-- TODO remove animation from hearttext-->

@@ -14,7 +14,7 @@ export async function initVoice() {
      await sampler.loadInstrument(instruments[0]);
 
      const gainNode = ctx.createGain();
-     gainNode.gain.value = 13.5;
+     gainNode.gain.value = 8;
      sampler.output.addEffect("volume", gainNode, 1);
      gainNode.connect(ctx.destination);
 }

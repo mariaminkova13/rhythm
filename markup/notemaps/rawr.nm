@@ -4,9 +4,7 @@ sixLanes: true
 centerLane: false
 defaultLength: 0.2
 root: A3
-
 -------------------------
-
 . . . . . .
 C4 . . . . .
 . D4 . . . .
@@ -17,4 +15,4 @@ C4 . . . . .
 . . . . . .
 C4 . . . . .
 . X . . . .
-. . X C5 X X
+. . X C5 E4 G4

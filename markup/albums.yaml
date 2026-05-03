@@ -1,5 +1,5 @@
 Special Thanks:
-  cover-image: markup/covers/windowsdarkmode.jpg
+  cover-image: assets/covers/windowsdarkmode.jpg
   contents:
     composer: Akira Yamaoka
     audio: assets/songAudio/Never Forgive Me, Never Forget Me.mp3
@@ -7,22 +7,22 @@ Special Thanks:
     description: was used for synchronization testing because it has a simple repetitive melody
     preview-segment: [6, 21]
 Phonk:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 Fallen:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 bb:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 gr:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 s:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 z:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 a:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 d:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 g:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg
 m:
-   cover-image: markup/covers/windowsdarkmode.jpg
+   cover-image: assets/covers/windowsdarkmode.jpg

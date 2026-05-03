@@ -67,8 +67,8 @@ function countdown() {
   animateSweep();
 
   // Cycle through numbers
-  const countsound = new Audio('sfx/countdown.ogg')
-  const countend = new Audio('sfx/countdownend.ogg')
+  // const countsound = new Audio('sfx/countdown.ogg')
+  // const countend = new Audio('sfx/countdownend.ogg')
   const countdownInterval = setInterval(() => {
     index++;
 
