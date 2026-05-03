@@ -1,6 +1,5 @@
 import { songSetup } from "./song.js";
 import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
-import { voice } from "./soundfonts-dist/soundfonts.js"
 import Cursor from "./style/cursor/cursor.js";
 export { avg, median, loadAlbumMenu }
 const yaml = require("yaml");
@@ -92,7 +91,6 @@ function initializeWindowControls() {
 }
 
 async function loadAlbumMenu() {
-  await voice()
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
 
@@ -107,7 +105,7 @@ async function loadAlbumMenu() {
 
     const menubutton = document.createElement('button')
     menubutton.classList.add('menubutton')
-    menubutton.onclick = function () { songSetup(parsedYaml[albumName]['contents']['notemap'], parsedYaml[albumName]['contents']['audio'], AdaptiveNoteSpeedPreference) }
+    menubutton.onclick = async function () { await songSetup(parsedYaml[albumName]['contents']['notemap'], parsedYaml[albumName]['contents']['audio'], AdaptiveNoteSpeedPreference) }
     thisTile.appendChild(menubutton)
 
     const title = document.createElement('h1')

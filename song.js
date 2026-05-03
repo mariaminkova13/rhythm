@@ -3,6 +3,7 @@ import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median, loadAlbumMenu } from "./index.js"
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
+import { sing, initVoice } from "./soundfonts/soundfonts.js"
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
 //TODO make countdown be as first beat flies to hitlone
@@ -317,8 +318,10 @@ function checkHit(lane) {
   };
 }
 
-function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
+async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
   console.clear()
+  await initVoice()
+
   document.body.style.cursor = "none";
   musicstart = false;
   hp = 100;
@@ -334,13 +337,13 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
       requestAnimationFrame(() => { //so that runs only after all is loaded
         const redobuttons = ["restartButton", "retryButton"];
         redobuttons.forEach(id => {
-          document.getElementById(id).onclick = function () {
+          document.getElementById(id).onclick = async function () {
             if (music) {
               music.pause()
               music.currentTime = 0
             }
             controller.abort()
-            songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference)
+            await songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference)
           };
         });
 
@@ -456,13 +459,13 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
 
             if (absoluteDistance <= perfectThreshold) {
               console.log("perfect");
-              perfectSound.play();
+              // perfectSound.play();
               hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
               perfectCount++;
               combo++
 
               hitResult.note.setAttribute("aria-active", "false");
-              console.log(hitResult.note.getAttribute('pitch'))
+              sing(hitResult.note.getAttribute('pitch'), 0.5)
             } else if (absoluteDistance <= hitThreshold) {
               console.log("hit");
               // hitSound.play();
@@ -470,7 +473,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               combo++
 
               hitResult.note.setAttribute("aria-active", "false");
-              console.log(hitResult.note.getAttribute('pitch'))
+              sing("C4", 0.5)
             } else if (absoluteDistance <= offbeatThreshold) {
               console.log("offbeat");
               offbeatSound.play();
@@ -478,7 +481,7 @@ function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
               if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
 
               hitResult.note.setAttribute("aria-active", "false");
-              console.log(hitResult.note.getAttribute('pitch'))
+              sing(hitResult.note.getAttribute('pitch'), 0.5)
             } else {
               console.log("miss");
               missSound.play();
