@@ -56,7 +56,6 @@ async function createNotes(data) {
   );
 
   var linesCounter = 0;
-  const hitline = document.querySelector('hitline');
 
   await new Promise(resolve => {
     window.addEventListener('playStarted', resolve, { once: true });
@@ -64,11 +63,9 @@ async function createNotes(data) {
 
   for (const line of data.body) {
     const newBeat = document.createElement("beat");
-    handleBeat(newBeat, linesCounter, hitline, data.head.precision);
+    handleBeat(newBeat, linesCounter, document.querySelector('hitline').getBoundingClientRect().bottom);
 
-    const notesInLine = [];
     const lineParsed = line.split(" ");
-    console.log(lineParsed);
 
     for (let i = 0; i < Math.min(lineParsed.length, laneList.length); i++) {
       if (lineParsed[i] != ".") {
@@ -77,7 +74,6 @@ async function createNotes(data) {
         newNote.setAttribute('pitch', lineParsed[i])
         laneList[i].appendChild(newNote);
         handleNote(newNote);
-        notesInLine.push(newNote);
       }
     }
 
@@ -91,7 +87,7 @@ async function createNotes(data) {
 }
 
 
-function handleBeat(beat, beatIndex, hitline) {
+function handleBeat(beat, beatIndex, hitlinePos) {
   let eventTriggered = false;
   let distanceMoved = 0;
 
@@ -131,11 +127,12 @@ function handleBeat(beat, beatIndex, hitline) {
     if (paused) {
       return;
     }
+    let beatBottom = beat.getBoundingClientRect().bottom
 
     let elapsedms = Date.now() - startTime
     position = elapsedms / (1000 / fps) * noteStepSize
 
-    let adjustedPosition = position + 23; //TODO make adaptive, why this num
+    let adjustedPosition = position - 22; //TODO make adaptive, why this num
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
@@ -144,7 +141,7 @@ function handleBeat(beat, beatIndex, hitline) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
 
-    if (beat.getBoundingClientRect().bottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitline.getBoundingClientRect().bottom) {
+    if (beatBottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitlinePos) {
       if (beat.getAttribute("aria-active") === "false") { }
       else {
         lightup();
@@ -152,13 +149,16 @@ function handleBeat(beat, beatIndex, hitline) {
       }
     }
 
-    if (beat.getBoundingClientRect().bottom >= hitline.getBoundingClientRect().bottom) {
-      clearInterval(fallInterval);
-      beat.remove();
+    if (beatBottom >= hitlinePos) {
       if (beatIndex == 0) {
         musicstart = true
         window.dispatchEvent(new Event('musicmaystart'));
       }
+    }
+
+    if (beatBottom >= document.getElementById('appContainer').getBoundingClientRect().bottom) {
+      beat.remove()
+      clearInterval(fallInterval);
     }
   }
 
@@ -169,6 +169,10 @@ function handleBeat(beat, beatIndex, hitline) {
 //TODO add transition time for ticks if low bpm
 
 function handleNote(noteElement) {
+  let position, distanceMoved = 0
+  let startTime = Date.now();
+  noteElement.setAttribute("aria-active", "true");
+
   function moveNote() {
     if (paused) {
       return;
@@ -195,9 +199,6 @@ function handleNote(noteElement) {
       noteElement.setAttribute('aria-active', false)
     }
   }
-  let position, distanceMoved = 0
-  let startTime = Date.now();
-  noteElement.setAttribute("aria-active", "true");
 
   const fallInterval = setInterval(() => {
     //clearInterval(fallInterval);
@@ -409,34 +410,30 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
             // hit evaluation
             hitAccuracy.push(absoluteDistance);
             accuracyDiv.textContent = Math.round(median(hitAccuracy));
+            if (absoluteDistance <= offbeatThreshold) {
+              if (absoluteDistance <= perfectThreshold) {
+                console.log("perfect");
+                // perfectSound.play();
+                hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
+                perfectCount++;
+                combo++
+              } else if (absoluteDistance <= hitThreshold) {
+                console.log("hit");
+                // hitSound.play();
+                hitCount++;
+                combo++
 
-            if (absoluteDistance <= perfectThreshold) {
-              console.log("perfect");
-              // perfectSound.play();
-              hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
-              perfectCount++;
-              combo++
-
+                //TODO make the legth defaultLength from nm * beat length
+              } else {
+                console.log("offbeat");
+                offbeatSound.play();
+                offbeatCount++;
+                if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
+              }
               hitResult.note.setAttribute("aria-active", "false");
               sing(hitResult.note.getAttribute('pitch'), 0.5)
-            } else if (absoluteDistance <= hitThreshold) {
-              console.log("hit");
-              // hitSound.play();
-              hitCount++;
-              combo++
-
-              //TODO make the legth defaultLength from nm * beat length
-              hitResult.note.setAttribute("aria-active", "false");
-              sing(hitResult.note.getAttribute('pitch'), 0.5)
-            } else if (absoluteDistance <= offbeatThreshold) {
-              console.log("offbeat");
-              offbeatSound.play();
-              offbeatCount++;
-              if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
-
-              hitResult.note.setAttribute("aria-active", "false");
-              sing(hitResult.note.getAttribute('pitch'), 0.5)
-            } else {
+            }
+            else {
               console.log("miss");
               missSound.play();
               hp -= missHpCost;
@@ -495,7 +492,8 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
     updatehp();
 
     async function startMusic() {
-      if (!music) { music = new Audio(musicFilePath); await visualizeAudio(music); }
+      music = new Audio(musicFilePath)
+      await visualizeAudio(music)
       music.play();
 
       const songprogress = document.querySelector('songprogress')

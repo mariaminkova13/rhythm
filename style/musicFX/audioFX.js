@@ -43,12 +43,9 @@ async function muffleAudio() {
 //      src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
 // }
 
-export function visualizeAudio(audio) {
+export async function visualizeAudio(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
-
-     const canvas = document.getElementById('wave-canvas')
-     const canvasCtx = canvas.getContext('2d')
 
      const analyser = ctx.createAnalyser();
      src.connect(analyser).connect(ctx.destination);
@@ -57,7 +54,12 @@ export function visualizeAudio(audio) {
      const dataArray = new Uint8Array(bufferLength);
      analyser.getByteTimeDomainData(dataArray);
 
+     const canvas = document.getElementById('wave-canvas')
+     const canvasCtx = canvas.getContext('2d')
+
      function draw() {
+          console.log('draawwwwwwwww')
+
           requestAnimationFrame(() => { setTimeout(draw, 1); });
           analyser.getByteTimeDomainData(dataArray);
 
@@ -88,4 +90,4 @@ export function visualizeAudio(audio) {
      }
 
      draw();
-} //TODO fade out visualizer wave when music quiet
+}
