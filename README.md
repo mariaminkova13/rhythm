@@ -8,7 +8,7 @@ Run the app.
 Controls:
 - arrow keys and mouse to navigate UI
 - <kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>spacebar</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> during songs. Number and arrow keys also work, cuz why not.
-- <kbd>esc</kbd> or <kbd>enter</kbd> to pause a song
+- <kbd>esc</kbd> or <kbd>enter</kbd> to pause/unpause a song
 
 ## See Also
 > Work in progress, not released yet.

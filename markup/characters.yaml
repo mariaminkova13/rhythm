@@ -1,0 +1,38 @@
+blue:
+  voice:
+  miss-sprite:
+  sprites:
+    S:
+    D:
+    F:
+    space:
+    J:
+    K:
+    L:
+  sprites-worried:
+    S:
+    D:
+    F:
+    space:
+    J:
+    K:
+    L:
+red:
+  voice:
+  miss-sprite:
+  sprites:
+    S:
+    D:
+    F:
+    space:
+    J:
+    K:
+    L:
+  # sprites-cocky:
+  #   S:
+  #   D:
+  #   F:
+  #   space:
+  #   J:
+  #   K:
+  #   L:

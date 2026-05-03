@@ -790,7 +790,7 @@ modal {
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
-    height: fit-content;
+    height: 1lh;
     font-size: calc(var(--fontsize) * 2);
     z-index: 10;
     margin-top: 2lh;

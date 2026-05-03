@@ -1,0 +1,20 @@
+bpm: 120
+beatsPerBar: 4
+sixLanes: true
+centerLane: false
+defaultLength: 0.2
+root: A3
+
+-------------------------
+
+. . . . . .
+C4 . . . . .
+. D4 . . . .
+. . E4 . . .
+. . . . . .
+. . . . . .
+. . . . . .
+. . . . . .
+C4 . . . . .
+. X . . . .
+. . X C5 X X

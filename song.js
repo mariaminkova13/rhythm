@@ -3,7 +3,8 @@ import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median, loadAlbumMenu } from "./index.js"
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
-import { sing, initVoice } from "./soundfonts/soundfonts.js"
+import { sing, initVoice } from "./soundfonts.js"
+import { parseNotemap } from "./nm-parser.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
 //TODO make countdown be as first beat flies to hitlone
@@ -38,63 +39,13 @@ const fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
-const perfectSound = new Audio("sfx/perfect.wav"),
-  missSound = new Audio("sfx/miss.mp3"),
-  hitSound = new Audio("sfx/hit.wav"),
-  offbeatSound = new Audio("sfx/offbeat.wav");
+const perfectSound = new Audio("assets/sfx/perfect.wav"),
+  missSound = new Audio("assets/sfx/miss.mp3"),
+  hitSound = new Audio("assets/sfx/hit.wav"),
+  offbeatSound = new Audio("assets/sfx/offbeat.wav");
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
 let musicstart = false
-
-async function parseNotemap(filePath) {
-  try {
-    const response = await fetch(filePath);
-    const text = await response.text();
-
-    // Parse the file - split on 3+ dashes
-    const parts = text.split(/^-{3,}$/m);
-    const headMatch = parts[0] ? parts[0].trim() : null;
-    const bodyMatch = parts[1] ? parts[1].trim() : null;
-
-    const head = {},
-      body = [];
-
-    // Parse head
-    if (headMatch) {
-      const headLines = headMatch.split("\n");
-      headLines.forEach((line) => {
-        const [key, value] = line.split(":").map((s) => s.trim());
-        if (key && value) {
-          // Convert to appropriate types
-          if (value == true || value === "true") head[key] = true;
-          else if (value == false || value === "false") head[key] = false;
-          else if (!isNaN(value)) head[key] = Number(value);
-          else head[key] = value;
-        }
-      });
-    } else {
-      throw new Error("header not found, check syntax");
-    }
-
-    // Parse body
-    if (bodyMatch) {
-      const bodyLines = bodyMatch.split("\n");
-      bodyLines.forEach((line) => {
-        const trimmed = line.trim();
-        if (trimmed) {
-          body.push(trimmed);
-        }
-      });
-    } else {
-      throw new Error("body not found, check syntax");
-    }
-
-    return { head, body };
-  } catch (error) {
-    console.error("Error reading notemap:", error);
-    return null;
-  }
-}
 
 async function createNotes(data) {
   musicstart = false
@@ -116,12 +67,14 @@ async function createNotes(data) {
     handleBeat(newBeat, linesCounter, hitline, data.head.precision);
 
     const notesInLine = [];
+    const lineParsed = line.split(" ");
+    console.log(lineParsed);
 
-    for (let i = 0; i < Math.min(line.length, laneList.length); i++) {
-      if (line[i] != ".") {
+    for (let i = 0; i < Math.min(lineParsed.length, laneList.length); i++) {
+      if (lineParsed[i] != ".") {
         const newNote = document.createElement("note");
         newNote.style.top = noteStartingPosition + "px";
-        newNote.setAttribute('pitch', line[i])
+        newNote.setAttribute('pitch', lineParsed[i])
         laneList[i].appendChild(newNote);
         handleNote(newNote);
         notesInLine.push(newNote);
@@ -472,8 +425,9 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
               hitCount++;
               combo++
 
+              //TODO make the legth defaultLength from nm * beat length
               hitResult.note.setAttribute("aria-active", "false");
-              sing("C4", 0.5)
+              sing(hitResult.note.getAttribute('pitch'), 0.5)
             } else if (absoluteDistance <= offbeatThreshold) {
               console.log("offbeat");
               offbeatSound.play();
