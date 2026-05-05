@@ -1,7 +1,36 @@
 import anime from "/node_modules/animejs/lib/anime.es.js";
-export { initializeTileEffects, loadStartPage };
+import { songSetup } from "./song.js"
+export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
+const yaml = require("yaml");
 
-//TODO ok it works but why is nextPercentage more than 100 or less than 0\
+let parsedYaml, startButton, currentCharacter, voicePath
+
+async function loadAlbumMenu() {
+  var response = await fetch("markup/albumsMenu.html");
+  allthestuff.innerHTML = await response.text();
+
+  parsedYaml = await yaml.parse(await (await fetch("markup/albums.yaml")).text());
+
+  for (const albumName in parsedYaml) {
+    const albumtile = document.createElement("div")
+    albumtile.classList.add("tile")
+    const thisTile = tileContainer.appendChild(albumtile)
+    thisTile.setAttribute("id", albumName)
+    thisTile.setAttribute("data-image", parsedYaml[albumName]['cover-image'])
+
+    const title = document.createElement('h1')
+    title.innerText = albumName
+    thisTile.appendChild(title)
+  }
+
+  initializeTileEffects();
+  startButton = document.getElementById('startButton')
+
+  document.getElementById('returnBtn').onclick = function () {
+    loadStartPage()
+  }
+}
+
 //TODO make it normal scrolling and not press and hold. maybe use rellax.js
 
 const scaleMultiplier = "1.15";
@@ -9,6 +38,10 @@ const scaleMultiplier = "1.15";
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
   const tiles = document.querySelectorAll(".tile");
+  const sidebar = document.getElementById('songInfo')
+
+  const appContainerRect = document.getElementById('appContainer').getBoundingClientRect();
+  const appCenter = appContainerRect.y + appContainerRect.height / 2;
 
   function initializeParallax() {
     tileContainer.onscroll = (e) => {
@@ -29,9 +62,6 @@ function initializeTileEffects() {
     let closest = null;
     let closestDistance = Infinity;
 
-    const appContainerRect = document.getElementById('appContainer').getBoundingClientRect();
-    const appCenter = appContainerRect.y + appContainerRect.height / 2;
-
     //TODO prevent holding up or down arrow and fix focus
 
     tiles.forEach(tile => {
@@ -46,8 +76,10 @@ function initializeTileEffects() {
     });
 
     if (closest) {
+      let prevClosest = document.querySelector('[selected]');
       tiles.forEach(t => t.removeAttribute('selected'));
       closest.setAttribute('selected', '');
+      if (closest != prevClosest) { updateSidebar(closest) }
     }
   }
 
@@ -92,10 +124,16 @@ function initializeTileEffects() {
       });
       tiles.forEach(tile => tile.removeAttribute('selected'));
       tile.setAttribute('selected', '');
+      updateSidebar(tile)
     }
   });
 
   initializeParallax()
+
+  function updateSidebar(tile) {
+    let albumName = tile.getAttribute('id')
+    startButton.onclick = async function () { await songSetup(parsedYaml[albumName]['notemap'], parsedYaml[albumName]['audio'], 'true') }
+  }
 }
 
 async function loadStartPage() {
@@ -130,4 +168,31 @@ async function loadStartPage() {
       duration: speed,
     })
   });
+
+  document.getElementById("startsingleplayer").onclick = async function () {
+    await loadAlbumMenu()
+  };
+
+  const parsedYaml = await yaml.parse(await (await fetch("markup/characters.yaml")).text());
+  const characterSelection = document.getElementById('characterSelection')
+  let i = 0
+
+  for (const characterName in parsedYaml) {
+    const portrait = document.createElement("div")
+    portrait.classList.add("portrait")
+    const thisTile = characterSelection.appendChild(portrait)
+    if (i == 0) {
+      thisTile.setAttribute('selected', '');
+      voicePath = parsedYaml[characterName]['voice']
+    }
+    thisTile.onclick = function () {
+      document.querySelectorAll('.portrait').forEach(t => t.removeAttribute('selected'));
+      thisTile.setAttribute('selected', '');
+      voicePath = parsedYaml[characterName]['voice']
+    }
+    const label = document.createElement('span')
+    label.textContent = characterName
+    thisTile.appendChild(label)
+    i++
+  }
 }

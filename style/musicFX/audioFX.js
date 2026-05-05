@@ -58,9 +58,7 @@ export async function visualizeAudio(audio) {
      const canvasCtx = canvas.getContext('2d')
 
      function draw() {
-          console.log('draawwwwwwwww')
-
-          requestAnimationFrame(() => { setTimeout(draw, 1); });
+          requestAnimationFrame(() => { setTimeout(draw, 5); });
           analyser.getByteTimeDomainData(dataArray);
 
           // Begin the path

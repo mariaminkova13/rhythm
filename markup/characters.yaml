@@ -1,5 +1,5 @@
-blue:
-  voice:
+one:
+  voice: assets/soundfonts/tankman.sf2
   sprites:
     miss:
     idle:
@@ -18,17 +18,17 @@ blue:
   #   J:
   #   K:
   #   L:
-# red:
-#   voice:
-#   miss-sprite:
-#   sprites:
-#     S:
-#     D:
-#     F:
-#     space:
-#     J:
-#     K:
-#     L:
+two(2):
+  voice: assets/soundfonts/miku.sf2
+  miss-sprite:
+  sprites:
+    S:
+    D:
+    F:
+    space:
+    J:
+    K:
+    L:
 #   # sprites-cocky:
 #   #   S:
 #   #   D:

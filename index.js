@@ -1,8 +1,6 @@
-import { songSetup } from "./song.js";
-import { initializeTileEffects, loadStartPage } from "./MenuFX.js";
+import { loadStartPage } from "./MenuFX.js";
 import Cursor from "./style/cursor/cursor.js";
-export { avg, median, loadAlbumMenu }
-const yaml = require("yaml");
+export { avg, median }
 //FIXME controlbuttondiv when leave back to menu
 export { songFilePath };
 let songFilePath;
@@ -90,40 +88,11 @@ function initializeWindowControls() {
   partscreenLayout();
 }
 
-async function loadAlbumMenu() {
-  var response = await fetch("markup/albumsMenu.html");
-  allthestuff.innerHTML = await response.text();
-
-  const parsedYaml = await yaml.parse(await (await fetch("markup/albums.yaml")).text());
-
-  for (const albumName in parsedYaml) {
-    const albumtile = document.createElement("div")
-    albumtile.classList.add("tile")
-    const thisTile = tileContainer.appendChild(albumtile)
-    thisTile.setAttribute("id", albumName)
-    thisTile.setAttribute("data-image", parsedYaml[albumName]['cover-image'])
-
-    const menubutton = document.createElement('button')
-    menubutton.classList.add('menubutton')
-    menubutton.onclick = async function () { await songSetup(parsedYaml[albumName]['contents']['notemap'], parsedYaml[albumName]['contents']['audio'], AdaptiveNoteSpeedPreference) }
-    thisTile.appendChild(menubutton)
-
-    const title = document.createElement('h1')
-    title.innerText = albumName
-    thisTile.appendChild(title)
-  }
-
-  initializeTileEffects();
-}
-
 addEventListener("DOMContentLoaded", async () => {
   initializeWindowControls();
 
   await loadStartPage()
   document.body.style.cursor = "default";
-  document.getElementById("startsingleplayer").onclick = async function () {
-    await loadAlbumMenu()
-  };
 });
 
 const avg = data => {

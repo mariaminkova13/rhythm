@@ -161,10 +161,6 @@ windowControlButton,
     color: black;
 }
 
-#gameName {
-    margin-left: 2ch
-}
-
 windowControlButton:hover {
     background-color: rgba(255, 255, 255, 0.5);
 }
@@ -172,6 +168,7 @@ windowControlButton:hover {
 #tileContainer {
     min-height: 0;
     scrollbar-width: none;
+    flex: 50%;
 
     display: flex;
     flex-direction: column;
@@ -190,13 +187,12 @@ windowControlButton:hover {
 
 .tile {
     position: relative;
-    height: 100px;
+    height: 90px;
     width: 100%;
     overflow: hidden;
     scroll-snap-align: center;
     min-height: auto;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px;
     flex-shrink: 0;
@@ -209,10 +205,9 @@ windowControlButton:hover {
 #songInfo {
     height: 100%;
     background: var(--notecolor);
-    flex: 40%;
-    /*TODO fixme*/
-    z-index: -3
-        /*TODO why no vignette*/
+    z-index: -3;
+    flex-grow: 1;
+    /*TODO why no vignette*/
 }
 
 @keyframes glow {
@@ -283,9 +278,33 @@ windowControlButton:hover {
     opacity: 0.8;
 }
 
+#characterSelection {
+    flex-direction: row;
+    display: flex;
+}
+
+.portrait {
+    height: 50px;
+    width: 50px;
+    background-color: red;
+    border: 1px solid black;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.portrait[selected] {
+    background-color: blue
+}
+
 #loading-screen {
     background: black;
     z-index: 99999999999
+}
+
+#returnBtn {
+    top: 0;
+    left: 0;
+    position: fixed
 }
 
 /*LOADERRRRR from cssloaders.com*/

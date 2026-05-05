@@ -1,6 +1,7 @@
 export { songSetup, handleNote, note, beatLength, music, musicstart };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
-import { avg, median, loadAlbumMenu } from "./index.js"
+import { avg, median } from "./index.js"
+import { loadAlbumMenu } from "./MenuFX.js";
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
 import { sing, initVoice } from "./soundfonts.js"
