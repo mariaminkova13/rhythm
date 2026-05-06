@@ -5,24 +5,17 @@ Special:
   notemap: markup/notemaps/rawr.nm
   description: was used for synchronization testing because it has a simple repetitive melody
   preview-segment: [6, 21]
-Phonk:
-   cover-image: assets/covers/windowsdarkmode.jpg
+Hopeless:
+   cover-image: assets/covers/hopeless.avif
    notemap: markup/notemaps/notemap2.nm
-Fallen:
-   cover-image: assets/covers/windowsdarkmode.jpg
+   composer: SNTNV
+   audio: assets/songAudio/Hopeless - Sped Up.mp3
+amogus drip:
+   cover-image: assets/covers/among-us-vr.avif
+   audio: assets/songAudio/amogus.mp3
 bb:
    cover-image: assets/covers/windowsdarkmode.jpg
 gr:
    cover-image: assets/covers/windowsdarkmode.jpg
 s:
-   cover-image: assets/covers/windowsdarkmode.jpg
-z:
-   cover-image: assets/covers/windowsdarkmode.jpg
-a:
-   cover-image: assets/covers/windowsdarkmode.jpg
-d:
-   cover-image: assets/covers/windowsdarkmode.jpg
-g:
-   cover-image: assets/covers/windowsdarkmode.jpg
-m:
    cover-image: assets/covers/windowsdarkmode.jpg

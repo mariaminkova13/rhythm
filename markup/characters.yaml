@@ -1,5 +1,5 @@
 one:
-  voice: assets/soundfonts/tankman.sf2
+  voice: assets/soundfonts/miku.sf2
   sprites:
     miss:
     idle:
@@ -19,7 +19,7 @@ one:
   #   K:
   #   L:
 two(2):
-  voice: assets/soundfonts/miku.sf2
+  voice: assets/soundfonts/nonsense.sf2
   miss-sprite:
   sprites:
     S:
@@ -37,3 +37,14 @@ two(2):
 #   #   J:
 #   #   K:
 #   #   L:
+two(3):
+  voice: assets/soundfonts/senpai.sf2
+  miss-sprite:
+  sprites:
+    S:
+    D:
+    F:
+    space:
+    J:
+    K:
+    L:

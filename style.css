@@ -204,10 +204,14 @@ windowControlButton:hover {
 
 #songInfo {
     height: 100%;
-    background: var(--notecolor);
+    background: darkslategray;
     z-index: -3;
     flex-grow: 1;
+    max-width: 50%;
     /*TODO why no vignette*/
+    display: flex;
+    flex-direction: column;
+    align-items: center
 }
 
 @keyframes glow {
@@ -251,8 +255,7 @@ windowControlButton:hover {
 }
 
 .tile:not([selected]) .photo {
-    filter: contrast(0.8) blur(1px);
-    opacity: 0.5
+    filter: contrast(0.8) blur(1px) saturate(0.5);
 }
 
 .tile button.menubutton {
@@ -304,7 +307,13 @@ windowControlButton:hover {
 #returnBtn {
     top: 0;
     left: 0;
-    position: fixed
+    position: absolute;
+    width: min-content
+}
+
+#songCover {
+    max-height: 50%;
+    max-width: 100%
 }
 
 /*LOADERRRRR from cssloaders.com*/

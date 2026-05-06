@@ -1,9 +1,10 @@
 import anime from "/node_modules/animejs/lib/anime.es.js";
 import { songSetup } from "./song.js"
+import { muffleAudio } from "./style/musicFX/audioFX.js";
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
 
-let parsedYaml, startButton, currentCharacter, voicePath
+let parsedYaml, currentCharacter, voicePath, audio
 
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
@@ -24,9 +25,9 @@ async function loadAlbumMenu() {
   }
 
   initializeTileEffects();
-  startButton = document.getElementById('startButton')
 
   document.getElementById('returnBtn').onclick = function () {
+    audio?.pause()
     loadStartPage()
   }
 }
@@ -49,11 +50,6 @@ function initializeTileEffects() {
       let percentage = (tileContainer.scrollTop / (tileContainer.scrollHeight - tileContainer.clientHeight)) * 100
       Array.from(tileContainer.getElementsByClassName("photo")).forEach((photo) => {
         photo.style.backgroundPosition = `50% ${percentage}%`
-        // photo.animate({
-        //   backgroundPosition: `50% ${percentage}%`
-        // }, {
-        //   duration: 300, fill: "forwards"
-        // }); Too laggy
       });
     }
   };
@@ -122,9 +118,6 @@ function initializeTileEffects() {
         behavior: "smooth", //make faster
         block: "center"
       });
-      tiles.forEach(tile => tile.removeAttribute('selected'));
-      tile.setAttribute('selected', '');
-      updateSidebar(tile)
     }
   });
 
@@ -132,7 +125,21 @@ function initializeTileEffects() {
 
   function updateSidebar(tile) {
     let albumName = tile.getAttribute('id')
-    startButton.onclick = async function () { await songSetup(parsedYaml[albumName]['notemap'], parsedYaml[albumName]['audio'], 'true') }
+    document.getElementById('startButton').onclick = async function () {
+      audio.pause();
+      await songSetup(parsedYaml[albumName]['notemap'], parsedYaml[albumName]['audio'], 'true')
+    }
+    document.getElementById('songArtist').textContent = parsedYaml[albumName]['composer']
+    document.getElementById('songCover').setAttribute('src', parsedYaml[albumName]['cover-image'])
+    document.getElementById('songTitle').innerText = albumName
+    audio?.pause()
+    audio = new Audio();
+    audio.src = parsedYaml[albumName]['audio']
+    audio.addEventListener("loadedmetadata", () => {
+      document.getElementById('songLength').textContent = `${Math.floor(audio.duration / 60)}:${Math.round(audio.duration % 60)}`
+    });
+    audio.play()
+    muffleAudio(audio)
   }
 }
 

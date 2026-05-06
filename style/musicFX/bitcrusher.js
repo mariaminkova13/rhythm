@@ -2,14 +2,14 @@ class BitcrusherProcessor extends AudioWorkletProcessor {
      static get parameterDescriptors() {
           return [
                { name: 'bits', defaultValue: 512, minValue: 16, maxValue: 1024 },
-               { name: 'normFreq', defaultValue: 0.25, minValue: 0.0, maxValue: 1.0 }
+               { name: 'normFreq', defaultValue: 0.2, minValue: 0.0, maxValue: 1.0 }
           ];
      }
 
      constructor() {
           super();
-          this.phase = [0, 0];       // per-channel
-          this.lastSample = [0, 0];  // per-channel
+          this.phase = [0, 0];
+          this.lastSample = [0, 0];
      }
 
      process(inputs, outputs, parameters) {

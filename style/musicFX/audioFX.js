@@ -1,4 +1,6 @@
-async function muffleAudio() {
+export { muffleAudio, visualizeAudio }
+
+async function muffleAudio(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
 
@@ -7,15 +9,18 @@ async function muffleAudio() {
      lowpass.frequency.value = 1200;
      lowpass.gain.value = -15;
 
-     const lowshelf = ctx.createBiquadFilter();
-     lowshelf.type = "lowshelf";
-     lowshelf.frequency.value = 165;
-     lowshelf.gain.value = 30;
+     const bassBoost = ctx.createBiquadFilter();
+     bassBoost.type = "lowshelf";
+     bassBoost.frequency.value = 165;
+     bassBoost.gain.value = 2;
+
+     const quiet = ctx.createGain();
+     quiet.gain.value = 0.7;
 
      await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
      const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
 
-     src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
+     src.connect(crusher).connect(bassBoost).connect(lowpass).connect(quiet).connect(ctx.destination);
 }
 
 // async function audioFilter(ctx, src) {
@@ -43,9 +48,12 @@ async function muffleAudio() {
 //      src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
 // }
 
-export async function visualizeAudio(audio) {
+async function visualizeAudio(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
+
+     const compressor = ctx.createDynamicsCompressor();
+     src.connect(compressor).connect(ctx.destination)
 
      const analyser = ctx.createAnalyser();
      src.connect(analyser).connect(ctx.destination);
