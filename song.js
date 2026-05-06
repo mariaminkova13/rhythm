@@ -17,19 +17,21 @@ const difficulties = ["relaxed", "normal", "hard", "brutal"];
 var hp = 100,
   difficulty = "normal"
 
-var missHpCost = 5,
+const missHpCost = 5,
   forgotNoteCost = 7,
   minHeal = 13,
-  maxHeal = 30,
-  perfectThreshold = 8,
-  hitThreshold = 40,
-  offbeatThreshold = 40,
-  offbeatLoseComboChance = 0.5;
+  maxHeal = 30
+
+const preciseThreshold = 20, //more than which is just hit
+  hitThreshold = 50, //more than which is just offbeat
+  offbeatThreshold = 100 //more than which is miss
+
+const offbeatLoseComboChance = 0.5;
 
 var missCount = 0,
   hitCount = 0,
   offbeatCount = 0,
-  perfectCount = 0,
+  preciseCount = 0,
   combo = 0,
   hitResult = null,
   earlyOrLate = null;
@@ -40,7 +42,7 @@ const fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
-const perfectSound = new Audio("assets/sfx/perfect.wav"),
+const preciseSound = new Audio("assets/sfx/perfect.wav"),
   missSound = new Audio("assets/sfx/miss.mp3"),
   hitSound = new Audio("assets/sfx/hit.wav"),
   offbeatSound = new Audio("assets/sfx/offbeat.wav");
@@ -89,7 +91,6 @@ async function createNotes(data) {
 
 
 function handleBeat(beat, beatIndex, hitlinePos) {
-  let eventTriggered = false;
   let distanceMoved = 0;
 
   const beatNumber = document.createElement('beatnumber')
@@ -137,8 +138,7 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
-    if (!eventTriggered && distanceMoved >= noteSpacingPx) {
-      eventTriggered = true;
+    if (elapsedms >= beatLength) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
 
@@ -180,14 +180,17 @@ function handleNote(noteElement) {
     }
 
     let elapsedms = Date.now() - startTime
-    position = elapsedms / (1000 / fps) * noteStepSize
+    position = elapsedms * (noteStepSize / (1000 / fps))
     noteElement.style.top = position + "px";
 
     let noteRect = noteElement.getBoundingClientRect()
     let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
     let hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
 
-    if (noteElement.getAttribute("aria-active") === "true" && noteCenter - hitlineBottom > offbeatThreshold) {
+    let msUntilHit = (hitlineBottom - noteCenter) / (noteStepSize / (1000 / fps))
+    noteElement.setAttribute('msUntilHit', msUntilHit)
+
+    if (noteElement.getAttribute("aria-active") === "true" && msUntilHit * -1 > offbeatThreshold) {
       // console.log("didn't press note");
       missSound.play();
       hp -= forgotNoteCost;
@@ -199,10 +202,14 @@ function handleNote(noteElement) {
       updateCombo()
       noteElement.setAttribute('aria-active', false)
     }
+
+    if (noteCenter > appContainer.getBoundingClientRect().bottom) {
+      noteElement.remove()
+      clearInterval(fallInterval)
+    }
   }
 
   const fallInterval = setInterval(() => {
-    //clearInterval(fallInterval);
     requestAnimationFrame(moveNote)
   }, 1000 / fps);
 }
@@ -252,24 +259,24 @@ function checkHit(lane) {
     tickCenterY = laneRect.bottom - (laneRect.height / 2);
 
   let closestNote = null,
-    closestDistance = Infinity;
+    closestDistance = Infinity,
+    closestDistanceRaw = Infinity;
 
   // Find the closest note to the tick
   lanenotes.forEach((note) => {
-    const noteRect = note.getBoundingClientRect();
-    const noteCenterY = noteRect.top + (noteRect.height / 2);
-    const distance = noteCenterY - tickCenterY;
-    const absoluteDistance = Math.abs(distance)
+    const distance = note.getAttribute('msUntilHit');
 
-    if (absoluteDistance < closestDistance) {
-      closestDistance = absoluteDistance;
+    if (Math.abs(distance) < closestDistance) {
+      closestDistance = Math.abs(distance);
+      closestDistanceRaw = distance
       closestNote = note;
     }
   });
 
   return {
     note: closestNote,
-    distance: closestDistance,
+    closestDistance: closestDistance,
+    closestDistanceRaw: closestDistanceRaw
   };
 }
 
@@ -400,23 +407,23 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
 
           hitResult = checkHit(lane);
           if (hitResult) {
-            const absoluteDistance = hitResult.distance;
+            const absoluteDistance = hitResult.closestDistance;
 
             console.log(
-              `Lane ${lane || 'unknown'}: Closest note is ${absoluteDistance.toFixed(
+              `${lane || 'unknown'}: ${absoluteDistance.toFixed(
                 2
-              )} pixels away`
+              )}`
             );
 
             // hit evaluation
-            hitAccuracy.push(absoluteDistance);
+            hitAccuracy.push(hitResult.closestDistanceRaw);
             accuracyDiv.textContent = Math.round(median(hitAccuracy));
             if (absoluteDistance <= offbeatThreshold) {
-              if (absoluteDistance <= perfectThreshold) {
-                console.log("perfect");
-                // perfectSound.play();
+              if (absoluteDistance <= preciseThreshold) {
+                console.log("precise");
+                // preciseSound.play();
                 hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
-                perfectCount++;
+                preciseCount++;
                 combo++
               } else if (absoluteDistance <= hitThreshold) {
                 console.log("hit");

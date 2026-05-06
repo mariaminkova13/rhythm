@@ -1,4 +1,5 @@
 export { muffleAudio, visualizeAudio }
+import { chorusEffect } from './chorus.js'
 
 async function muffleAudio(audio) {
      const ctx = new AudioContext();
@@ -7,7 +8,7 @@ async function muffleAudio(audio) {
      const lowpass = ctx.createBiquadFilter();
      lowpass.type = "highshelf";
      lowpass.frequency.value = 1200;
-     lowpass.gain.value = -15;
+     lowpass.gain.value = 0.2;
 
      const bassBoost = ctx.createBiquadFilter();
      bassBoost.type = "lowshelf";
@@ -20,40 +21,18 @@ async function muffleAudio(audio) {
      await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
      const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
 
-     src.connect(crusher).connect(bassBoost).connect(lowpass).connect(quiet).connect(ctx.destination);
+     src.connect(bassBoost).connect(lowpass).connect(quiet).connect(crusher).connect(ctx.destination);
 }
-
-// async function audioFilter(ctx, src) {
-//      const lowpass = ctx.createBiquadFilter();
-//      lowpass.type = "highshelf";
-//      lowpass.frequency.value = 1200;
-//      lowpass.gain.value = -15;
-
-//      const lowshelf = ctx.createBiquadFilter();
-//      lowshelf.type = "lowshelf";
-//      lowshelf.frequency.value = 165;
-//      lowshelf.gain.value = 30;
-
-//      const reverb = ctx.createConvolver()
-
-//      const compression = ctx.createAnalyser()
-
-//      const distortion = ctx.createAnalyser()
-
-//      const chorus = ctx.createConvolver()
-
-//      await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
-//      const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
-
-//      src.connect(crusher).connect(lowshelf).connect(lowpass).connect(ctx.destination);
-// }
 
 async function visualizeAudio(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
 
+     // await ctx.audioWorklet.addModule('style/musicFX/chorus.js');
+     // const chorus = new AudioWorkletNode(ctx, "chorus-processor")
      const compressor = ctx.createDynamicsCompressor();
      src.connect(compressor).connect(ctx.destination)
+     // chorusEffect(audio.src)
 
      const analyser = ctx.createAnalyser();
      src.connect(analyser).connect(ctx.destination);
@@ -65,14 +44,15 @@ async function visualizeAudio(audio) {
      const canvas = document.getElementById('wave-canvas')
      const canvasCtx = canvas.getContext('2d')
 
+     canvasCtx.lineWidth = 1;
+     canvasCtx.strokeStyle = "rgb(0 0 0)";
+
      function draw() {
           requestAnimationFrame(() => { setTimeout(draw, 5); });
           analyser.getByteTimeDomainData(dataArray);
 
           // Begin the path
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-          canvasCtx.lineWidth = 1;
-          canvasCtx.strokeStyle = "rgb(0 0 0)";
           canvasCtx.beginPath();
           // Draw each point in the waveform
           const sliceWidth = canvas.width / bufferLength;

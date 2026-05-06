@@ -133,8 +133,7 @@ function initializeTileEffects() {
     document.getElementById('songCover').setAttribute('src', parsedYaml[albumName]['cover-image'])
     document.getElementById('songTitle').innerText = albumName
     audio?.pause()
-    audio = new Audio();
-    audio.src = parsedYaml[albumName]['audio']
+    audio = new Audio(parsedYaml[albumName]['audio']);
     audio.addEventListener("loadedmetadata", () => {
       document.getElementById('songLength').textContent = `${Math.floor(audio.duration / 60)}:${Math.round(audio.duration % 60)}`
     });

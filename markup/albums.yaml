@@ -13,6 +13,7 @@ Hopeless:
 amogus drip:
    cover-image: assets/covers/among-us-vr.avif
    audio: assets/songAudio/amogus.mp3
+   notemap: markup/notemaps/notemap2.nm
 bb:
    cover-image: assets/covers/windowsdarkmode.jpg
 gr:
