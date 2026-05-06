@@ -1,6 +1,7 @@
 import anime from "/node_modules/animejs/lib/anime.es.js";
 import { songSetup } from "./song.js"
 import { muffleAudio } from "./style/musicFX/audioFX.js";
+import { parseSplashTexts } from "./parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
 
@@ -113,7 +114,7 @@ function initializeTileEffects() {
       photo.style.transformOrigin = x + "% " + y + "%";
     });
 
-    tile.onclick = (e) => {
+    tile.onclick = (e) => { //TODO await done so that no flashing intermediate tileinfos
       tile.scrollIntoView({
         behavior: "smooth", //make faster
         block: "center"
@@ -144,6 +145,10 @@ function initializeTileEffects() {
 
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
+
+  const parsedTexts = await parseSplashTexts()
+  const randomIndex = Math.floor(Math.random() * parsedTexts.length);
+  document.getElementById('splashText').innerText = parsedTexts[randomIndex].trim();
 
   const appContainer = document.getElementById("appContainer");
   appContainer.style.cursor = "default"

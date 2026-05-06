@@ -284,6 +284,7 @@ windowControlButton:hover {
 #characterSelection {
     flex-direction: row;
     display: flex;
+    pointer-events: all;
 }
 
 .portrait {
@@ -826,7 +827,8 @@ modal {
     /* animation: slidedown 0.1s ease; */
 }
 
-#counterAfter {
+#counterAfter,
+#hitcomment {
     text-transform: lowercase;
     font-size: var(--fontsize);
     text-align: center;

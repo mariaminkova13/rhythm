@@ -1,4 +1,6 @@
-export async function parseNotemap(filePath) {
+export { parseNotemap, parseSplashTexts }
+
+async function parseNotemap(filePath) {
      try {
           const response = await fetch(filePath);
           const text = await response.text();
@@ -46,4 +48,9 @@ export async function parseNotemap(filePath) {
           console.error("Error reading notemap:", error);
           return null;
      }
+}
+
+async function parseSplashTexts() {
+     const response = await (await fetch('markup/splashes.txt')).text();
+     return response.split("\n")
 }

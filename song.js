@@ -5,7 +5,7 @@ import { loadAlbumMenu } from "./MenuFX.js";
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
 import anime from "/node_modules/animejs/lib/anime.es.js";
 import { sing, initVoice } from "./soundfonts.js"
-import { parseNotemap } from "./nm-parser.js";
+import { parseNotemap } from "./parser.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
 //TODO make countdown be as first beat flies to hitlone
@@ -214,9 +214,11 @@ function handleNote(noteElement) {
   }, 1000 / fps);
 }
 
-function updateCombo() {
+function updateCombo(msg) {
   let comboCounter = document.getElementById('comboCounter')
   let counterAfter = document.getElementById('counterAfter')
+
+  if (msg) { document.getElementById('hitcomment').textContent = msg }
 
   if (combo == displayComboAfter) {
     comboCounter.textContent = null
@@ -408,6 +410,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
           hitResult = checkHit(lane);
           if (hitResult) {
             const absoluteDistance = hitResult.closestDistance;
+            const rawDistance = hitResult.closestDistanceRaw
 
             console.log(
               `${lane || 'unknown'}: ${absoluteDistance.toFixed(
@@ -416,24 +419,23 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
             );
 
             // hit evaluation
-            hitAccuracy.push(hitResult.closestDistanceRaw);
+            hitAccuracy.push(rawDistance);
             accuracyDiv.textContent = Math.round(median(hitAccuracy));
             if (absoluteDistance <= offbeatThreshold) {
               if (absoluteDistance <= preciseThreshold) {
-                console.log("precise");
+                updateCombo('precise')
                 // preciseSound.play();
                 hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
                 preciseCount++;
                 combo++
               } else if (absoluteDistance <= hitThreshold) {
-                console.log("hit");
                 // hitSound.play();
                 hitCount++;
                 combo++
 
                 //TODO make the legth defaultLength from nm * beat length
               } else {
-                console.log("offbeat");
+                updateCombo('offbeat')
                 offbeatSound.play();
                 offbeatCount++;
                 if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
@@ -450,6 +452,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
                 hitResult.note.setAttribute("aria-active", "false");
               }
               missCount++;
+              updateCombo()
             }
           } else {
             console.log("no note on screen");
@@ -457,20 +460,20 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
             hp -= missHpCost;
             combo = 0
             window.dispatchEvent(new Event('vignetteRed'))
+            updateCombo()
           }
           if (hitResult) {
-            if (hitResult.distance > 0) {
+            if (hitResult.rawDistance > 0) {
               earlyOrLate = "early";
             }
-            if (hitResult.distance === 0) {
+            if (hitResult.rawDistance === 0) {
               earlyOrLate = "exact!"
             }
             else {
-              earlyOrLate = "late"; //FIXME is the math wrong is it switched
+              earlyOrLate = "late";
             }
           }
           updatehp();
-          updateCombo()
 
           break;
         }
