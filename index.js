@@ -1,10 +1,10 @@
 import { loadStartPage } from "./MenuFX.js";
-import Cursor from "./style/cursor/cursor.js";
+// import Cursor from "./style/cursor/cursor.js";
 export { avg, median }
 export { songFilePath };
 let songFilePath;
 
-new Cursor();
+// new Cursor();
 const AdaptiveNoteSpeedPreference = 'true'
 
 function initializeWindowControls() {

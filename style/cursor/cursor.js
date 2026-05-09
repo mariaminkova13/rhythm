@@ -342,8 +342,7 @@ export default class Cursor {
         this.cursor.style.transition = `transform 0.15s`;
         this.cursor.style.transform = "rotate(0)";
         utils.remove(this.cursorAdditive);
-        anime({
-          targets: this.cursorAdditive,
+        animate(this.cursorAdditive, {
           opacity: 0,
           duration: 200,
           easing: function () {
@@ -351,7 +350,17 @@ export default class Cursor {
               return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
             };
           },
-        });
+        })
+        // anime({
+        //   targets: this.cursorAdditive,
+        //   opacity: 0,
+        //   duration: 200,
+        //   easing: function () {
+        //     return function (t) {
+        //       return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
+        //     };
+        //   },
+        // });
       }
     }
     else if (currentCursor == "none") {

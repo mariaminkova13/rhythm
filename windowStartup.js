@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const sass = require("sass");
 
 require("@electron/remote/main").initialize();
 
@@ -14,6 +15,7 @@ const MIME_TYPES = {
   ".js": "application/javascript",
   ".mjs": "text/javascript",
   ".css": "text/css",
+  ".sass": "text/sass",
   ".json": "application/json",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -26,6 +28,16 @@ const MIME_TYPES = {
   ".yaml": "text/yaml",
   ".txt": "text/plain",
 };
+
+// const sassFile = path.join(__dirname, "styles.sass");
+// const cssFile = path.join(__dirname, "style.css");
+// try {
+//   const result = sass.compile(sassFile, { style: "compressed" });
+//   fs.writeFileSync(cssFile, result.css);
+//   console.log("compiled to CSS");
+// } catch (err) {
+//   console.error("Sass compilation error:", err.message);
+// } TODO compile sass ?
 
 function startNodeServer() {
   return new Promise((resolve, reject) => {

@@ -1,7 +1,7 @@
 const { animate } = require('animejs');
 import { songSetup } from "./song.js"
 import { muffleAudio } from "./style/musicFX/audioFX.js";
-import { parseSplashTexts } from "./parser.js"
+import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
 

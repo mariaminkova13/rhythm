@@ -1,4 +1,4 @@
-import { beatLength, music, musicstart } from "./song.js";
+import { beatLength, music, musicstart } from "../song.js";
 const { animate } = require('animejs');
 export { showModal, countdown, pause, unpause, paused, showDeathMsg }
 
@@ -91,6 +91,7 @@ function countdown() {
       if (music && paused == true && musicstart == true) {
         music.play()
       }
+      window.dispatchEvent(new Event('timerStart'));
 
       paused = false;
       window.dispatchEvent(new CustomEvent('playStarted'))
@@ -104,6 +105,7 @@ function pauseMusic() {
 
 function pause() {
   if (paused) return;
+  window.dispatchEvent(new Event('timerPause'));
   document.querySelector("countdowncircle")?.remove();
   pauseMusic();
   showModal("pausemodal");
@@ -112,8 +114,8 @@ function pause() {
 }
 
 function unpause() {
-  document.body.style.cursor = "none";
   if (!paused) return;
+  document.body.style.cursor = "none";
   console.log('unpause')
   hideModal("pausemodal");
   countdown();

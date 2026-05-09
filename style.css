@@ -115,6 +115,10 @@ canvas,
     z-index: 10000000
 }
 
+#vig-canvas {
+    z-index: 100000000000000000
+}
+
 #titlebar {
     width: 100%;
     height: 30px;
@@ -142,7 +146,6 @@ controlButtonDiv {
     height: 100%;
     margin-right: 2px;
     z-index: 10000000000000000
-        /*TODO fix fullscreen time span covering it*/
 }
 
 windowControlButton {
@@ -208,7 +211,6 @@ windowControlButton:hover {
     z-index: -3;
     flex-grow: 1;
     max-width: 50%;
-    /*TODO why no vignette*/
     display: flex;
     flex-direction: column;
     align-items: center
@@ -454,10 +456,6 @@ column {
     flex-direction: row;
     gap: 0;
     height: 100%
-}
-
-marquee {
-    box-shadow: 2px 0px 2px inset var(--bgcolor), -2px 0px 2px var(--bgcolor)
 }
 
 sidecolumn {
@@ -809,7 +807,7 @@ modal {
     border: none;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(5px) brightness(0.5);
+    backdrop-filter: blur(3px) brightness(0.5);
     position: absolute
 }
 

@@ -1,5 +1,5 @@
 export { parseNotemap, parseSplashTexts, readNotemap }
-import { handleBeat, noteStartingPosition, handleNote } from "./song.js";
+import { handleBeat, noteStartingPosition, handleNote } from "../song.js";
 
 async function parseNotemap(filePath) {
      try {

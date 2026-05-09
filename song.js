@@ -1,15 +1,18 @@
 export { songSetup, handleNote, handleBeat, note, beatLength, music, musicstart, noteStartingPosition };
-import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
+import { unpause, pause, countdown, paused, showDeathMsg } from "./utils/modals.js";
 import { avg, median } from "./index.js"
 import { loadAlbumMenu } from "./MenuFX.js";
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
 const { animate } = require('animejs');
-import { sing, initVoice } from "./soundfonts.js"
-import { parseNotemap, readNotemap } from "./parser.js";
+import { sing, initVoice } from "./utils/soundfonts.js"
+import { parseNotemap, readNotemap } from "./utils/parser.js";
+import { GlobalOrchestratorFactory } from "./utils/timer.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
 //TODO make countdown be as first beat flies to hitlone
 //TODO modifiers, like practice mode with no death and lenient timings, hide area around judgement line modifier. Amount of points/score based on actual hits not categories of hits
+//TODO fix unpause given new system
+//TODO on restart animate the notes onscreen going back and then restart countdown make seamless
 
 const note = document.createElement("note");
 const difficulties = ["relaxed", "normal", "hard", "brutal"];
@@ -47,6 +50,8 @@ const missSound = new Audio("assets/sfx/miss.mp3"),
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
 let musicstart = false
+
+var orchestrator
 
 async function createNotes(data) {
   musicstart = false
@@ -90,26 +95,16 @@ function handleBeat(beat, beatIndex, hitlinePos) {
       duration: lightduration,
       loop: false
     });
-
-    // const lightanimation = anime({
-    //   targets: hitlinelight,
-    //   keyframes: [
-    //     { opacity: 0, offset: 0 },
-    //     { opacity: 0.7, offset: peakOffset },
-    //     { opacity: 0, offset: 1 },
-    //   ],
-    //   duration: lightduration,
-    //   easing: 'linear',
-    //   loop: 'false'
-    // });
-    // lightanimation.restart();
   }
 
   document.querySelector('notecontainer').appendChild(beat)
 
   let position = noteStartingPosition;
   const startPosition = position;
-  let startTime = Date.now();
+  let startTime = Date.now()
+  let elapsedms = 0
+
+  let timer = orchestrator.createTimer();
 
   function moveBeat() {
     if (paused) {
@@ -117,7 +112,12 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     }
     let beatBottom = beat.getBoundingClientRect().bottom
 
-    let elapsedms = Date.now() - startTime
+    elapsedms = Date.now() - startTime
+    let elapsedms2 = timer.getElapsed()
+
+    console.log(`Timer: ${elapsedms2}, time: ${elapsedms}`);
+
+    //TODO position starts from notestartingpos
     position = elapsedms / (1000 / fps) * noteStepSize
 
     let adjustedPosition = position - 22; //TODO make adaptive, why this num
@@ -156,22 +156,25 @@ function handleBeat(beat, beatIndex, hitlinePos) {
 //TODO add transition time for ticks if low bpm
 
 function handleNote(noteElement) {
+  let hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
   let position, distanceMoved = 0
-  let startTime = Date.now();
   noteElement.setAttribute("aria-active", "true");
+  let elapsedms = 0
+  // let startTime = Date.now()
+  var timer = orchestrator.createTimer();
 
   function moveNote() {
     if (paused) {
       return;
     }
 
-    let elapsedms = Date.now() - startTime
+    // elapsedms = Date.now() - startTime
+    elapsedms = timer.getElapsed();
     position = elapsedms * (noteStepSize / (1000 / fps))
-    noteElement.style.top = position + "px";
+    noteElement.style.top = position + 'px'
 
     let noteRect = noteElement.getBoundingClientRect()
     let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
-    let hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
 
     let msUntilHit = (hitlineBottom - noteCenter) / (noteStepSize / (1000 / fps))
     noteElement.setAttribute('msUntilHit', msUntilHit)
@@ -189,7 +192,7 @@ function handleNote(noteElement) {
       noteElement.setAttribute('aria-active', false)
     }
 
-    if (noteCenter > appContainer.getBoundingClientRect().bottom) {
+    if (noteCenter > appContainer.getBoundingClientRect().bottom + 30) {
       noteElement.remove()
       clearInterval(fallInterval)
     }
@@ -278,6 +281,7 @@ function checkHit(lane) {
 async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference) {
   console.clear()
   await initVoice()
+  orchestrator = new GlobalOrchestratorFactory()
 
   document.body.style.cursor = "none";
   musicstart = false;
