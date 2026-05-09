@@ -1,12 +1,12 @@
-import anime from "/node_modules/animejs/lib/anime.es.js";
+const { animate, utils } = require('animejs');
 
-// Direct paths for assets
 //TODO cursor tilt
 //TODO remove default cur
+//TODO fix rotation
+//TODO fix additive
 const cursorDefault = "./style/cursor/aero_gray_tailless.png";
 const cursorAdditive = "./style/cursor/No-Shadow-Tailless-White.png";
 
-// Inline CSS
 const styleSheet = `#custom-cursor{
 	position: fixed;
 	pointer-events: none;
@@ -144,7 +144,7 @@ export default class Cursor {
       if (diff < -180) diff += 360;
       if (diff > 180) diff -= 360;
       this.rotateState.degrees += diff;
-      anime.remove(this.cursor);
+      utils.remove(this.cursor);
       this.cursor.style.transition = `transform 0.15s`;
       this.cursor.style.transform = `rotate(${this.rotateState.degrees}deg)`;
     }
@@ -167,15 +167,14 @@ export default class Cursor {
       return;
     }
     if (this.visible) {
-      //anime.remove(this.cursor);
+      //utils.remove(this.cursor);
       //this.cursorAdditive.style.transitionDuration = "800ms";
       this.dragStartPos.x = e.pageX - window.pageXOffset;
       this.dragStartPos.y = e.pageY - window.pageYOffset;
       this.rotateState.degrees = 0;
       this.cursor.classList.add("active");
-      anime.remove(this.cursorInner);
-      anime({
-        targets: this.cursorInner,
+      utils.remove(this.cursorInner);
+      animate(this.cursorInner, {
         scale: 0.9,
         duration: 800,
         easing: function () {
@@ -184,9 +183,18 @@ export default class Cursor {
           };
         },
       });
-      anime.remove(this.cursorAdditive);
-      anime({
-        targets: this.cursorAdditive,
+      // anime({
+      //   targets: this.cursorInner,
+      //   scale: 0.9,
+      //   duration: 800,
+      //   easing: function () {
+      //     return function (t) {
+      //       return (t - 1) * (t - 1) * (t - 1) + 1;
+      //     };
+      //   },
+      // });
+      utils.remove(this.cursorAdditive);
+      animate(this.cursorAdditive, {
         opacity: this.dragState == 3 ? 1 : [0, 1],
         duration: 800,
         easing: function () {
@@ -194,7 +202,17 @@ export default class Cursor {
             return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
           };
         },
-      });
+      })
+      // anime({
+      //   targets: this.cursorAdditive,
+      //   opacity: this.dragState == 3 ? 1 : [0, 1],
+      //   duration: 800,
+      //   easing: function () {
+      //     return function (t) {
+      //       return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
+      //     };
+      //   },
+      // });
       this.dragState = 1;
     }
   }
@@ -202,11 +220,10 @@ export default class Cursor {
   mouseUp(e) {
     if (this.visible) {
       if (this.dragState == 2) {
-        anime.remove(this.cursor);
+        utils.remove(this.cursor);
         this.rotateState.isInAnimation = true;
         this.cursor.style.removeProperty("transition");
-        anime({
-          targets: this.cursor,
+        animate(this.cursor, {
           rotate: 0,
           duration: 600 * (1 + Math.abs(this.rotateState.degrees / 720)),
           easing: function () {
@@ -219,20 +236,38 @@ export default class Cursor {
               );
             };
           },
-          complete: () => {
+          onComplete: () => {
             this.rotateState.isInAnimation = false;
             new Event("click");
           },
-        });
+        })
+        // anime({
+        //   targets: this.cursor,
+        //   rotate: 0,
+        //   duration: 600 * (1 + Math.abs(this.rotateState.degrees / 720)),
+        //   easing: function () {
+        //     return function (t) {
+        //       return (
+        //         Math.pow(2, -10 * t) *
+        //         Math.sin((0.5 * t - 0.075) * 20.943951023931955) +
+        //         1 -
+        //         0.0004882812499999998 * t
+        //       );
+        //     };
+        //   },
+        //   complete: () => {
+        //     this.rotateState.isInAnimation = false;
+        //     new Event("click");
+        //   },
+        // });
         this.rotateState.degrees = 0;
         //this.cursor.style.transform = `rotate(0deg)`;
       }
       this.dragState = 0;
       //this.cursorAdditive.style.transitionDuration = "600ms";
       this.cursor.classList.remove("active");
-      anime.remove(this.cursorInner);
-      anime({
-        targets: this.cursorInner,
+      utils.remove(this.cursorInner);
+      animate(this.cursorInner, {
         scale: 1,
         duration: 500,
         easing: function () {
@@ -245,10 +280,24 @@ export default class Cursor {
             );
           };
         },
-      });
-      anime.remove(this.cursorAdditive);
-      anime({
-        targets: this.cursorAdditive,
+      })
+      // anime({
+      //   targets: this.cursorInner,
+      //   scale: 1,
+      //   duration: 500,
+      //   easing: function () {
+      //     return function (t) {
+      //       return (
+      //         Math.pow(2, -10 * t) *
+      //         Math.sin((t - 0.075) * 20.943951023931955) +
+      //         1 -
+      //         0.00048828125 * t
+      //       );
+      //     };
+      //   },
+      // });
+      utils.remove(this.cursorAdditive);
+      animate(this.cursorAdditive, {
         opacity: [1, 0],
         duration: 500,
         easing: function () {
@@ -256,7 +305,17 @@ export default class Cursor {
             return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
           };
         },
-      });
+      })
+      // anime({
+      //   targets: this.cursorAdditive,
+      //   opacity: [1, 0],
+      //   duration: 500,
+      //   easing: function () {
+      //     return function (t) {
+      //       return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
+      //     };
+      //   },
+      // });
     }
   }
 
@@ -279,10 +338,10 @@ export default class Cursor {
       this.cursor.style.display = "block";
       if (this.dragState == 3) {
         this.dragState = 0;
-        anime.remove(this.cursor);
+        utils.remove(this.cursor);
         this.cursor.style.transition = `transform 0.15s`;
         this.cursor.style.transform = "rotate(0)";
-        anime.remove(this.cursorAdditive);
+        utils.remove(this.cursorAdditive);
         anime({
           targets: this.cursorAdditive,
           opacity: 0,
@@ -306,12 +365,11 @@ export default class Cursor {
       this.cursor.style.display = "block";
       if (this.dragState == 0 && !this.rotateState.isInAnimation) {
         this.dragState = 3;
-        anime.remove(this.cursor);
+        utils.remove(this.cursor);
         this.cursor.style.transition = `transform 0.15s`;
         this.cursor.style.transform = "rotate(24.3deg)";
-        anime.remove(this.cursorAdditive);
-        anime({
-          targets: this.cursorAdditive,
+        utils.remove(this.cursorAdditive);
+        animate(this.cursorAdditive, {
           opacity: 1,
           duration: 200,
           easing: function () {
@@ -319,7 +377,17 @@ export default class Cursor {
               return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
             };
           },
-        });
+        })
+        // anime({
+        //   targets: this.cursorAdditive,
+        //   opacity: 1,
+        //   duration: 200,
+        //   easing: function () {
+        //     return function (t) {
+        //       return (t - 1) * (t - 1) * (t - 1) * (t - 1) * (t - 1) + 1;
+        //     };
+        //   },
+        // });
       }
     } else {
       this.visible = false;
@@ -339,11 +407,11 @@ export default class Cursor {
     document.documentElement.style.cursor = "none";
     this.cursor.style.display = "block";
     this.cursor.classList.remove("active");
-    anime.remove(this.cursorAdditive);
+    utils.remove(this.cursorAdditive);
     this.cursorAdditive.style.opacity = 0;
-    anime.remove(this.cursor);
+    utils.remove(this.cursor);
     this.cursor.style.transform = "rotate(0)";
-    anime.remove(this.cursorInner);
+    utils.remove(this.cursorInner);
     this.cursorInner.style.transform = "scale(1)";
     this.visible = true;
     this.dragState = 0;

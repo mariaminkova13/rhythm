@@ -1,4 +1,4 @@
-import anime from "/node_modules/animejs/lib/anime.es.js";
+const { animate } = require('animejs');
 import { songSetup } from "./song.js"
 import { muffleAudio } from "./style/musicFX/audioFX.js";
 import { parseSplashTexts } from "./parser.js"
@@ -163,21 +163,20 @@ async function loadStartPage() {
     var relX = e.pageX - boundingRect.left;
     var relY = e.pageY - boundingRect.top;
 
-    anime({
-      targets: targetObj,
+    //TODO use spring
+    animate(targetObj, {
       translateX: (relX - boundingRect.width / 2) / boundingRect.width * force,
       translateY: (relY - boundingRect.height / 2) / boundingRect.height * force,
       duration: speed
-    })
+    });
   });
 
   target.addEventListener('mouseout', function () {
-    anime({
-      targets: targetObj,
+    animate(targetObj, {
       translateX: 0,
       translateY: 0,
       duration: speed,
-    })
+    });
   });
 
   document.getElementById("startsingleplayer").onclick = async function () {

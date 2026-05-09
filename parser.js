@@ -1,4 +1,5 @@
-export { parseNotemap, parseSplashTexts }
+export { parseNotemap, parseSplashTexts, readNotemap }
+import { handleBeat, noteStartingPosition, handleNote } from "./song.js";
 
 async function parseNotemap(filePath) {
      try {
@@ -47,6 +48,58 @@ async function parseNotemap(filePath) {
      } catch (error) {
           console.error("Error reading notemap:", error);
           return null;
+     }
+}
+
+async function readNotemap(data, linesCounter, laneList) {
+     var chart = []
+     for (const line of data.body) {
+          chart.push(line.split(" "))
+     }
+     //console.log(chart)
+     for (let j = 0; j < chart.length; j++) {
+          const newBeat = document.createElement("beat");
+          handleBeat(newBeat, linesCounter, document.querySelector('hitline').getBoundingClientRect().bottom);
+
+          const lineParsed = chart[j]
+
+          for (let i = 0; i < Math.min(lineParsed.length, laneList.length); i++) {
+               if (lineParsed[i] != ".") {
+                    const newNote = document.createElement("note");
+                    newNote.style.top = noteStartingPosition + "px";
+                    if (lineParsed[i].includes("H")) {
+                         if (lineParsed[i].includes("(") && lineParsed[i].includes(")")) {
+                              if (chart[j + 1][i].includes("H" == false)) { console.warn('syntax error'); return }
+                              newNote.setAttribute('pitch', lineParsed[i].replace("H", "").replace("(", "").replace(")", ""))
+                              newNote.style.background = "red"
+                              console.log('first')
+                         }
+                         // if (j != 0 && chart[j - 1][i].includes("H")) { console.log('YESS') }
+                         else if (j == chart.length - 1 || chart[j + 1][i].includes("H") == false) {
+                              if (chart[j - 1][i].includes("H") == false) { console.warn('hold note starts should contain parentheses'); return }
+                              console.log('last')
+                              newNote.style.background = "green"
+                         }
+                         else {
+                              if (chart[j + 1][i].includes("H") == false || chart[j - 1][i].includes("H") == false) { console.warn('error'); return }
+                              console.log('middle')
+                              newNote.style.background = "blue"
+                         }
+                    }
+                    else {
+                         newNote.setAttribute('pitch', lineParsed[i])
+                    }
+                    laneList[i].appendChild(newNote);
+                    handleNote(newNote);
+               }
+          }
+
+          // Wait for the first note in this line to complete its delay before creating the next line
+          await new Promise(resolve => {
+               newBeat.addEventListener('noteDelayDone', resolve, { once: true });
+          });
+
+          linesCounter++;
      }
 }
 

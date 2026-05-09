@@ -20,7 +20,14 @@ async function initVoice() {
      gainNode.connect(ctx.destination);
 }
 
-function sing(note, duration) {
-     if (note === "X") { return }
+const preciseSound = new Audio("assets/sfx/perfect.wav"),
+     hitSound = new Audio("assets/sfx/hit.wav")
+
+function sing(note, duration, accuracy) {
+     if (note === "X" || note === "") {
+          if (accuracy == 'hit') { hitSound.play() }
+          if (accuracy == 'precise') { preciseSound.play() }
+          return
+     }
      sampler?.start({ note, velocity: 80, duration });
 }

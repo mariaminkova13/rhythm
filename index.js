@@ -1,7 +1,6 @@
 import { loadStartPage } from "./MenuFX.js";
 import Cursor from "./style/cursor/cursor.js";
 export { avg, median }
-//FIXME controlbuttondiv when leave back to menu
 export { songFilePath };
 let songFilePath;
 
@@ -39,10 +38,7 @@ function initializeWindowControls() {
   }
 
   /// titling
-  const appTitle = "Rhythmata!";
-  const gameName = document.getElementById("gameName");
-  gameName.innerText = appTitle;
-  document.title = appTitle;
+  document.title = 'Rhythm Game';
 
   // Window control buttons
   const remote = require("@electron/remote");

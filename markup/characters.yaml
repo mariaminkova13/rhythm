@@ -38,7 +38,7 @@ two(2):
 #   #   K:
 #   #   L:
 two(3):
-  voice: assets/soundfonts/senpai.sf2
+  voice: assets/soundfonts/yuri.sf2
   miss-sprite:
   sprites:
     S:

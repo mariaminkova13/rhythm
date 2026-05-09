@@ -1,5 +1,5 @@
 import { beatLength, music, musicstart } from "./song.js";
-import anime from "/node_modules/animejs/lib/anime.es.js";
+const { animate } = require('animejs');
 export { showModal, countdown, pause, unpause, paused, showDeathMsg }
 
 var paused, waveCanvas
@@ -130,11 +130,9 @@ function showModal(modalId) {
   document.body.style.cursor = "default"; //TODO fix customcursor at first
   const modal = document.getElementById(modalId)
   modal.style.visibility = "visible"
-  anime({
-    targets: modal,
-    opacity: [0.5, 1],
+  animate(modal, {
+    opacity: [0, 1],
     duration: 150,
-    easing: 'linear'
   });
 }
 

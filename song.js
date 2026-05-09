@@ -1,11 +1,11 @@
-export { songSetup, handleNote, note, beatLength, music, musicstart };
+export { songSetup, handleNote, handleBeat, note, beatLength, music, musicstart, noteStartingPosition };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./modals.js";
 import { avg, median } from "./index.js"
 import { loadAlbumMenu } from "./MenuFX.js";
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
-import anime from "/node_modules/animejs/lib/anime.es.js";
+const { animate } = require('animejs');
 import { sing, initVoice } from "./soundfonts.js"
-import { parseNotemap } from "./parser.js";
+import { parseNotemap, readNotemap } from "./parser.js";
 
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
 //TODO make countdown be as first beat flies to hitlone
@@ -42,9 +42,7 @@ const fps = 80;
 const noteStartingPosition = -10;
 var hitAccuracy = [];
 
-const preciseSound = new Audio("assets/sfx/perfect.wav"),
-  missSound = new Audio("assets/sfx/miss.mp3"),
-  hitSound = new Audio("assets/sfx/hit.wav"),
+const missSound = new Audio("assets/sfx/miss.mp3"),
   offbeatSound = new Audio("assets/sfx/offbeat.wav");
 
 let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
@@ -64,29 +62,7 @@ async function createNotes(data) {
     window.addEventListener('playStarted', resolve, { once: true });
   });
 
-  for (const line of data.body) {
-    const newBeat = document.createElement("beat");
-    handleBeat(newBeat, linesCounter, document.querySelector('hitline').getBoundingClientRect().bottom);
-
-    const lineParsed = line.split(" ");
-
-    for (let i = 0; i < Math.min(lineParsed.length, laneList.length); i++) {
-      if (lineParsed[i] != ".") {
-        const newNote = document.createElement("note");
-        newNote.style.top = noteStartingPosition + "px";
-        newNote.setAttribute('pitch', lineParsed[i])
-        laneList[i].appendChild(newNote);
-        handleNote(newNote);
-      }
-    }
-
-    // Wait for the first note in this line to complete its delay before creating the next line
-    await new Promise(resolve => {
-      newBeat.addEventListener('noteDelayDone', resolve, { once: true });
-    });
-
-    linesCounter++;
-  }
+  await readNotemap(data, linesCounter, laneList)
 }
 
 
@@ -105,18 +81,28 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     const hitlinelight = document.querySelector("hitlinelight")
     hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
 
-    const lightanimation = anime({
-      targets: hitlinelight,
+    animate(hitlinelight, {
       keyframes: [
         { opacity: 0, offset: 0 },
-        { opacity: 0.7, offset: peakOffset },
+        { opacity: 0.5, offset: peakOffset },
         { opacity: 0, offset: 1 },
       ],
       duration: lightduration,
-      easing: 'linear',
-      loop: 'false'
+      loop: false
     });
-    lightanimation.restart();
+
+    // const lightanimation = anime({
+    //   targets: hitlinelight,
+    //   keyframes: [
+    //     { opacity: 0, offset: 0 },
+    //     { opacity: 0.7, offset: peakOffset },
+    //     { opacity: 0, offset: 1 },
+    //   ],
+    //   duration: lightduration,
+    //   easing: 'linear',
+    //   loop: 'false'
+    // });
+    // lightanimation.restart();
   }
 
   document.querySelector('notecontainer').appendChild(beat)
@@ -217,8 +203,9 @@ function handleNote(noteElement) {
 function updateCombo(msg) {
   let comboCounter = document.getElementById('comboCounter')
   let counterAfter = document.getElementById('counterAfter')
+  let hitcomment = document.getElementById('hitcomment')
 
-  if (msg) { document.getElementById('hitcomment').textContent = msg }
+  if (msg) { hitcomment.textContent = msg }
 
   if (combo == displayComboAfter) {
     comboCounter.textContent = null
@@ -227,7 +214,13 @@ function updateCombo(msg) {
     comboCounter.textContent = combo
   }
   counterAfter.textContent = earlyOrLate
-  // TODO fade after 500 ms
+  setTimeout(() => {
+    animate([counterAfter, hitcomment], {
+      opacity: 0,
+      loop: false,
+      duration: 200
+    });
+  }, 650)
 }
 
 function updatehp() {
@@ -381,13 +374,12 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
     // Build keymap with actual lane elements
     let keymap = new Map();
     if (Slane) keymap.set(Slane, ["Digit1", "KeyS"]);
-    keymap.set(Dlane, ["Digit2", "KeyD", "ArrowLeft"]);
-    keymap.set(Flane, ["Digit3", "KeyF", "ArrowDown"]);
+    keymap.set(Dlane, ["Digit2", "KeyD", "ArrowLeft", "KeyZ"]);
+    keymap.set(Flane, ["Digit3", "KeyF", "ArrowDown", "KeyX"]);
     if (spacelane) keymap.set(spacelane, ["Space"]);
-    keymap.set(Jlane, ["Digit4", "KeyJ", "ArrowUp"]);
-    keymap.set(Klane, ["Digit5", "KeyK", "ArrowRight"]);
+    keymap.set(Jlane, ["Digit4", "KeyJ", "ArrowUp", "Comma"]);
+    keymap.set(Klane, ["Digit5", "KeyK", "ArrowRight", "Period"]);
     if (Llane) keymap.set(Llane, ["Digit6", "KeyL"]);
-
     if (difficulty === "relaxed") {
       missHpCost = 0;
     } else if (difficulty === "hard") {
@@ -422,16 +414,18 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
             hitAccuracy.push(rawDistance);
             accuracyDiv.textContent = Math.round(median(hitAccuracy));
             if (absoluteDistance <= offbeatThreshold) {
+              let accuracy
               if (absoluteDistance <= preciseThreshold) {
                 updateCombo('precise')
-                // preciseSound.play();
+                accuracy = "precise"
                 hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
                 preciseCount++;
                 combo++
               } else if (absoluteDistance <= hitThreshold) {
-                // hitSound.play();
+                accuracy = "hit"
                 hitCount++;
                 combo++
+                updateCombo('')
 
                 //TODO make the legth defaultLength from nm * beat length
               } else {
@@ -441,7 +435,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
                 if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
               }
               hitResult.note.setAttribute("aria-active", "false");
-              sing(hitResult.note.getAttribute('pitch'), 0.5)
+              sing(hitResult.note.getAttribute('pitch'), 0.5, accuracy)
             }
             else {
               console.log("miss");
@@ -452,7 +446,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
                 hitResult.note.setAttribute("aria-active", "false");
               }
               missCount++;
-              updateCombo()
+              updateCombo('miss')
             }
           } else {
             console.log("no note on screen");
