@@ -103,7 +103,6 @@ function handleBeat(beat, beatIndex, hitlinePos) {
   let position = noteStartingPosition;
   const startPosition = position;
   let startTime = Date.now()
-  let elapsedms = 0
 
   let timer = orchestrator.createTimer();
 
@@ -113,17 +112,13 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     }
     let beatBottom = beat.getBoundingClientRect().bottom
 
-    elapsedms = Date.now() - startTime
-    let elapsedms2 = timer.getElapsed()
-
     //TODO position starts from notestartingpos
-    position = elapsedms / (1000 / fps) * noteStepSize
 
-    let adjustedPosition = position - 22; //TODO make adaptive, why this num
+    let adjustedPosition = updatePositionOfThing(beat, timer) - 22; //TODO make adaptive, why this num
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
-    if (elapsedms >= beatLength) {
+    if (timer.getElapsed() >= beatLength) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
 
@@ -167,10 +162,7 @@ function handleNote(noteElement) {
       return;
     }
 
-    // elapsedms = Date.now() - startTime
-    elapsedms = timer.getElapsed();
-    position = elapsedms * (noteStepSize / (1000 / fps))
-    noteElement.style.top = position + 'px'
+    updatePositionOfThing(noteElement, timer)
 
     let noteRect = noteElement.getBoundingClientRect()
     let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
@@ -191,7 +183,7 @@ function handleNote(noteElement) {
       noteElement.setAttribute('aria-active', false)
     }
 
-    if (noteCenter > deleteBelow) {
+    if (noteCenter > deleteBelow && !noteElement.hasAttribute('holdStartOf')) {
       noteElement.remove()
       clearInterval(fallInterval)
     }
@@ -204,18 +196,34 @@ function handleNote(noteElement) {
 
 function handleHold(holdBody, startNote) {
   startNote.parentElement.appendChild(holdBody)
+  let timer = orchestrator.createTimer()
   function moveHold() {
-    holdBody.style.bottom = document.getElementById('appContainer').getBoundingClientRect().bottom - startNote.style.top
+    let holdRect = holdBody.getBoundingClientRect()
+    holdBody.style.top = parseFloat(startNote.style.top) - (holdRect.bottom - holdRect.top) + 'px'
     if (startNote.getAttribute('aria-active' === false)) { holdBody.setAttribute('aria-active', false) }
-    if (holdBody.getBoundingClientRect().top > deleteBelow) {
-      noteElement.remove()
-      clearInterval(fallInterval)
-    }
+    console.log('movedhold')
   }
 
   const fallInterval = setInterval(() => {
-    requestAnimationFrame(moveHold)
+    if (paused) { return }
+    if (holdBody.getBoundingClientRect().top > deleteBelow) {
+      startNote.remove()
+      holdBody.remove()
+      clearInterval(fallInterval)
+    }
+    if (document.body.contains(startNote)) { requestAnimationFrame(moveHold) }
+    // else { moveIndependant()}
   }, 1000 / fps);
+
+  // function moveIndependant(){
+  //   clearInterval(fallInterval)
+  // }
+}
+
+function updatePositionOfThing(thing, timer) {
+  let pos = timer.getElapsed() / (1000 / fps) * noteStepSize
+  thing.style.top = pos + 'px'
+  return pos
 }
 
 function updateCombo(msg) {

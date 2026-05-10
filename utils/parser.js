@@ -72,18 +72,18 @@ async function readNotemap(data, linesCounter, laneList) {
                          if (lineParsed[i].includes("(") && lineParsed[i].includes(")")) {
                               if (chart[j + 1][i].includes("H" == false)) { console.warn('syntax error'); return }
                               newNote.setAttribute('pitch', lineParsed[i].replace("H", "").replace("(", "").replace(")", ""))
-                              newNote.style.background = "red"
                               console.log('first')
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
 
                               const holdBody = document.createElement("holdBody")
+                              newNote.setAttribute('holdStartOf', holdBody)
                               handleHold(holdBody, newNote);
                          }
                          else if (j == chart.length - 1 || chart[j + 1][i].includes("H") == false) {
                               if (chart[j - 1][i].includes("H") == false) { console.warn('hold note starts should contain parentheses'); return }
                               console.log('last')
-                              newNote.style.background = "green"
+                              newNote.setAttribute('holdEnd', '')
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
                          }

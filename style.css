@@ -1,3 +1,12 @@
+@font-face {
+    font-family: chicago;
+    src: url('./style/fonts/ChicagoFLF.ttf')
+}
+
+#title-obj {
+    font-family: chicago;
+}
+
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
@@ -6,7 +15,7 @@
     --hpwidth: 20px;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
-    --transitionspeed: 0.2s;
+    --transitionspeed: 0.15s;
 
     --beatlength: 0.5s;
     --ticktransitionspeed: calc(var(--beatlength) / 4);
@@ -14,7 +23,7 @@
     --cursor: none;
 
     --fontsize: 18px;
-    --bodyfont: verdana, Abaddon, DotGothic, monospace;
+    --bodyfont: verdana;
     --headfont: monospace, Raccoon, CyrillicPixel, Acme, serif;
     --radius: 3px;
 
@@ -131,15 +140,6 @@ windowControlButton,
 
 windowControlButton:hover {
     background-color: rgba(255, 255, 255, 0.5);
-}
-
-@font-face {
-    font-family: VerminVibes;
-    src: url('./style/fonts/vermin-vibes-1989.regular.ttf') format("truetype");
-}
-
-#title-obj {
-    font-family: VerminVibes;
 }
 
 #tileContainer {
@@ -385,6 +385,7 @@ note {
     top: 0px;
     position: absolute;
     background: var(--notecolor);
+    z-index: 50
 }
 
 note[aria-active=false],
@@ -405,15 +406,24 @@ note.perc {
     mask-size: 100% 100%;
 }
 
+note[holdEnd],
+note[holdStartOf],
 holdBody {
-    background: blue;
+    background: pink
+}
+
+note[holdEnd] {
+    background: lightseagreen
+}
+
+holdBody {
     opacity: 0.5;
     width: calc(var(--tickwidth) * 0.5);
     height: 200px;
-    bottom: 0;
     display: block;
     position: absolute;
     transform: translateX(-50%);
+    z-index: 50
 }
 
 @keyframes redden {
@@ -621,7 +631,7 @@ songprogress {
     top: 0;
     left: 0;
     height: var(--barwidth);
-    background-color: var(--color1);
+    background-color: yellow;
     position: absolute;
     opacity: 0.75;
     z-index: 999;
@@ -763,6 +773,12 @@ modal {
     mask-position: center;
     mask-size: cover;
     background: var(--textcolor);
+    transition: var(--transitionspeed) all;
+}
+
+#quitButton:hover,
+#restartButton:hover {
+    transform: scale(1.1);
 }
 
 #pausemodal,
@@ -871,5 +887,6 @@ flexcolumn {
     position: absolute;
     display: block;
     left: 1ch;
-    top: var(--barwidth)
+    top: var(--barwidth);
+    z-index: 70
 }
