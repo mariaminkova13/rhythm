@@ -1,44 +1,9 @@
-@font-face {
-    font-family: "Raccoon";
-    src: url('style/fonts/RaccoonSerif-Medium.otf');
-}
-
-@font-face {
-    font-family: "Abaddon";
-    src: url('style/fonts/Abaddon Light.ttf');
-}
-
-@font-face {
-    font-family: "Peaberry";
-    src: url('style/fonts/PeaberryMono.ttf');
-}
-
-@font-face {
-    font-family: "Acme";
-    src: url('style/fonts/Grixel Acme 9 Regular Bold Regular.ttf')
-}
-
-@font-face {
-    font-family: "starcrush";
-    src: url('style/fonts/Star Crush.otf')
-}
-
-@font-face {
-    font-family: "CyrillicPixel";
-    src: url('style/fonts/CyrillicPixel7-LPeg.ttf')
-}
-
-@font-face {
-    font-family: "DotGothic";
-    src: url('style/fonts/DotGothic16-Regular.ttf')
-}
-
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
-    --tickheight: 18px;
-    --tickgap: calc(var(--tickheight) * 1.5);
-    --hpwidth: 10px;
+    --tickwidth: 18px;
+    --tickgap: calc(var(--tickwidth) * 1.5);
+    --hpwidth: 20px;
     --heartsize: calc(var(--hpwidth) + 20px);
     --pulsespeed: 1.5s;
     --transitionspeed: 0.2s;
@@ -166,6 +131,15 @@ windowControlButton,
 
 windowControlButton:hover {
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+@font-face {
+    font-family: VerminVibes;
+    src: url('./style/fonts/vermin-vibes-1989.regular.ttf') format("truetype");
+}
+
+#title-obj {
+    font-family: VerminVibes;
 }
 
 #tileContainer {
@@ -401,11 +375,10 @@ tick {
     display: block;
     border-radius: var(--radius);
     height: 5px;
-    width: var(--tickheight);
+    width: var(--tickwidth);
 }
 
 note {
-    left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     opacity: 100%;
@@ -414,15 +387,8 @@ note {
     background: var(--notecolor);
 }
 
-/* note holdBody {
-    height: 80px
-} */
-
-note .hold {
-    background: green
-}
-
-note[aria-active=false] {
+note[aria-active=false],
+holdBody[aria-active=false] {
     opacity: 0;
     animation: redden 0.1s ease-out;
     background: red;
@@ -439,6 +405,17 @@ note.perc {
     mask-size: 100% 100%;
 }
 
+holdBody {
+    background: blue;
+    opacity: 0.5;
+    width: calc(var(--tickwidth) * 0.5);
+    height: 200px;
+    bottom: 0;
+    display: block;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
 @keyframes redden {
     0% {
         background: var(--notecolor);
@@ -449,13 +426,6 @@ note.perc {
         background: red;
         opacity: 0.1;
     }
-}
-
-column {
-    display: flex;
-    flex-direction: row;
-    gap: 0;
-    height: 100%
 }
 
 sidecolumn {
@@ -596,8 +566,8 @@ beatnumber {
 
 ticksection {
     display: flex;
-    width: calc(var(--tickheight) * 5);
-    /* gap: calc(var(--tickheight) * 0.2); */
+    width: calc(var(--tickwidth) * 5);
+    /* gap: calc(var(--tickwidth) * 0.2); */
     justify-content: space-between;
     align-items: center;
 }
@@ -686,6 +656,7 @@ hpbar {
     margin-left: calc(15% + calc(var(--heartsize)/2));
     align-items: center;
     bottom: var(--bottompadding);
+    outline: 1px solid black
 }
 
 hpbar::after {
@@ -711,11 +682,10 @@ hpbar::after {
     height: var(--heartsize);
     z-index: 3;
     animation: pulse var(--pulsespeed) ease-in-out infinite;
-    /* clip-path: path("M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z"); */
     justify-content: center;
     align-items: center;
     font-size: small;
-    background-image: url('assets/icons/heart.svg');
+    background-image: url('./style/icons/heart.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     left: calc(var(--heartsize) / -2)
@@ -737,7 +707,6 @@ countdownnumber {
     width: 100%;
     aspect-ratio: 1 / 1;
     background-color: var(--bgcolor);
-    box-shadow: 0px 0px 50px 10px black inset;
     overflow: hidden;
     text-align: center;
 }

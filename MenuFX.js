@@ -4,12 +4,20 @@ import { muffleAudio } from "./style/musicFX/audioFX.js";
 import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
+const { addCorners, Flat, Squircle } = require('@monokai/monoco')
 
 let parsedYaml, currentCharacter, voicePath, audio
 
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
+
+  addCorners(document.getElementById('startButton'), {
+    smoothing: 1,
+    borderRadius: 32,
+    clip: true,
+    cornerType: Flat
+  })
 
   parsedYaml = await yaml.parse(await (await fetch("markup/albums.yaml")).text());
 
@@ -117,7 +125,8 @@ function initializeTileEffects() {
     tile.onclick = (e) => { //TODO await done so that no flashing intermediate tileinfos
       tile.scrollIntoView({
         behavior: "smooth", //make faster
-        block: "center"
+        block: "center",
+        container: "nearest"
       });
     }
   });
@@ -132,6 +141,14 @@ function initializeTileEffects() {
     }
     document.getElementById('songArtist').textContent = parsedYaml[albumName]['composer']
     document.getElementById('songCover').setAttribute('src', parsedYaml[albumName]['cover-image'])
+    addCorners(document.getElementById('songCover'), {
+      smoothing: 1,
+      borderRadius: 32,
+      clip: true,
+      cornerType: Flat,
+      border: [4, '#f00'] //FIXME
+    })
+
     document.getElementById('songTitle').innerText = albumName
     audio?.pause()
     audio = new Audio(parsedYaml[albumName]['audio']);
@@ -145,6 +162,20 @@ function initializeTileEffects() {
 
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
+
+  addCorners(document.getElementById('startsingleplayer'), {
+    smoothing: 1,
+    borderRadius: 32,
+    clip: true,
+    cornerType: Flat
+  }) //do forEach in array?
+
+  addCorners(document.getElementById('startmultiplayer'), {
+    smoothing: 1,
+    borderRadius: 32,
+    clip: true,
+    cornerType: Flat
+  })
 
   const parsedTexts = await parseSplashTexts()
   const randomIndex = Math.floor(Math.random() * parsedTexts.length);
@@ -190,6 +221,12 @@ async function loadStartPage() {
   for (const characterName in parsedYaml) {
     const portrait = document.createElement("div")
     portrait.classList.add("portrait")
+    addCorners(portrait, {
+      smoothing: 1,
+      borderRadius: 12,
+      clip: true,
+      cornerType: Flat
+    })
     const thisTile = characterSelection.appendChild(portrait)
     if (i == 0) {
       thisTile.setAttribute('selected', '');

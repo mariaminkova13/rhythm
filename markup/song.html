@@ -1,8 +1,8 @@
 <modal id="pausemodal">
   <!-- <span style="width: 100%; text-align: center; bottom: 0; margin-bottom: 3lh;">esc or enter to unpause</span> -->
   <div style="display: flex; flex-direction: row; justify-content: center; gap: 50px; align-items: center">
-    <button id="quitButton" style="mask-image: url('./assets/icons/quit.svg');"></button>
-    <button id="restartButton" style="mask-image:url('./assets/icons/restart.svg')"></button>
+    <button id="quitButton" style="mask-image: url('./style/icons/quit.svg');"></button>
+    <button id="restartButton" style="mask-image:url('./style/icons/restart.svg')"></button>
   </div>
 </modal>
 <modal id="deathmsg">
@@ -12,7 +12,7 @@
 </modal>
 <canvas id="wave-canvas"></canvas>
 <songprogress></songprogress>
-<column>
+<div style="display: flex; flex-direction: row; height: 100%">
   <sidecolumn>
     <span id="timestamp"></span>
     <div id="infobox">
@@ -26,7 +26,7 @@
       <scorebar></scorebar>
     </div>
   </sidecolumn>
-  <div style="flex: 0.6; display: flex; flex-direction: column; align-items: end; bottom: 0">
+  <div style="display: flex; flex-direction: column; align-items: end; bottom: 0; width: 300px">
     <notecontainer>
       <div id="comboCounterContainer">
         <span id="comboCounter"></span>
@@ -46,5 +46,5 @@
       <!-- TODO change svg path for bottom to be bottom of div -->
     </hpbar>
   </sidecolumn>
-</column>
+</div>
 <!--TODO add container showing where top & bottom of note would be when center on hitline. maybe use negative coloring on note when over-->

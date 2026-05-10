@@ -1,4 +1,4 @@
-export { songSetup, handleNote, handleBeat, note, beatLength, music, musicstart, noteStartingPosition };
+export { songSetup, handleNote, handleBeat, handleHold, note, beatLength, music, musicstart, noteStartingPosition };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./utils/modals.js";
 import { avg, median } from "./index.js"
 import { loadAlbumMenu } from "./MenuFX.js";
@@ -22,11 +22,11 @@ var hp = 100,
 
 const missHpCost = 5,
   forgotNoteCost = 7,
-  minHeal = 13,
-  maxHeal = 30
+  minHeal = 0,
+  maxHeal = 10
 
-const preciseThreshold = 20, //more than which is just hit
-  hitThreshold = 50, //more than which is just offbeat
+const preciseThreshold = 30, //more than which is just hit
+  hitThreshold = 70, //more than which is just offbeat
   offbeatThreshold = 100 //more than which is miss
 
 const offbeatLoseComboChance = 0.5;
@@ -41,9 +41,10 @@ var missCount = 0,
 
 var noteSpacingPx, noteStepSize, bps, beatLength;
 const displayComboAfter = 4
-const fps = 80;
-const noteStartingPosition = -10;
+const fps = 70;
+const noteStartingPosition = -10
 var hitAccuracy = [];
+var deleteBelow
 
 const missSound = new Audio("assets/sfx/miss.mp3"),
   offbeatSound = new Audio("assets/sfx/offbeat.wav");
@@ -115,8 +116,6 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     elapsedms = Date.now() - startTime
     let elapsedms2 = timer.getElapsed()
 
-    console.log(`Timer: ${elapsedms2}, time: ${elapsedms}`);
-
     //TODO position starts from notestartingpos
     position = elapsedms / (1000 / fps) * noteStepSize
 
@@ -143,7 +142,7 @@ function handleBeat(beat, beatIndex, hitlinePos) {
       }
     }
 
-    if (beatBottom >= document.getElementById('appContainer').getBoundingClientRect().bottom) {
+    if (beatBottom >= deleteBelow) {
       beat.remove()
       clearInterval(fallInterval);
     }
@@ -192,7 +191,7 @@ function handleNote(noteElement) {
       noteElement.setAttribute('aria-active', false)
     }
 
-    if (noteCenter > appContainer.getBoundingClientRect().bottom + 30) {
+    if (noteCenter > deleteBelow) {
       noteElement.remove()
       clearInterval(fallInterval)
     }
@@ -200,6 +199,22 @@ function handleNote(noteElement) {
 
   const fallInterval = setInterval(() => {
     requestAnimationFrame(moveNote)
+  }, 1000 / fps);
+}
+
+function handleHold(holdBody, startNote) {
+  startNote.parentElement.appendChild(holdBody)
+  function moveHold() {
+    holdBody.style.bottom = document.getElementById('appContainer').getBoundingClientRect().bottom - startNote.style.top
+    if (startNote.getAttribute('aria-active' === false)) { holdBody.setAttribute('aria-active', false) }
+    if (holdBody.getBoundingClientRect().top > deleteBelow) {
+      noteElement.remove()
+      clearInterval(fallInterval)
+    }
+  }
+
+  const fallInterval = setInterval(() => {
+    requestAnimationFrame(moveHold)
   }, 1000 / fps);
 }
 
@@ -282,6 +297,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
   console.clear()
   await initVoice()
   orchestrator = new GlobalOrchestratorFactory()
+  deleteBelow = document.getElementById('appContainer').getBoundingClientRect().bottom + 30
 
   document.body.style.cursor = "none";
   musicstart = false;

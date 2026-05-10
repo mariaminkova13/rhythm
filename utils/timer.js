@@ -1,4 +1,4 @@
-export class GlobalOrchestratorFactory {
+export class GlobalOrchestratorFactory { //most bullshit name i can think of LOL
      timers = [];
 
      constructor() {

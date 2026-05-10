@@ -1,13 +1,14 @@
 bpm: 100
 beatsPerBar: 5
 sixLanes: false
-centerLane: true
+centerLane: false
 
 -----------------------
 
-. . . . H(Eb4)
-C5 . . . H
-. . . . H
-. . . . .
-. . . . H(C4)
-. . . . H
+. . . H(Eb4)
+C5 . . H
+. . . H
+. . . H
+. . . .
+. . . H(C4)
+. . . H

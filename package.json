@@ -4,7 +4,6 @@
   "description": "A simple rhythm game",
   "main": "windowStartup.js",
   "devDependencies": {
-    "coffeescript": "^2.7.0",
     "electron": "^39.0.0"
   },
   "scripts": {

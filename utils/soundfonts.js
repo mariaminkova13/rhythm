@@ -28,6 +28,6 @@ function sing(note, duration, accuracy) {
           if (accuracy == 'hit') { hitSound.play() }
           if (accuracy == 'precise') { preciseSound.play() }
           return
-     }
+     } //TODO stop playing everything else for that track if playing
      sampler?.start({ note, velocity: 80, duration });
 }
