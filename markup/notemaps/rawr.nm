@@ -1,5 +1,5 @@
 bpm: 120
-beatsPerBar: 4
+beatsPerBar: 6
 sixLanes: true
 centerLane: false
 defaultLength: 0.2

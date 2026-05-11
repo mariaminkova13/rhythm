@@ -36,6 +36,7 @@
     --tickcolor: var(--color2);
     --bordercolor: var(--color2);
     --notecolor: wheat;
+    --pulselightcolor: darkslategrey;
 }
 
 body {
@@ -515,7 +516,7 @@ notecontainer {
     position: relative;
     height: 100%;
     width: 100%;
-    background-color: rgba(119, 136, 153, 0.4);
+    background-color: slategray;
 }
 
 hitline {
@@ -533,16 +534,23 @@ hitline {
     /* padding: 0 var(--tickgap) 0 var(--tickgap); */
 }
 
-hitlinelight {
-    display: block;
-    height: 20px;
-    width: 100%;
+pulselight {
     position: absolute;
-    bottom: 1px;
-    /*TODO z-index instead?*/
-    z-index: -3;
-    opacity: 0;
-    /* animation: var(--beatlength) infinite lightup; */
+    display: block;
+    height: 100%;
+    width: 20px;
+    z-index: -10;
+    opacity: 0
+}
+
+#pulselightR {
+    background: linear-gradient(to right, var(--pulselightcolor), transparent);
+    right: -20px
+}
+
+#pulselightL {
+    background: linear-gradient(to left, var(--pulselightcolor), transparent);
+    left: -20px
 }
 
 /* 

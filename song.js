@@ -39,7 +39,7 @@ var missCount = 0,
   hitResult = null,
   earlyOrLate = null;
 
-var noteSpacingPx, noteStepSize, bps, beatLength;
+var noteSpacingPx, noteStepSize, bps, beatLength, beatsPerBar;
 const displayComboAfter = 4
 const fps = 70;
 const noteStartingPosition = -10
@@ -79,19 +79,48 @@ function handleBeat(beat, beatIndex, hitlinePos) {
   beatNumber.textContent = beatIndex + 1
   beat.appendChild(beatNumber)
 
-  var lightduration = 400;
+  var lightduration = beatLength * 0.8;
   const peakOffset = 0.2
+  const pulselights = document.querySelectorAll("pulselight")
+  const pulseL = document.getElementById('pulselightL')
+  const pulseR = document.getElementById('pulselightR')
 
-  const lightup = function () {
-    // alert('lightup');
-    const hitlinelight = document.querySelector("hitlinelight")
-    hitlinelight.style.background = "linear-gradient(to top, var(--color1), transparent)";
-
-    animate(hitlinelight, {
+  function lightup() {
+    animate(pulselights, {
       keyframes: [
         { opacity: 0, offset: 0 },
-        { opacity: 0.5, offset: peakOffset },
+        { opacity: 1, width: '20px', filter: "", offset: peakOffset },
         { opacity: 0, offset: 1 },
+      ],
+      duration: lightduration,
+      loop: false
+    });
+  }
+
+  function lightupStrong() {
+    animate(pulselights, {
+      keyframes: [
+        { opacity: 0, offset: 0 },
+        { opacity: 1, width: '40px', filter: 'saturation(2)', offset: peakOffset },
+        { opacity: 0, offset: 1 },
+      ],
+      duration: lightduration,
+      loop: false
+    });
+    animate(pulseL, {
+      keyframes: [
+        { left: '-20px', offset: 0 },
+        { left: '-40px', offset: peakOffset },
+        { left: '-20px', offset: 1 },
+      ],
+      duration: lightduration,
+      loop: false
+    });
+    animate(pulseR, {
+      keyframes: [
+        { right: '-20px', offset: 0 },
+        { right: '-40px', offset: peakOffset },
+        { right: '-20px', offset: 1 },
       ],
       duration: lightduration,
       loop: false
@@ -125,8 +154,9 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     if (beatBottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitlinePos) {
       if (beat.getAttribute("aria-active") === "false") { }
       else {
-        lightup();
         beat.setAttribute("aria-active", "false")
+        if (beatIndex % beatsPerBar === 0) { lightupStrong() }
+        else { lightup() }
       }
     }
 
@@ -233,8 +263,28 @@ function updateCombo(msg) {
 
   if (msg) { hitcomment.textContent = msg }
 
-  if (combo == displayComboAfter) {
-    comboCounter.textContent = null
+  if (combo == 0) {
+    animate(comboCounter, {
+      loop: false,
+      duration: 200,
+      keyframes: {
+        '0%': { translate: '1px, 1px', rotate: '0deg' },
+        '10%': { translate: '-1px, -2px', rotate: '-1deg', },
+        '20%': { translate: '-3px, 0px', rotate: '1deg' },
+        '30%': { translate: '3px, 2px', rotate: '0deg' },
+        '40%': { translate: '1px, -1px', rotate: '1deg' },
+        '50%': { translate: '-1px, 2px', rotate: '-1deg' },
+        '60%': { translate: '-3px, 1px', rotate: '0deg' },
+        '70%': { translate: '3px, 1px', rotate: '-1deg' },
+        '80%': { translate: '-1px, -1px', rotate: '1deg' },
+        '90%': { translate: '1px, 2px', rotate: '0deg' },
+        '100%': { translate: '1px, -2px', rotate: '-1deg', opacity: 0 }
+      }
+    })
+  }
+
+  if (combo <= displayComboAfter) {
+    // comboCounter.textContent = null
   }
   else if (combo > displayComboAfter) {
     comboCounter.textContent = combo
@@ -246,7 +296,7 @@ function updateCombo(msg) {
       loop: false,
       duration: 200
     });
-  }, 650)
+  }, 1000)
 }
 
 function updatehp() {
@@ -352,7 +402,8 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
       parseNotemap(mapFilePath).then((data) => {
         const accuracyDiv = document.getElementById("accuracyDiv");
         bps = data.head.bpm / 60;
-        beatLength = 1000 / bps
+        beatLength = 1000 / bps;
+        beatsPerBar = data.head.beatsPerBar
         if (AdaptiveNoteSpeedPreference === 'true') {
           noteSpacingPx = 100 * bps;
         }
