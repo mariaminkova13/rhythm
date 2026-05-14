@@ -74,6 +74,7 @@ async function createNotes(data) {
 
 function handleBeat(beat, beatIndex, hitlinePos) {
   let distanceMoved = 0;
+  let noteDelayDoneTriggered = false
 
   const beatNumber = document.createElement('beatnumber')
   beatNumber.textContent = beatIndex + 1
@@ -143,12 +144,14 @@ function handleBeat(beat, beatIndex, hitlinePos) {
 
     //TODO position starts from notestartingpos
 
-    let adjustedPosition = updatePositionOfThing(beat, timer) - 22; //TODO make adaptive, why this num
+    let adjustedPosition = updatePositionOfThing(beat, timer) - 22; //TODO fix this, sync everything with timer
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
-    if (timer.getElapsed() >= beatLength) {
+    if (timer.getElapsed() >= beatLength && noteDelayDoneTriggered == false) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
+      noteDelayDoneTriggered = true
+      console.log('delaydone')
     }
 
     if (beatBottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitlinePos) {
@@ -225,13 +228,21 @@ function handleNote(noteElement) {
 }
 
 function handleHold(holdBody, startNote) {
+  let holdEndAdded = false
+  holdBody.addEventListener('holdEnd', (e) => {
+    let end = e.detail.element.getBoundingClientRect().bottom
+    let rect = holdBody.getBoundingClientRect()
+    let currentHeight = rect.bottom - rect.top
+    holdEndAdded = true
+  }, { once: true });
   startNote.parentElement.appendChild(holdBody)
   let timer = orchestrator.createTimer()
   function moveHold() {
     let holdRect = holdBody.getBoundingClientRect()
+    if (holdEndAdded == false) {
+      holdBody.style.height = parseFloat(startNote.style.top) + 'px'
+    }
     holdBody.style.top = parseFloat(startNote.style.top) - (holdRect.bottom - holdRect.top) + 'px'
-    if (startNote.getAttribute('aria-active' === false)) { holdBody.setAttribute('aria-active', false) }
-    console.log('movedhold')
   }
 
   const fallInterval = setInterval(() => {
@@ -241,13 +252,11 @@ function handleHold(holdBody, startNote) {
       holdBody.remove()
       clearInterval(fallInterval)
     }
-    if (document.body.contains(startNote)) { requestAnimationFrame(moveHold) }
-    // else { moveIndependant()}
+    if (document.body.contains(startNote)) {
+      requestAnimationFrame(moveHold);
+      if (startNote.getAttribute('aria-active' === false)) { holdBody.setAttribute('aria-active', false) }
+    }
   }, 1000 / fps);
-
-  // function moveIndependant(){
-  //   clearInterval(fallInterval)
-  // }
 }
 
 function updatePositionOfThing(thing, timer) {

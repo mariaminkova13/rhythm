@@ -194,7 +194,6 @@ async function loadStartPage() {
     var relX = e.pageX - boundingRect.left;
     var relY = e.pageY - boundingRect.top;
 
-    //TODO use spring
     animate(targetObj, {
       translateX: (relX - boundingRect.width / 2) / boundingRect.width * force,
       translateY: (relY - boundingRect.height / 2) / boundingRect.height * force,

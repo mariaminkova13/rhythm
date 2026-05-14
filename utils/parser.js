@@ -82,10 +82,11 @@ async function readNotemap(data, linesCounter, laneList) {
                          }
                          else if (j == chart.length - 1 || chart[j + 1][i].includes("H") == false) {
                               if (chart[j - 1][i].includes("H") == false) { console.warn('hold note starts should contain parentheses'); return }
-                              console.log('last')
-                              newNote.setAttribute('holdEnd', '')
+                              let prevHoldBody = findPrevHoldBody(laneList[i])
+                              newNote.setAttribute('holdEndOf', prevHoldBody)
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
+                              prevHoldBody.dispatchEvent(new CustomEvent('holdEnd', { detail: { element: newNote } }));
                          }
                          else {
                               if (chart[j + 1][i].includes("H") == false || chart[j - 1][i].includes("H") == false) { console.warn('error'); return }
@@ -107,6 +108,19 @@ async function readNotemap(data, linesCounter, laneList) {
 
           linesCounter++;
      }
+}
+
+function findPrevHoldBody(lane) {
+     let closest = null;
+     let closestDistance = Infinity;
+     lane.querySelectorAll('holdBody').forEach(element => {
+          let top = element.getBoundingClientRect().top;
+          if (top < closestDistance) {
+               closestDistance = top
+               closest = element;
+          }
+     })
+     return closest
 }
 
 async function parseSplashTexts() {

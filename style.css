@@ -3,8 +3,20 @@
     src: url('./style/fonts/ChicagoFLF.ttf')
 }
 
-#title-obj {
-    font-family: chicago;
+@font-face {
+    font-family: arya;
+    src: url('./style/fonts/Arya-Regular.ttf')
+}
+
+@font-face {
+    font-family: prosto;
+    src: url('./style/fonts/Prosto.ttf')
+}
+
+@font-face {
+    font-family: aero;
+    src: url('./style/fonts/Aero.ttf');
+    font-weight: 400;
 }
 
 :root {
@@ -23,8 +35,8 @@
     --cursor: none;
 
     --fontsize: 18px;
-    --bodyfont: verdana;
-    --headfont: monospace, Raccoon, CyrillicPixel, Acme, serif;
+    --bodyfont: arya, verdana;
+    --headfont: chicago, monospace;
     --radius: 3px;
 
     --bgcolor: rgb(100, 100, 100);
@@ -128,15 +140,16 @@ windowControlButton {
     width: 4ch;
     cursor: pointer;
     app-region: no-drag;
-}
-
-windowControlButton,
-#gameName {
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     color: black;
+}
+
+#windowTitle {
+    margin-left: 2ch;
+    font-family: var(--headfont);
 }
 
 windowControlButton:hover {
@@ -407,13 +420,13 @@ note.perc {
     mask-size: 100% 100%;
 }
 
-note[holdEnd],
+note[holdEndOf],
 note[holdStartOf],
 holdBody {
     background: pink
 }
 
-note[holdEnd] {
+note[holdEndOf] {
     background: lightseagreen
 }
 
@@ -424,7 +437,8 @@ holdBody {
     display: block;
     position: absolute;
     transform: translateX(-50%);
-    z-index: 50
+    z-index: 50;
+    top: 0
 }
 
 @keyframes redden {
@@ -477,12 +491,13 @@ plusminus {
 
 scorebar {
     display: block;
-    height: calc(150px + 1lh);
-    width: calc(var(--barwidth) * 2);
-    background-color: var(--color1);
-    margin-left: calc(var(--barwidth) * 3);
-    bottom: 0;
-    border-radius: var(--radius);
+    margin-right: 30px;
+    right: 0;
+    position: absolute;
+    width: 2ch;
+    background: green;
+    height: 70%;
+    bottom: var(--bottompadding)
 }
 
 songname {

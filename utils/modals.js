@@ -94,7 +94,7 @@ function countdown() {
       window.dispatchEvent(new Event('timerStart'));
 
       paused = false;
-      window.dispatchEvent(new CustomEvent('playStarted'))
+      window.dispatchEvent(new Event('playStarted'))
     }
   }, beatLength);
 }
