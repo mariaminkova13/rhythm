@@ -49,7 +49,7 @@ var deleteBelow
 const missSound = new Audio("assets/sfx/miss.mp3"),
   offbeatSound = new Audio("assets/sfx/offbeat.wav");
 
-let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, music;
+let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, Rjump, Ljump, music;
 let musicstart = false
 
 var orchestrator
@@ -410,9 +410,15 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
 
       parseNotemap(mapFilePath).then((data) => {
         const accuracyDiv = document.getElementById("accuracyDiv");
-        bps = data.head.bpm / 60;
+        if (data.head.bpm) {
+          bps = data.head.bpm / 60;
+        }
+        else { bps = 90 / 60 }
         beatLength = 1000 / bps;
-        beatsPerBar = data.head.beatsPerBar
+        if (data.head.beatsPerBar) {
+          beatsPerBar = data.head.beatsPerBar
+        }
+        else { beatsPerBar = 4 }
         if (AdaptiveNoteSpeedPreference === 'true') {
           noteSpacingPx = 100 * bps;
         }
@@ -461,18 +467,18 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
 
     // Build keymap with actual lane elements
     let keymap = new Map();
-    if (Slane) keymap.set(Slane, ["Digit1", "KeyS"]);
-    keymap.set(Dlane, ["Digit2", "KeyD", "ArrowLeft", "KeyZ"]);
-    keymap.set(Flane, ["Digit3", "KeyF", "ArrowDown", "KeyX"]);
-    if (spacelane) keymap.set(spacelane, ["Space"]);
-    keymap.set(Jlane, ["Digit4", "KeyJ", "ArrowUp", "Comma"]);
-    keymap.set(Klane, ["Digit5", "KeyK", "ArrowRight", "Period"]);
-    if (Llane) keymap.set(Llane, ["Digit6", "KeyL"]);
+    if (Slane) keymap.set(Slane, "KeyS");
+    keymap.set(Dlane, "KeyD");
+    keymap.set(Flane, "KeyF");
+    if (spacelane) keymap.set(spacelane, "Space");
+    keymap.set(Jlane, "KeyJ");
+    keymap.set(Klane, "KeyK");
+    if (Llane) keymap.set(Llane, "KeyL");
+    if (Ljump) keymap.set(Rjump, "Tab")
+    if (Rjump) keymap.set(Rjump, "Slash")
     if (difficulty === "relaxed") {
       missHpCost = 0;
-    } else if (difficulty === "hard") {
-
-    }
+    } else if (difficulty === "hard") { }
 
     // Event listeners - optimized using keymap
     document.addEventListener("keydown", (event) => {
@@ -482,9 +488,9 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
       }
 
       // Loop through each lane in the keymap
-      for (const [lane, keys] of keymap) {
+      for (const [lane, key] of keymap) {
         // Check if the pressed key matches any key for this lane
-        if (keys.includes(event.code)) {
+        if (key == (event.code)) {
           lane.setAttribute("aria-pressed", "true");
 
           hitResult = checkHit(lane);

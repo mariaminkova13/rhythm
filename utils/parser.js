@@ -72,10 +72,8 @@ async function readNotemap(data, linesCounter, laneList) {
                          if (lineParsed[i].includes("(") && lineParsed[i].includes(")")) {
                               if (chart[j + 1][i].includes("H" == false)) { console.warn('syntax error'); return }
                               newNote.setAttribute('pitch', lineParsed[i].replace("H", "").replace("(", "").replace(")", ""))
-                              console.log('first')
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
-
                               const holdBody = document.createElement("holdBody")
                               newNote.setAttribute('holdStartOf', holdBody)
                               handleHold(holdBody, newNote);
@@ -87,10 +85,6 @@ async function readNotemap(data, linesCounter, laneList) {
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
                               prevHoldBody.dispatchEvent(new CustomEvent('holdEnd', { detail: { element: newNote } }));
-                         }
-                         else {
-                              if (chart[j + 1][i].includes("H") == false || chart[j - 1][i].includes("H") == false) { console.warn('error'); return }
-                              console.log('middle')
                          }
                     }
                     else {

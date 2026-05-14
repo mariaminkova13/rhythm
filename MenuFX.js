@@ -4,6 +4,7 @@ import { muffleAudio } from "./style/musicFX/audioFX.js";
 import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
+const SegmentDispay = require("fun-7-segment");
 const { addCorners, Flat, Squircle } = require('@monokai/monoco')
 
 let parsedYaml, currentCharacter, voicePath, audio
@@ -11,6 +12,13 @@ let parsedYaml, currentCharacter, voicePath, audio
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
+
+  const hiScore = new SegmentDisplay('#hiScore', {
+    text: '0000',
+    digitCount: 4,
+    scrolling: false,
+    color: '#00ff00'
+  });
 
   addCorners(document.getElementById('startButton'), {
     smoothing: 1,

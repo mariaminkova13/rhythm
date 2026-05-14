@@ -1,16 +1,41 @@
-<div id="title">
-    <h1 id="title-obj" style="display: inline-block">Untitled Rhythm Game</h1>
-</div>
-<div style="display:flex; flex-direction:column; align-items: center; justify-content: flex-start;">
-    <div style="display:flex; flex-direction:column; align-items: center; padding: 5rem">
-        <button id="startsingleplayer" style="width: 500px">Independant sigma</button>
-        <button id="startmultiplayer" style="width: 500px">Play with Friends</button>
+<div style="display: flex; flex-direction: row; height: 100%">
+    <carousel>
+        <ol class="carousel__viewport">
+            <li id="carousel__slide1" tabindex="0" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide4" class="carousel__prev">Go to last slide</a>
+                    <a href="#carousel__slide2" class="carousel__next">Go to next slide</a>
+                </div>
+            </li>
+            <li id="carousel__slide2" tabindex="0" class="carousel__slide">
+                <div class="carousel__snapper"></div>
+                <a href="#carousel__slide1" class="carousel__prev">Go to previous slide</a>
+                <a href="#carousel__slide3" class="carousel__next">Go to next slide</a>
+            </li>
+            <li id="carousel__slide3" tabindex="0" class="carousel__slide">
+                <div class="carousel__snapper"></div>
+                <a href="#carousel__slide2" class="carousel__prev">Go to previous slide</a>
+                <a href="#carousel__slide4" class="carousel__next">Go to next slide</a>
+            </li>
+            <li id="carousel__slide4" tabindex="0" class="carousel__slide">
+                <div class="carousel__snapper"></div>
+                <a href="#carousel__slide3" class="carousel__prev">Go to previous slide</a>
+                <a href="#carousel__slide1" class="carousel__next">Go to first slide</a>
+            </li>
+        </ol>
+    </carousel>
+    <div>
+        <div id="title">
+            <h1 id="title-obj" style="display: inline-block">Untitled Rhythm Game</h1>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items: center; justify-content: flex-start; flex: 0.5">
+            <div style="display:flex; flex-direction:column; align-items: center; padding: 5rem">
+                <button id="startsingleplayer" style="width: 500px">Independant sigma</button>
+                <button id="startmultiplayer" style="width: 500px">Play with Friends</button>
+            </div>
+            <div id="characterSelection"></div>
+            <span id="splashText"></span>
+        </div>
     </div>
-    <div id="characterSelection"></div>
-    <span id="splashText"></span>
 </div>
 <span id="creditsLink">by sadgrl_07</span>
-
-<!-- <modal id="credits" style="visibility:hidden">
-    <img src="../sprites/mefr.jpg">
-</modal> -->
