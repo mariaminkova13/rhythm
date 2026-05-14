@@ -10,7 +10,7 @@ Report bugs or share suggestions in ['Issues'](https://github.com/mariaminkova13
 Run the app.
 Controls:
 - arrow keys and mouse to navigate UI
-- <kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>spacebar</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> during songs. Number and arrow keys also work, cuz why not.
+- <kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>spacebar</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> during songs.
 - <kbd>esc</kbd> or <kbd>enter</kbd> to pause/unpause a song
 
 # (Un)License
