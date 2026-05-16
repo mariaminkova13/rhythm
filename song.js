@@ -96,6 +96,15 @@ function handleBeat(beat, beatIndex, hitlinePos) {
       duration: lightduration,
       loop: false
     });
+    // animate(document.getElementById('wave-canvas'), {
+    //   keyframes: [
+    //     { background: rgba(0, 0, 0, 0), offset: 0 },
+    //     { background: red, filter: "", offset: peakOffset },
+    //     { background: rgba(0, 0, 0, 0), offset: 1 },
+    //   ],
+    //   duration: lightduration,
+    //   loop: false
+    // })
   }
 
   function lightupStrong() {
@@ -151,7 +160,6 @@ function handleBeat(beat, beatIndex, hitlinePos) {
     if (timer.getElapsed() >= beatLength && noteDelayDoneTriggered == false) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
       noteDelayDoneTriggered = true
-      console.log('delaydone')
     }
 
     if (beatBottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitlinePos) {
@@ -254,7 +262,7 @@ function handleHold(holdBody, startNote) {
     }
     if (document.body.contains(startNote)) {
       requestAnimationFrame(moveHold);
-      if (startNote.getAttribute('aria-active' === false)) { holdBody.setAttribute('aria-active', false) }
+      if (startNote.getAttribute('aria-active') === false) { holdBody.setAttribute('aria-active', false) }
     }
   }, 1000 / fps);
 }
@@ -327,8 +335,11 @@ function updatehp() {
   }
 }
 
-function checkHit(lane) {
-  const lanenotes = lane.querySelectorAll('note[aria-active="true"]');
+function checkHit(lane, holdEnd) {
+  let lanenotes = lane.querySelectorAll('note[aria-active="true"]');
+  if (holdEnd == true) {
+    lanenotes = lane.querySelectorAll('note[aria-active="true"][holdendof]');
+  }
 
   if (lanenotes.length === 0) {
     return null;
@@ -352,7 +363,6 @@ function checkHit(lane) {
       closestNote = note;
     }
   });
-
   return {
     note: closestNote,
     closestDistance: closestDistance,
@@ -480,7 +490,79 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
       missHpCost = 0;
     } else if (difficulty === "hard") { }
 
-    // Event listeners - optimized using keymap
+    function evalHit(hitResult, keyup) {
+      // if (!keyup && hitResult.note.hasAttribute('holdendof') == true) hitResult = null
+      // console.log(hitResult.note.hasAttribute('holdendof'))
+      if (hitResult) {
+        const absoluteDistance = hitResult.closestDistance;
+        const rawDistance = hitResult.closestDistanceRaw
+
+        // console.log(
+        //   `${lane || 'unknown'}: ${absoluteDistance.toFixed(
+        //     2
+        //   )}`
+        // );
+
+        // hit evaluation
+        hitAccuracy.push(rawDistance);
+        accuracyDiv.textContent = Math.round(median(hitAccuracy));
+        if (absoluteDistance <= offbeatThreshold) {
+          let accuracy
+          if (absoluteDistance <= preciseThreshold) {
+            updateCombo('precise')
+            accuracy = "precise"
+            hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
+            preciseCount++;
+            combo++
+          } else if (absoluteDistance <= hitThreshold) {
+            accuracy = "hit"
+            hitCount++;
+            combo++
+            updateCombo('')
+
+            //TODO make the legth defaultLength from nm * beat length
+          } else {
+            updateCombo('offbeat')
+            offbeatSound.play();
+            offbeatCount++;
+            if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
+          }
+          hitResult.note.setAttribute("aria-active", "false");
+          sing(hitResult.note.getAttribute('pitch'), 0.5, accuracy)
+        }
+        else {
+          console.log("miss");
+          missSound.play();
+          hp -= missHpCost;
+          combo = 0
+          if (absoluteDistance <= 200) {
+            hitResult.note.setAttribute("aria-active", "false");
+          }
+          missCount++;
+          updateCombo('miss')
+        }
+      } else {
+        console.log("no note on screen");
+        missSound.play();
+        hp -= missHpCost;
+        combo = 0
+        window.dispatchEvent(new Event('vignetteRed'))
+        updateCombo()
+      }
+      if (hitResult) {
+        if (hitResult.rawDistance > 0) {
+          earlyOrLate = "early";
+        }
+        if (hitResult.rawDistance === 0) {
+          earlyOrLate = "exact!"
+        }
+        else {
+          earlyOrLate = "late";
+        }
+      }
+      updatehp();
+    }
+
     document.addEventListener("keydown", (event) => {
       // Ignore repeated keydown events from holding the key
       if (event.repeat || paused) {
@@ -494,86 +576,22 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
           lane.setAttribute("aria-pressed", "true");
 
           hitResult = checkHit(lane);
-          if (hitResult) {
-            const absoluteDistance = hitResult.closestDistance;
-            const rawDistance = hitResult.closestDistanceRaw
-
-            console.log(
-              `${lane || 'unknown'}: ${absoluteDistance.toFixed(
-                2
-              )}`
-            );
-
-            // hit evaluation
-            hitAccuracy.push(rawDistance);
-            accuracyDiv.textContent = Math.round(median(hitAccuracy));
-            if (absoluteDistance <= offbeatThreshold) {
-              let accuracy
-              if (absoluteDistance <= preciseThreshold) {
-                updateCombo('precise')
-                accuracy = "precise"
-                hp = Math.min(hp + Math.random() * (maxHeal - minHeal) + minHeal, 100);
-                preciseCount++;
-                combo++
-              } else if (absoluteDistance <= hitThreshold) {
-                accuracy = "hit"
-                hitCount++;
-                combo++
-                updateCombo('')
-
-                //TODO make the legth defaultLength from nm * beat length
-              } else {
-                updateCombo('offbeat')
-                offbeatSound.play();
-                offbeatCount++;
-                if (Math.random() >= offbeatLoseComboChance) { combo++ } else { combo = 0 }
-              }
-              hitResult.note.setAttribute("aria-active", "false");
-              sing(hitResult.note.getAttribute('pitch'), 0.5, accuracy)
-            }
-            else {
-              console.log("miss");
-              missSound.play();
-              hp -= missHpCost;
-              combo = 0
-              if (absoluteDistance <= 200) {
-                hitResult.note.setAttribute("aria-active", "false");
-              }
-              missCount++;
-              updateCombo('miss')
-            }
-          } else {
-            console.log("no note on screen");
-            missSound.play();
-            hp -= missHpCost;
-            combo = 0
-            window.dispatchEvent(new Event('vignetteRed'))
-            updateCombo()
-          }
-          if (hitResult) {
-            if (hitResult.rawDistance > 0) {
-              earlyOrLate = "early";
-            }
-            if (hitResult.rawDistance === 0) {
-              earlyOrLate = "exact!"
-            }
-            else {
-              earlyOrLate = "late";
-            }
-          }
-          updatehp();
+          evalHit(hitResult)
 
           break;
         }
       }
     }, { signal });
 
-    // remove 'pressed' on keyup
     document.addEventListener("keyup", (event) => {
-      for (const [lane, keys] of keymap) {
-        if (keys.includes(event.code)) {
+      for (const [lane, key] of keymap) {
+        if (key == event.code) {
           lane.setAttribute("aria-pressed", "false");
-          break;
+          hitResult = checkHit(lane, true);
+          if (!hitResult?.note) break
+          if (hitResult.note.hasAttribute('holdendof')) {
+            evalHit(hitResult, true)
+          }
         }
       }
     }, { signal });

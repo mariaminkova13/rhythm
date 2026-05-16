@@ -2,6 +2,8 @@ async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+//FIXME add cooldown such that many misses at once only activates it once. Make it so that can only be activated if not already doing animation
+
 class WebGLRenderer {
 
   constructor(canvasId) {

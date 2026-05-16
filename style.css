@@ -19,6 +19,11 @@
     font-weight: 400;
 }
 
+@font-face {
+    font-family: ocrb;
+    src: url('./style/fonts/OCR-B.ttf')
+}
+
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
@@ -410,12 +415,12 @@ carousel::after,
 
 carousel::before,
 .carousel__prev {
-    left: -1rem;
+    left: 1rem;
 }
 
 carousel::after,
 .carousel__next {
-    right: -1rem;
+    right: 1rem;
 }
 
 carousel::before,
@@ -584,7 +589,7 @@ note.perc {
     mask-size: 100% 100%;
 }
 
-note[holdEndOf],
+note[holdendof],
 note[holdStartOf],
 holdBody {
     background: pink
@@ -691,7 +696,7 @@ notecontainer {
     position: relative;
     height: 100%;
     width: 100%;
-    background-color: slategray;
+    background-color: rgba(112, 128, 144, 0.5);
 }
 
 hitline {
@@ -754,7 +759,8 @@ beatnumber {
     color: var(--trackcolor);
     font-size: small;
     position: relative;
-    margin-left: 5px
+    margin-left: 5px;
+    opacity: 1
 }
 
 ticksection {

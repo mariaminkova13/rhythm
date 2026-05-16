@@ -81,7 +81,7 @@ async function readNotemap(data, linesCounter, laneList) {
                          else if (j == chart.length - 1 || chart[j + 1][i].includes("H") == false) {
                               if (chart[j - 1][i].includes("H") == false) { console.warn('hold note starts should contain parentheses'); return }
                               let prevHoldBody = findPrevHoldBody(laneList[i])
-                              newNote.setAttribute('holdEndOf', prevHoldBody)
+                              newNote.setAttribute('holdendof', prevHoldBody)
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
                               prevHoldBody.dispatchEvent(new CustomEvent('holdEnd', { detail: { element: newNote } }));

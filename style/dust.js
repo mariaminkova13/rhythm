@@ -84,12 +84,6 @@ function loop() {
      draw();
 }
 
-window.addEventListener("resize", function () {
-     (w = canvas.width = window.innerWidth),
-          (h = canvas.height = window.innerHeight);
-     loop();
-});
-
 export function initFireflies() {
 
 }
