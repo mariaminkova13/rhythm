@@ -461,8 +461,6 @@ carousel::after,
     height: 4rem;
     transform: translateY(-50%);
     border-radius: var(--radius);
-    font-size: 0;
-    outline: 0;
 }
 
 carousel::before,
@@ -479,11 +477,9 @@ carousel::before,
 carousel::after {
     content: '';
     z-index: 1;
-    background-color: #333;
     background-size: 1.5rem 1.5rem;
     background-repeat: no-repeat;
     background-position: center center;
-    color: #fff;
     font-size: 2.5rem;
     line-height: 4rem;
     text-align: center;
@@ -491,11 +487,11 @@ carousel::after {
 }
 
 carousel::before {
-    background: red
+    content: '<'
 }
 
 carousel::after {
-    background: red
+    content: '>'
 }
 
 .portrait {

@@ -171,8 +171,10 @@ function initializeTileEffects() {
 
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
-
   initParticles();
+  const lobbysongs = ['./assets/ww.mp3', './assets/And bliss everywhere bliss.mp3']
+  const lobbymusic = new Audio(lobbysongs[Math.floor(Math.random() * lobbysongs.length)])
+  lobbymusic.play()
 
   addCorners(document.getElementById('startsingleplayer'), {
     smoothing: 1,
@@ -221,6 +223,7 @@ async function loadStartPage() {
   });
 
   document.getElementById("startsingleplayer").onclick = async function () {
+    lobbymusic.pause()
     await loadAlbumMenu()
   };
 
@@ -239,8 +242,8 @@ async function loadStartPage() {
     template.innerHTML = `
       <li id="carousel__slide${slideNum}" tabindex="0" class="carousel__slide">
         <div class="carousel__snapper">
-          <a href="#carousel__slide${prevNum}" class="carousel__prev">Go to previous slide</a>
-          <a href="#carousel__slide${nextNum}" class="carousel__next">Go to next slide</a>
+          <a href="#carousel__slide${prevNum}" class="carousel__prev"></a>
+          <a href="#carousel__slide${nextNum}" class="carousel__next"></a>
         </div>
         <h1>${characterName}</h1>
       </li>
@@ -249,12 +252,6 @@ async function loadStartPage() {
 
     const portrait = document.createElement("div")
     portrait.classList.add("portrait")
-    // addCorners(portrait, {
-    //   smoothing: 1,
-    //   borderRadius: 12,
-    //   clip: true,
-    //   cornerType: Flat
-    // })
     const thisTile = characterSelection.appendChild(portrait)
     if (i == 0) {
       thisTile.setAttribute('selected', '');
