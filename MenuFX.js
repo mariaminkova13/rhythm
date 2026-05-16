@@ -1,6 +1,7 @@
 const { animate } = require('animejs');
 import { songSetup } from "./song.js"
 import { muffleAudio } from "./style/musicFX/audioFX.js";
+import { initParticles } from "./style/dust.js";
 import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
@@ -171,6 +172,8 @@ function initializeTileEffects() {
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
 
+  initParticles();
+
   addCorners(document.getElementById('startsingleplayer'), {
     smoothing: 1,
     borderRadius: 32,
@@ -223,9 +226,27 @@ async function loadStartPage() {
 
   const parsedYaml = await yaml.parse(await (await fetch("markup/characters.yaml")).text());
   const characterSelection = document.getElementById('characterSelection')
+  const total = Object.keys(parsedYaml).length
+  const viewport = document.querySelector('.carousel__viewport')
   let i = 0
 
   for (const characterName in parsedYaml) {
+    const slideNum = i + 1
+    const prevNum = i === 0 ? total : i
+    const nextNum = i === total - 1 ? 1 : slideNum + 1
+
+    const template = document.createElement('template')
+    template.innerHTML = `
+      <li id="carousel__slide${slideNum}" tabindex="0" class="carousel__slide">
+        <div class="carousel__snapper">
+          <a href="#carousel__slide${prevNum}" class="carousel__prev">Go to previous slide</a>
+          <a href="#carousel__slide${nextNum}" class="carousel__next">Go to next slide</a>
+        </div>
+        <h1>${characterName}</h1>
+      </li>
+    `
+    viewport.appendChild(template.content.firstElementChild);
+
     const portrait = document.createElement("div")
     portrait.classList.add("portrait")
     // addCorners(portrait, {

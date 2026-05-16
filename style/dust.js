@@ -1,4 +1,4 @@
-class firefly {
+class particle {
      constructor() {
           this.x = Math.random() * w;
           this.y = Math.random() * h;
@@ -20,15 +20,12 @@ class firefly {
 }
 
 let f = [];
-
-let c = init(document.getElementById('fireflies')),
-     w = (canvas.width = window.innerWidth),
-     h = (canvas.height = window.innerHeight);
+var w, h, c;
 
 function draw() {
      if (f.length < 100) {
           for (let j = 0; j < 10; j++) {
-               f.push(new firefly());
+               f.push(new particle());
           }
      }
      //animation
@@ -44,48 +41,45 @@ function draw() {
 let mouse = {};
 let last_mouse = {};
 
-canvas.addEventListener(
-     "mousemove",
-     function (e) {
-          last_mouse.x = mouse.x;
-          last_mouse.y = mouse.y;
-
-          mouse.x = e.pageX - this.offsetLeft;
-          mouse.y = e.pageY - this.offsetTop;
-     },
-     false
-);
-function init(elemid) {
-     let canvas = document.getElementById(elemid),
-          c = canvas.getContext("2d"),
-          w = (canvas.width = window.innerWidth),
-          h = (canvas.height = window.innerHeight);
+function init(canvas) {
+     c = canvas.getContext("2d");
+     w = (canvas.width = window.innerWidth);
+     h = (canvas.height = window.innerHeight);
      c.fillStyle = "rgba(30,30,30,1)";
      c.fillRect(0, 0, w, h);
-     return c;
 }
 
 window.requestAnimFrame = (function () {
      return (
           window.requestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame ||
-          window.oRequestAnimationFrame ||
-          window.msRequestAnimationFrame ||
           function (callback) {
                window.setTimeout(callback);
           }
      );
 });
 
-function loop() {
-     window.requestAnimFrame(loop);
-     c.clearRect(0, 0, w, h);
-     draw();
-}
+export function initParticles() {
+     let canvas = document.getElementById('dust-canvas')
+     init(canvas);
 
-export function initFireflies() {
+     canvas.addEventListener(
+          "mousemove",
+          function (e) {
+               last_mouse.x = mouse.x;
+               last_mouse.y = mouse.y;
 
+               mouse.x = e.pageX - this.offsetLeft;
+               mouse.y = e.pageY - this.offsetTop;
+          },
+          false
+     );
+
+     function loop() {
+          window.requestAnimFrame(loop);
+          c.clearRect(0, 0, w, h);
+          draw();
+     }
+
+     loop();
+     setInterval(loop, 1000 / 60);
 }
-loop();
-setInterval(loop, 1000 / 60);
