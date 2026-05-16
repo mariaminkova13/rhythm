@@ -228,12 +228,12 @@ async function loadStartPage() {
   for (const characterName in parsedYaml) {
     const portrait = document.createElement("div")
     portrait.classList.add("portrait")
-    addCorners(portrait, {
-      smoothing: 1,
-      borderRadius: 12,
-      clip: true,
-      cornerType: Flat
-    })
+    // addCorners(portrait, {
+    //   smoothing: 1,
+    //   borderRadius: 12,
+    //   clip: true,
+    //   cornerType: Flat
+    // })
     const thisTile = characterSelection.appendChild(portrait)
     if (i == 0) {
       thisTile.setAttribute('selected', '');

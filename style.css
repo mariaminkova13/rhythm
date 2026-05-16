@@ -348,8 +348,8 @@ windowControlButton:hover {
     }
 }
 
-ol,
-li {
+carousel>ol,
+carousel>li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -360,8 +360,35 @@ carousel {
     padding-top: 75%;
     perspective: 100px;
     height: 100%;
-    flex: 50%;
     pointer-events: all;
+}
+
+dome {
+    width: 80%;
+    aspect-ratio: 5/7;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+dome::before,
+dome::after {
+    background: blueviolet;
+    width: 100%;
+    position: absolute;
+    content: '';
+}
+
+dome::after {
+    bottom: 0;
+    height: 50%;
+}
+
+dome::before {
+    top: 0;
+    height: 50%;
+    border-radius: 100% 100% 0 0;
 }
 
 .carousel__viewport {
@@ -383,6 +410,7 @@ carousel {
     width: 100%;
     background-color: #f99;
     counter-increment: item;
+    opacity: 0.3
 }
 
 .carousel__slide:before {
@@ -418,7 +446,7 @@ carousel::after,
     width: 4rem;
     height: 4rem;
     transform: translateY(-50%);
-    border-radius: 50%;
+    border-radius: var(--radius);
     font-size: 0;
     outline: 0;
 }
@@ -449,11 +477,11 @@ carousel::after {
 }
 
 carousel::before {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='0,50 80,100 80,0' fill='%23fff'/%3E%3C/svg%3E");
+    background: red
 }
 
 carousel::after {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='100,50 20,100 20,0' fill='%23fff'/%3E%3C/svg%3E");
+    background: red
 }
 
 .portrait {

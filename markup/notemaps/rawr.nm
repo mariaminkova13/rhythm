@@ -1,7 +1,7 @@
 bpm: 120
 beatsPerBar: 3
 sixLanes: true
-centerLane: false
+centerLane: true
 defaultLength: 0.2
 root: A3
 -------------------------
