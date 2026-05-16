@@ -33,7 +33,6 @@
     "@monokai/monoco": "^0.3.2",
     "animejs": "^4.4.1",
     "fun-7-segment": "^1.1.0",
-    "sass": "^1.99.0",
     "smplr": "^0.20.0",
     "soundfont2": "^0.5.0",
     "yaml": "^2.8.3"

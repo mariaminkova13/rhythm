@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const sass = require("sass");
 
 require("@electron/remote/main").initialize();
 

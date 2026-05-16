@@ -24,6 +24,16 @@
     src: url('./style/fonts/OCR-B.ttf')
 }
 
+@font-face {
+    font-family: grenze;
+    src: url(' ./style/fonts/Grenze-VariableFont_wght.ttf')
+}
+
+@font-face {
+    font-family: blackbone;
+    src: url('./style/fonts/BlackbonesDEMORegular.otf')
+}
+
 :root {
     --bottompadding: 10vh;
     --barwidth: 10px;
@@ -780,28 +790,25 @@ tick {
     transition: var(--ticktransitionspeed) all;
 }
 
-#Slane,
-#Jlane {
-    order: 1
-}
-
-#Dlane,
-#Klane {
-    order: 2
-}
-
-#Flane,
-#Llane {
-    order: 3
-}
-
-#spacelane {
-    border-radius: 100px;
-}
-
 tick[aria-pressed="true"] {
     background-color: magenta;
     background-blend-mode: difference;
+}
+
+#Slane>track,
+#Flane>track,
+#Jlane>track,
+#Llane>track {
+    background: var(--trackcolor)
+}
+
+#Dlane>track,
+#Klane>track {
+    background: goldenrod
+}
+
+#spacelane>track {
+    background: papayawhip
 }
 
 track {

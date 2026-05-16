@@ -441,7 +441,9 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
 
         hitline.appendChild(leftHand);
         leftHand.appendChild(Dlane);
+        Dlane.id = "Dlane"
         leftHand.appendChild(Flane);
+        Flane.id = "Flane"
         if (data.head.centerLane == true) {
           const centerHand = document.createElement("ticksection");
           hitline.appendChild(centerHand);
@@ -451,12 +453,16 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
         }
         hitline.appendChild(rightHand);
         rightHand.appendChild(Jlane);
+        Jlane.id = "Jlane"
         rightHand.appendChild(Klane);
+        Klane.id = "Klane"
         if (data.head.sixLanes == true) {
           Slane = document.createElement("tick");
           leftHand.insertBefore(Slane, Dlane);
+          Slane.id = "Slane"
           Llane = document.createElement("tick");
           rightHand.appendChild(Llane);
+          Llane.id = "Llane"
         }
 
         document.querySelectorAll("tick").forEach((tick) => {

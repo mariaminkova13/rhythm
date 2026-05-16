@@ -2,24 +2,31 @@ async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-//FIXME add cooldown such that many misses at once only activates it once. Make it so that can only be activated if not already doing animation
-
 class WebGLRenderer {
-
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
-
     this.gl = this.canvas.getContext("webgl")
-
     this.program = null;
     this.startTime = Date.now();
-
+    var animating = false
 
     window.addEventListener("vignetteRed", async (e) => {
-      for (var i = 1.0; i >= 0.0; i -= 0.01) {
-        this.gl.uniform1f(this.vignettePhase, i);
-        this.render();
+      console.log('eventtrigered')
+      let that = this
+      if (animating == true) return
+      animating = true
+      let i = 1
+      loop()
+      async function loop() {
+        that.gl.uniform1f(that.vignettePhase, i);
+        that.render();
         await sleep(5);
+        i -= 0.01
+        if (i <= 0) {
+          animating = false
+          return
+        }
+        else { loop() }
       }
     });
   }
