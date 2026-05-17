@@ -52,7 +52,6 @@ async function parseNotemap(filePath) {
 }
 
 async function readNotemap(data, linesCounter, laneList) {
-     const hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
      var chart = []
      for (const line of data.body) {
           chart.push(line.split(" "))
@@ -60,7 +59,7 @@ async function readNotemap(data, linesCounter, laneList) {
      //console.log(chart)
      for (let j = 0; j < chart.length; j++) {
           const newBeat = document.createElement("beat");
-          handleBeat(newBeat, linesCounter, hitlineBottom);
+          handleBeat(newBeat, linesCounter);
 
           const lineParsed = chart[j]
 
@@ -75,7 +74,9 @@ async function readNotemap(data, linesCounter, laneList) {
                               laneList[i].appendChild(newNote);
                               handleNote(newNote);
                               const holdBody = document.createElement("holdBody")
+                              newNote.id = `${j}:${i}`
                               newNote.setAttribute('holdStartOf', holdBody)
+                              // holdBody.setAttribute('holdStartIs', newNote.id)
                               handleHold(holdBody, newNote);
                          }
                          else if (j == chart.length - 1 || chart[j + 1][i].includes("H") == false) {

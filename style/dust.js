@@ -1,4 +1,5 @@
 class particle {
+     //TODO make them smaller
      constructor() {
           this.x = Math.random() * w;
           this.y = Math.random() * h;

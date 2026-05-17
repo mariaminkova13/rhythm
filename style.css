@@ -118,13 +118,15 @@ canvas,
     opacity: 0.7
 }
 
-#blend-canvas {
+#texture-canvas {
     background-image: url('./style/texture.jpg');
     mix-blend-mode: overlay;
     z-index: 9999999999999;
     opacity: 0.1;
     filter: blur(1px) contrast(0.8);
     background-size: cover;
+    transform: scale(1.2);
+    background-origin: border-box;
 }
 
 #allthestuff,

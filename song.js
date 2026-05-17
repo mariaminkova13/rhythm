@@ -44,7 +44,7 @@ const displayComboAfter = 4
 const fps = 70;
 const noteStartingPosition = -10
 var hitAccuracy = [];
-var deleteBelow
+var deleteBelow, hitlinePos
 
 const missSound = new Audio("assets/sfx/miss.mp3"),
   offbeatSound = new Audio("assets/sfx/offbeat.wav");
@@ -72,7 +72,7 @@ async function createNotes(data) {
 }
 
 
-function handleBeat(beat, beatIndex, hitlinePos) {
+function handleBeat(beat, beatIndex) {
   let distanceMoved = 0;
   let noteDelayDoneTriggered = false
 
@@ -191,24 +191,24 @@ function handleBeat(beat, beatIndex, hitlinePos) {
 //TODO add transition time for ticks if low bpm
 
 function handleNote(noteElement) {
-  let hitlineBottom = document.querySelector('hitline').getBoundingClientRect().bottom
   let position, distanceMoved = 0
   noteElement.setAttribute("aria-active", "true");
   let elapsedms = 0
-  // let startTime = Date.now()
   var timer = orchestrator.createTimer();
 
   function moveNote() {
-    if (paused) {
-      return;
-    }
+    // if (paused || noteElement.hasAttribute("held")) {
+    //   return;
+    // }
+
+    if (paused) return
 
     updatePositionOfThing(noteElement, timer)
 
     let noteRect = noteElement.getBoundingClientRect()
     let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
 
-    let msUntilHit = (hitlineBottom - noteCenter) / (noteStepSize / (1000 / fps))
+    let msUntilHit = (hitlinePos - noteCenter) / (noteStepSize / (1000 / fps))
     noteElement.setAttribute('msUntilHit', msUntilHit)
 
     if (noteElement.getAttribute("aria-active") === "true" && msUntilHit * -1 > offbeatThreshold) {
@@ -237,19 +237,24 @@ function handleNote(noteElement) {
 
 function handleHold(holdBody, startNote) {
   let holdEndAdded = false
+  let end
   holdBody.addEventListener('holdEnd', (e) => {
-    let end = e.detail.element.getBoundingClientRect().bottom
+    end = e.detail.element.getBoundingClientRect().bottom
     let rect = holdBody.getBoundingClientRect()
     let currentHeight = rect.bottom - rect.top
-    holdEndAdded = true
   }, { once: true });
   startNote.parentElement.appendChild(holdBody)
   let timer = orchestrator.createTimer()
+
   function moveHold() {
     let holdRect = holdBody.getBoundingClientRect()
     if (holdEndAdded == false) {
       holdBody.style.height = parseFloat(startNote.style.top) + 'px'
     }
+    // if (holdStart.hasAttribute('held')) {
+    //   holdBody.style.height = end - startNote.getBoundingClientRect().bottom
+    //   console.log('yes')
+    // }
     holdBody.style.top = parseFloat(startNote.style.top) - (holdRect.bottom - holdRect.top) + 'px'
   }
 
@@ -260,10 +265,8 @@ function handleHold(holdBody, startNote) {
       holdBody.remove()
       clearInterval(fallInterval)
     }
-    if (document.body.contains(startNote)) {
-      requestAnimationFrame(moveHold);
-      if (startNote.getAttribute('aria-active') === false) { holdBody.setAttribute('aria-active', false) }
-    }
+    requestAnimationFrame(moveHold);
+    if (startNote.getAttribute('aria-active') === false) { holdBody.setAttribute('aria-active', false) }
   }, 1000 / fps);
 }
 
@@ -387,6 +390,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
     .then((response) => response.text())
     .then((html) => {
       document.getElementById("allthestuff").innerHTML = html;
+      hitlinePos = document.querySelector('hitline').getBoundingClientRect().bottom
 
       requestAnimationFrame(() => { //so that runs only after all is loaded
         const redobuttons = ["restartButton", "retryButton"];
@@ -479,9 +483,6 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
     });
 
   function tickEventListeners() {
-    // Setup pause modal buttons
-
-    // Build keymap with actual lane elements
     let keymap = new Map();
     if (Slane) keymap.set(Slane, "KeyS");
     keymap.set(Dlane, "KeyD");
@@ -492,13 +493,12 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
     if (Llane) keymap.set(Llane, "KeyL");
     if (Ljump) keymap.set(Rjump, "Tab")
     if (Rjump) keymap.set(Rjump, "Slash")
+
     if (difficulty === "relaxed") {
       missHpCost = 0;
     } else if (difficulty === "hard") { }
 
-    function evalHit(hitResult, keyup) {
-      // if (!keyup && hitResult.note.hasAttribute('holdendof') == true) hitResult = null
-      // console.log(hitResult.note.hasAttribute('holdendof'))
+    function evalHit(hitResult) {
       if (hitResult) {
         const absoluteDistance = hitResult.closestDistance;
         const rawDistance = hitResult.closestDistanceRaw
@@ -509,7 +509,6 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
         //   )}`
         // );
 
-        // hit evaluation
         hitAccuracy.push(rawDistance);
         accuracyDiv.textContent = Math.round(median(hitAccuracy));
         if (absoluteDistance <= offbeatThreshold) {
@@ -535,6 +534,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
           }
           hitResult.note.setAttribute("aria-active", "false");
           sing(hitResult.note.getAttribute('pitch'), 0.5, accuracy)
+          if (hitResult.note.hasAttribute('holdStartOf')) { hitResult.note.setAttribute("held", "") }
         }
         else {
           console.log("miss");
@@ -595,8 +595,9 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
           lane.setAttribute("aria-pressed", "false");
           hitResult = checkHit(lane, true);
           if (!hitResult?.note) break
+          if (hitResult.note.hasAttribute('held')) { hitResult.note.removeAttribute('held') }
           if (hitResult.note.hasAttribute('holdendof')) {
-            evalHit(hitResult, true)
+            evalHit(hitResult)
           }
         }
       }
@@ -604,6 +605,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape" && event.key !== "Enter") return;
+      if (document.querySelector("countdowncircle")) return
       if (paused) {
         unpause();
       }

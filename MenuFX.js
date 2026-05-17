@@ -9,16 +9,16 @@ const SegmentDispay = require("fun-7-segment");
 const { addCorners, Flat, Squircle } = require('@monokai/monoco')
 
 let parsedYaml, currentCharacter, voicePath, audio
+const buttonpress = new Audio//TODO
 
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
 
-  const hiScore = new SegmentDisplay('#hiScore', {
-    text: '0000',
+  const display = new SegmentDisplay('#hiScore', {
+    text: '00000000',
     digitCount: 4,
     scrolling: false,
-    color: '#00ff00'
   });
 
   addCorners(document.getElementById('startButton'), {
@@ -141,8 +141,9 @@ function initializeTileEffects() {
   });
 
   initializeParallax()
-
+  const channelSwitch = new Audio('./assets/sfx/channel_switch.ogg')
   function updateSidebar(tile) {
+    channelSwitch.play()
     let albumName = tile.getAttribute('id')
     document.getElementById('startButton').onclick = async function () {
       audio.pause();
@@ -168,13 +169,31 @@ function initializeTileEffects() {
     muffleAudio(audio)
   }
 }
-
+const lobbysongs = ['./assets/ww.mp3', './assets/And bliss everywhere bliss.mp3']
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
   initParticles();
-  const lobbysongs = ['./assets/ww.mp3', './assets/And bliss everywhere bliss.mp3']
   const lobbymusic = new Audio(lobbysongs[Math.floor(Math.random() * lobbysongs.length)])
   lobbymusic.play()
+  muffleAudio(lobbymusic)
+
+  const texture = document.getElementById('texture-canvas')
+  function updatebg(e) {
+    const rect = texture.getBoundingClientRect();
+    const x =
+      ((e.pageX - rect.left - window.scrollX) / texture.offsetWidth) * 25;
+    const y =
+      ((e.pageY - rect.top - window.scrollY) / texture.offsetHeight) * 25;
+    texture.style.transformOrigin = x + "% " + y + "%";
+  }
+  window.addEventListener("mousemove", function (e) {
+    updatebg(e)
+  });
+  window.addEventListener("mouseover", function (e) {
+    updatebg(e)
+  });
+
+  //TODO fix window resize
 
   addCorners(document.getElementById('startsingleplayer'), {
     smoothing: 1,

@@ -11,7 +11,6 @@ class WebGLRenderer {
     var animating = false
 
     window.addEventListener("vignetteRed", async (e) => {
-      console.log('eventtrigered')
       let that = this
       if (animating == true) return
       animating = true
