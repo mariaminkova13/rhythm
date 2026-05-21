@@ -9,10 +9,13 @@ const SegmentDispay = require("fun-7-segment");
 const { addCorners, Flat, Squircle } = require('@monokai/monoco')
 
 let parsedYaml, currentCharacter, voicePath, audio
-const buttonpress = new Audio//TODO
+const buttonpress = new Audio('./assets/sfx/button.ogg')
 
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
+  // window.addEventListener('load', function () {
+  //   document.getElementById('loadScreen').style.display = 'none';
+  // })
   allthestuff.innerHTML = await response.text();
 
   const display = new SegmentDisplay('#hiScore', {
@@ -47,6 +50,7 @@ async function loadAlbumMenu() {
   document.getElementById('returnBtn').onclick = function () {
     audio?.pause()
     loadStartPage()
+    buttonpress.play()
   }
 }
 
@@ -180,11 +184,13 @@ async function loadStartPage() {
   const texture = document.getElementById('texture-canvas')
   function updatebg(e) {
     const rect = texture.getBoundingClientRect();
+    const width = rect.right - rect.left
+    const height = rect.bottom - rect.top
     const x =
-      ((e.pageX - rect.left - window.scrollX) / texture.offsetWidth) * 25;
+      (((width - e.pageX) - rect.left - window.scrollX) / texture.offsetWidth) * 20;
     const y =
-      ((e.pageY - rect.top - window.scrollY) / texture.offsetHeight) * 25;
-    texture.style.transformOrigin = x + "% " + y + "%";
+      (((height - e.pageY) - rect.top - window.scrollY) / texture.offsetHeight) * 20;
+    texture.style.transformOrigin = (100 - x) + "% " + (100 - y) + "%";
   }
   window.addEventListener("mousemove", function (e) {
     updatebg(e)
@@ -244,6 +250,7 @@ async function loadStartPage() {
   document.getElementById("startsingleplayer").onclick = async function () {
     lobbymusic.pause()
     await loadAlbumMenu()
+    buttonpress.play()
   };
 
   const parsedYaml = await yaml.parse(await (await fetch("markup/characters.yaml")).text());
