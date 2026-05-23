@@ -4,7 +4,7 @@
   "description": "A simple rhythm game",
   "main": "windowStartup.js",
   "devDependencies": {
-    "electron": "^39.0.0"
+    "electron": "^42.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -33,7 +33,8 @@
     "@monokai/monoco": "^0.3.2",
     "animejs": "^4.4.1",
     "fun-7-segment": "^1.1.0",
-    "smplr": "^0.20.0",
+    "party-js": "^2.2.0",
+    "smplr": "^0.26.0",
     "soundfont2": "^0.5.0",
     "yaml": "^2.8.3"
   }

@@ -4,6 +4,7 @@ import { muffleAudio } from "./style/musicFX/audioFX.js";
 import { initParticles } from "./style/dust.js";
 import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
+import { text } from "./style/particle-letter.js";
 const yaml = require("yaml");
 const SegmentDispay = require("fun-7-segment");
 const { addCorners, Flat, Squircle } = require('@monokai/monoco')
@@ -187,9 +188,9 @@ async function loadStartPage() {
     const width = rect.right - rect.left
     const height = rect.bottom - rect.top
     const x =
-      (((width - e.pageX) - rect.left - window.scrollX) / texture.offsetWidth) * 20;
+      (((width - e.pageX) - rect.left - window.scrollX) / texture.offsetWidth) * 10;
     const y =
-      (((height - e.pageY) - rect.top - window.scrollY) / texture.offsetHeight) * 20;
+      (((height - e.pageY) - rect.top - window.scrollY) / texture.offsetHeight) * 10;
     texture.style.transformOrigin = (100 - x) + "% " + (100 - y) + "%";
   }
   window.addEventListener("mousemove", function (e) {
