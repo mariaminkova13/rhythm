@@ -57,6 +57,7 @@ async function loadAlbumMenu() {
 //TODO make it normal scrolling and not press and hold. maybe use rellax.js
 
 const scaleMultiplier = "1.15";
+const startPgMovement = 15
 
 function initializeTileEffects() {
   const tileContainer = document.getElementById("tileContainer");
@@ -187,9 +188,9 @@ async function loadStartPage() {
     const width = rect.right - rect.left
     const height = rect.bottom - rect.top
     const x =
-      (((width - e.pageX) - rect.left - window.scrollX) / texture.offsetWidth) * 10;
+      (((width - e.pageX) - rect.left - window.scrollX) / texture.offsetWidth) * startPgMovement;
     const y =
-      (((height - e.pageY) - rect.top - window.scrollY) / texture.offsetHeight) * 10;
+      (((height - e.pageY) - rect.top - window.scrollY) / texture.offsetHeight) * startPgMovement;
     texture.style.transformOrigin = (100 - x) + "% " + (100 - y) + "%";
   }
   window.addEventListener("mousemove", function (e) {

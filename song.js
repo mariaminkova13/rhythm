@@ -1,4 +1,4 @@
-export { songSetup, handleNote, handleBeat, handleHold, note, beatLength, music, musicstart, noteStartingPosition, controller };
+export { songSetup, handleNote, handleBeat, handleHold, beatLength, music, musicstart, noteStartingPosition, controller };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./utils/modals.js";
 import { avg, median } from "./index.js"
 import { loadAlbumMenu } from "./MenuFX.js";
@@ -501,12 +501,6 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
         const absoluteDistance = hitResult.closestDistance;
         const rawDistance = hitResult.closestDistanceRaw
 
-        // console.log(
-        //   `${lane || 'unknown'}: ${absoluteDistance.toFixed(
-        //     2
-        //   )}`
-        // );
-
         hitAccuracy.push(rawDistance);
         accuracyDiv.textContent = Math.round(median(hitAccuracy));
         if (absoluteDistance <= offbeatThreshold) {
@@ -614,7 +608,8 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
 
     updatehp();
 
-    async function startMusic() {
+    //start music
+    window.addEventListener("musicmaystart", async function () {
       music = new Audio(musicFilePath)
       await visualizeAudio(music)
       music.play();
@@ -633,9 +628,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
         }
 
       }, 1000 / fps);
-    };
-
-    window.addEventListener("musicmaystart", async (event) => { await startMusic(); }, { once: true });
+    }, { once: true });
 
     //TODO base score on ms offset, not px offset
 

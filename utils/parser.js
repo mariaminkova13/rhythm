@@ -1,5 +1,5 @@
-export { parseNotemap, parseSplashTexts, readNotemap }
 import { handleBeat, noteStartingPosition, handleNote, handleHold, controller } from "../song.js";
+export { parseNotemap, parseSplashTexts, readNotemap }
 
 async function parseNotemap(filePath) {
      try {
@@ -68,13 +68,16 @@ async function readNotemap(data, linesCounter, laneList) {
                if (lineParsed[i] != ".") {
                     const newNote = document.createElement("note");
                     newNote.style.top = noteStartingPosition + "px";
+                    laneList[i].appendChild(newNote);
+                    handleNote(newNote);
+                    newNote.id = `${j}:${i}`
                     if (lineParsed[i].includes("H")) {
                          if (lineParsed[i].includes("(") && lineParsed[i].includes(")")) {
                               if (chart[j + 1][i].includes("H" == false)) { console.warn('syntax error'); return }
                               newNote.setAttribute('pitch', lineParsed[i].replace("H", "").replace("(", "").replace(")", ""))
                               const holdBody = document.createElement("holdBody")
-                              newNote.id = `${j}:${i}`
                               newNote.setAttribute('holdStartOf', holdBody)
+                              laneList[i].appendChild(holdBody);
                               // holdBody.setAttribute('holdStartIs', newNote.id)
                               handleHold(holdBody, newNote);
                          }
@@ -88,16 +91,12 @@ async function readNotemap(data, linesCounter, laneList) {
                     else {
                          newNote.setAttribute('pitch', lineParsed[i])
                     }
-                    laneList[i].appendChild(newNote);
-                    handleNote(newNote);
-                    newNote.id = `${j}:${i}`
                }
           }
 
           // Wait for the first note in this line to complete its delay before creating the next line
           await new Promise(resolve => {
                newBeat.addEventListener('noteDelayDone', resolve, { signal });
-               console.log('hhhh')
           });
 
           linesCounter++;
