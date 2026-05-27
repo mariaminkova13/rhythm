@@ -1,5 +1,6 @@
 import { beatLength, music, musicstart } from "../song.js";
 const { animate } = require('animejs');
+const party = require("party-js");
 export { showModal, countdown, pause, unpause, paused, showDeathMsg }
 
 var paused, waveCanvas

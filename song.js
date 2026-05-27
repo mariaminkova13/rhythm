@@ -11,7 +11,6 @@ import { GlobalOrchestratorFactory } from "./utils/timer.js";
 //TODO when bpm 20 notes too close together, tweak adaptiveness factor.
 //TODO make countdown be as first beat flies to hitlone
 //TODO modifiers, like practice mode with no death and lenient timings, hide area around judgement line modifier. Amount of points/score based on actual hits not categories of hits
-//TODO fix unpause given new system
 //TODO on restart animate the notes onscreen going back and then restart countdown make seamless
 
 const note = document.createElement("note");
@@ -41,7 +40,7 @@ var missCount = 0,
 
 var noteSpacingPx, noteStepSize, bps, beatLength, beatsPerBar;
 const displayComboAfter = 4
-const fps = 70;
+const updateps = 60;
 const noteStartingPosition = -10
 var hitAccuracy = [];
 var deleteBelow, hitlinePos
@@ -160,7 +159,7 @@ function handleBeat(beat, beatIndex) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
     }
 
-    if (beatBottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitlinePos) {
+    if (beatBottom + ((noteStepSize / (1000 / updateps)) * (lightduration * peakOffset)) >= hitlinePos) {
       if (beat.getAttribute("aria-active") === "false") { }
       else {
         beat.setAttribute("aria-active", "false")
@@ -184,7 +183,7 @@ function handleBeat(beat, beatIndex) {
 
   const fallInterval = setInterval(() => {
     requestAnimationFrame(moveBeat)
-  }, 1000 / fps);
+  }, 1000 / updateps);
 }
 //TODO add transition time for ticks if low bpm
 
@@ -195,9 +194,9 @@ function handleNote(noteElement) {
   var timer = orchestrator.createTimer();
 
   function moveNote() {
-    // if (paused || noteElement.hasAttribute("held")) {
-    //   return;
-    // }
+    if (paused || noteElement.hasAttribute("held")) {
+      return;
+    }
 
     if (paused) return
 
@@ -206,7 +205,7 @@ function handleNote(noteElement) {
     let noteRect = noteElement.getBoundingClientRect()
     let noteCenter = ((noteRect.bottom - noteRect.y) / 2) + noteRect.y
 
-    let msUntilHit = (hitlinePos - noteCenter) / (noteStepSize / (1000 / fps))
+    let msUntilHit = (hitlinePos - noteCenter) / (noteStepSize / (1000 / updateps))
     noteElement.setAttribute('msUntilHit', msUntilHit)
 
     if (noteElement.getAttribute("aria-active") === "true" && msUntilHit * -1 > offbeatThreshold) {
@@ -230,17 +229,17 @@ function handleNote(noteElement) {
 
   const fallInterval = setInterval(() => {
     requestAnimationFrame(moveNote)
-  }, 1000 / fps);
+  }, 1000 / updateps);
 }
 
 function handleHold(holdBody, startNote) {
   let holdEndAdded = false
-  let end
+  let endNote
   holdBody.addEventListener('holdEnd', (e) => {
-    end = e.detail.element.getBoundingClientRect().bottom
-    let rect = holdBody.getBoundingClientRect()
-    let currentHeight = rect.bottom - rect.top
-  }, { once: true });
+    endNote = e.detail.element
+    holdBody.style.height = endNote.getBoundingClientRect().bottom - startNote.getBoundingClientRect().bottom + "px"
+    holdEndAdded = true
+  });
   startNote.parentElement.appendChild(holdBody)
   let timer = orchestrator.createTimer()
 
@@ -249,10 +248,11 @@ function handleHold(holdBody, startNote) {
     if (holdEndAdded == false) {
       holdBody.style.height = parseFloat(startNote.style.top) + 'px'
     }
-    // if (holdStart.hasAttribute('held')) {
-    //   holdBody.style.height = end - startNote.getBoundingClientRect().bottom
-    //   console.log('yes')
-    // }
+    if (startNote.hasAttribute('held') && holdEndAdded == true) {
+      let dist = startNote.getBoundingClientRect().top - endNote.getBoundingClientRect().top
+      holdBody.style.height = dist + "px"
+      if (dist < 0) { holdBody.setAttribute("aria-active", false) }
+    }
     holdBody.style.top = parseFloat(startNote.style.top) - (holdRect.bottom - holdRect.top) + 'px'
   }
 
@@ -263,13 +263,13 @@ function handleHold(holdBody, startNote) {
       holdBody.remove()
       clearInterval(fallInterval)
     }
+    if (startNote.getAttribute('aria-active') === false) { holdBody.setAttribute('aria-active', false) } //FIXME
     requestAnimationFrame(moveHold);
-    if (startNote.getAttribute('aria-active') === false) { holdBody.setAttribute('aria-active', false) }
-  }, 1000 / fps);
+  }, 1000 / updateps);
 }
 
 function updatePositionOfThing(thing, timer) {
-  let pos = timer.getElapsed() / (1000 / fps) * noteStepSize
+  let pos = timer.getElapsed() / (1000 / updateps) * noteStepSize
   thing.style.top = pos + 'px'
   return pos
 }
@@ -377,12 +377,12 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
   orchestrator = new GlobalOrchestratorFactory()
   deleteBelow = document.getElementById('appContainer').getBoundingClientRect().bottom + 30
 
+  controller = new AbortController()
+  const { signal } = controller
+
   document.body.style.cursor = "none";
   musicstart = false;
   hp = 100;
-
-  controller = new AbortController()
-  const { signal } = controller
 
   fetch("pages/song.html")
     .then((response) => response.text())
@@ -437,7 +437,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
         else {
           noteSpacingPx = 100 * AdaptiveNoteSpeedPreference
         }
-        noteStepSize = bps * noteSpacingPx / fps;
+        noteStepSize = bps * noteSpacingPx / updateps;
         // console.log("noteStepSize: " + noteStepSize);
         // console.log("noteSpacingPx: " + noteSpacingPx);
 
@@ -627,7 +627,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
           timestamp.style.visibility = 'hidden'
         }
 
-      }, 1000 / fps);
+      }, 1000 / updateps);
     }, { once: true });
 
     //TODO base score on ms offset, not px offset

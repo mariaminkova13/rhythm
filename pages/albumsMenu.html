@@ -4,12 +4,14 @@
      <div id="songInfo">
           <h1 id="songTitle"></h1>
           <div id="coverBg">
-               <img id="songCover"></img>
+               <div id="songCover"></div>
           </div>
-          <span id="songArtist"></span>
-          <span id="songLength"></span>
+          <div style="display: flex; flex-direction: row; height: 1lh; justify-content: space-between; width: 100%">
+               <span id="songArtist"></span>
+               <span id="songLength"></span>
+          </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-               <button id="startButton">start</button>
+               <button id="startButton" style="margin: 20px 0 20px 0">start</button>
                <div id="hiScore" style="width: 100%">0000</div>
                <!-- TODO set to be always bottom-->
           </div>

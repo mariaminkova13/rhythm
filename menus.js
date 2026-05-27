@@ -9,7 +9,9 @@ const { addCorners, Flat, Squircle } = require('@monokai/monoco')
 
 let parsedYaml, currentCharacter, voicePath, audio
 const buttonpress = new Audio('./assets/sfx/button.ogg')
-const scrambleSpd = 80
+const scrambleSpd = 70
+
+//TODO cooldown for music switch
 
 async function loadAlbumMenu() {
   var response = await fetch("pages/albumsMenu.html");
@@ -151,7 +153,9 @@ function initializeTileEffects() {
         settleDuration: scrambleSpd
       })
     });
-    document.getElementById('songCover').setAttribute('src', parsedYaml[albumName]['cover-image'])
+
+    document.getElementById('songCover').style.backgroundImage = `url('${parsedYaml[albumName]['cover-image']}')`
+    //TODO transition
     addCorners(document.getElementById('songCover'), {
       smoothing: 1,
       borderRadius: 32,
@@ -166,7 +170,6 @@ function initializeTileEffects() {
       cornerType: Flat,
     })
 
-    // document.getElementById('songTitle').innerText = albumName
     animate(document.getElementById('songTitle'), {
       innerHTML: scrambleText({
         text: albumName,
@@ -181,19 +184,19 @@ function initializeTileEffects() {
           text: `${Math.floor(audio.duration / 60)}:${Math.round(audio.duration % 60)}`,
           settleDuration: scrambleSpd
         })
-      });
+      }); //TODO number transition insteead
     });
     audio.play()
     muffleAudio(audio)
   }
 }
-const lobbysongs = ['./assets/ww.mp3', './assets/And bliss everywhere bliss.mp3']
+const lobbysongs = ['./assets/lobbymusic/ww.mp3', './assets/lobbymusic/And bliss everywhere bliss.mp3', './assets/lobbymusic/D5 - The way ahead feels lonely.mp3']
 async function loadStartPage() {
   allthestuff.innerHTML = await (await fetch("pages/startpage.html")).text()
   initParticles();
   const lobbymusic = new Audio(lobbysongs[Math.floor(Math.random() * lobbysongs.length)])
   lobbymusic.play()
-  muffleAudio(lobbymusic)
+  // muffleAudio(lobbymusic)
 
   const texture = document.getElementById('texture-canvas')
   function updatebg(e) {

@@ -66,29 +66,38 @@ async function readNotemap(data, linesCounter, laneList) {
 
           for (let i = 0; i < Math.min(lineParsed.length, laneList.length); i++) {
                if (lineParsed[i] != ".") {
-                    const newNote = document.createElement("note");
-                    newNote.style.top = noteStartingPosition + "px";
-                    laneList[i].appendChild(newNote);
-                    handleNote(newNote);
-                    newNote.id = `${j}:${i}`
                     if (lineParsed[i].includes("H")) {
                          if (lineParsed[i].includes("(") && lineParsed[i].includes(")")) {
                               if (chart[j + 1][i].includes("H" == false)) { console.warn('syntax error'); return }
+                              const newNote = document.createElement("note");
+                              newNote.style.top = noteStartingPosition + "px";
+                              laneList[i].appendChild(newNote);
+                              handleNote(newNote);
+                              newNote.id = `${j}:${i}`
                               newNote.setAttribute('pitch', lineParsed[i].replace("H", "").replace("(", "").replace(")", ""))
                               const holdBody = document.createElement("holdBody")
                               newNote.setAttribute('holdStartOf', holdBody)
                               laneList[i].appendChild(holdBody);
-                              // holdBody.setAttribute('holdStartIs', newNote.id)
                               handleHold(holdBody, newNote);
                          }
                          else if (j == chart.length - 1 || chart[j + 1][i].includes("H") == false) {
                               if (chart[j - 1][i].includes("H") == false) { console.warn('hold note starts should contain parentheses'); return }
+                              const newNote = document.createElement("note");
+                              newNote.style.top = noteStartingPosition + "px";
+                              laneList[i].appendChild(newNote);
+                              handleNote(newNote);
+                              newNote.id = `${j}:${i}`
                               let prevHoldBody = findPrevHoldBody(laneList[i])
                               newNote.setAttribute('holdendof', prevHoldBody)
                               prevHoldBody.dispatchEvent(new CustomEvent('holdEnd', { detail: { element: newNote } }));
                          }
                     }
                     else {
+                         const newNote = document.createElement("note");
+                         newNote.style.top = noteStartingPosition + "px";
+                         laneList[i].appendChild(newNote);
+                         handleNote(newNote);
+                         newNote.id = `${j}:${i}`
                          newNote.setAttribute('pitch', lineParsed[i])
                     }
                }
