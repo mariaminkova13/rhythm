@@ -1,28 +1,19 @@
-const { animate } = require('animejs');
+const { animate, scrambleText } = require('animejs');
 import { songSetup } from "./song.js"
 import { muffleAudio } from "./style/musicFX/audioFX.js";
 import { initParticles } from "./style/dust.js";
 import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
 const yaml = require("yaml");
-const SegmentDispay = require("fun-7-segment");
 const { addCorners, Flat, Squircle } = require('@monokai/monoco')
 
 let parsedYaml, currentCharacter, voicePath, audio
 const buttonpress = new Audio('./assets/sfx/button.ogg')
+const scrambleSpd = 80
 
 async function loadAlbumMenu() {
   var response = await fetch("markup/albumsMenu.html");
-  // window.addEventListener('load', function () {
-  //   document.getElementById('loadScreen').style.display = 'none';
-  // })
   allthestuff.innerHTML = await response.text();
-
-  const display = new SegmentDisplay('#hiScore', {
-    text: '00000000',
-    digitCount: 4,
-    scrolling: false,
-  });
 
   addCorners(document.getElementById('startButton'), {
     smoothing: 1,
@@ -154,21 +145,43 @@ function initializeTileEffects() {
       audio.pause();
       await songSetup(parsedYaml[albumName]['notemap'], parsedYaml[albumName]['audio'], 'true')
     }
-    document.getElementById('songArtist').textContent = parsedYaml[albumName]['composer']
+    animate(document.getElementById('songArtist'), {
+      innerHTML: scrambleText({
+        text: parsedYaml[albumName]['composer'],
+        settleDuration: scrambleSpd
+      })
+    });
     document.getElementById('songCover').setAttribute('src', parsedYaml[albumName]['cover-image'])
     addCorners(document.getElementById('songCover'), {
       smoothing: 1,
       borderRadius: 32,
       clip: true,
       cornerType: Flat,
-      border: [4, '#f00'] //FIXME
     })
 
-    document.getElementById('songTitle').innerText = albumName
+    addCorners(document.getElementById('coverBg'), {
+      smoothing: 1,
+      borderRadius: 32,
+      clip: true,
+      cornerType: Flat,
+    })
+
+    // document.getElementById('songTitle').innerText = albumName
+    animate(document.getElementById('songTitle'), {
+      innerHTML: scrambleText({
+        text: albumName,
+        settleDuration: scrambleSpd
+      })
+    });
     audio?.pause()
     audio = new Audio(parsedYaml[albumName]['audio']);
     audio.addEventListener("loadedmetadata", () => {
-      document.getElementById('songLength').textContent = `${Math.floor(audio.duration / 60)}:${Math.round(audio.duration % 60)}`
+      animate(document.getElementById('songLength'), {
+        innerHTML: scrambleText({
+          text: `${Math.floor(audio.duration / 60)}:${Math.round(audio.duration % 60)}`,
+          settleDuration: scrambleSpd
+        })
+      });
     });
     audio.play()
     muffleAudio(audio)

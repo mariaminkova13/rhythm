@@ -3,10 +3,15 @@
      <div id="tileContainer"></div>
      <div id="songInfo">
           <h1 id="songTitle"></h1>
-          <img id="songCover"></img>
+          <div id="coverBg">
+               <img id="songCover"></img>
+          </div>
           <span id="songArtist"></span>
           <span id="songLength"></span>
-          <button id="startButton">start</button>
-          <div id="hiScore" style="width: 100%; height: 300px"></div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+               <button id="startButton">start</button>
+               <div id="hiScore" style="width: 100%">0000</div>
+               <!-- TODO set to be always bottom-->
+          </div>
      </div>
 </div>
