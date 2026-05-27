@@ -1,3 +1,4 @@
+A simple vertical-scrolling rhythm game. Very generic and done more as an exercise for the process rather than for the product. But still play it if you want. Intended to be challenging yet played casually. The difficulty should be rooted more in precision than in key-spamming.
 > Enjoy!!1 ( ｡ᓀ⩊ᓂ｡)
 
 More specific info is in the [wiki](https://github.com/mariaminkova13/rhythm/wiki).
