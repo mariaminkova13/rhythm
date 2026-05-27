@@ -1,4 +1,4 @@
-import { loadStartPage } from "./MenuFX.js";
+import { loadStartPage } from "./menus.js";
 // import Cursor from "./style/cursor/cursor.js";
 export { avg, median }
 export { songFilePath };

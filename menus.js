@@ -12,7 +12,7 @@ const buttonpress = new Audio('./assets/sfx/button.ogg')
 const scrambleSpd = 80
 
 async function loadAlbumMenu() {
-  var response = await fetch("markup/albumsMenu.html");
+  var response = await fetch("pages/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
 
   addCorners(document.getElementById('startButton'), {
@@ -22,7 +22,7 @@ async function loadAlbumMenu() {
     cornerType: Flat
   })
 
-  parsedYaml = await yaml.parse(await (await fetch("markup/albums.yaml")).text());
+  parsedYaml = await yaml.parse(await (await fetch("data/albums.yaml")).text());
 
   for (const albumName in parsedYaml) {
     const albumtile = document.createElement("div")
@@ -189,7 +189,7 @@ function initializeTileEffects() {
 }
 const lobbysongs = ['./assets/ww.mp3', './assets/And bliss everywhere bliss.mp3']
 async function loadStartPage() {
-  allthestuff.innerHTML = await (await fetch("markup/startpage.html")).text()
+  allthestuff.innerHTML = await (await fetch("pages/startpage.html")).text()
   initParticles();
   const lobbymusic = new Audio(lobbysongs[Math.floor(Math.random() * lobbysongs.length)])
   lobbymusic.play()
@@ -267,7 +267,7 @@ async function loadStartPage() {
     buttonpress.play()
   };
 
-  const parsedYaml = await yaml.parse(await (await fetch("markup/characters.yaml")).text());
+  const parsedYaml = await yaml.parse(await (await fetch("data/characters.yaml")).text());
   const characterSelection = document.getElementById('characterSelection')
   const total = Object.keys(parsedYaml).length
   const viewport = document.querySelector('.carousel__viewport')

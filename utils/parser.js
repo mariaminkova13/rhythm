@@ -117,6 +117,6 @@ function findPrevHoldBody(lane) {
 }
 
 async function parseSplashTexts() {
-     const response = await (await fetch('markup/splashes.txt')).text();
+     const response = await (await fetch('pages/splashes.txt')).text();
      return response.split("\n")
 }

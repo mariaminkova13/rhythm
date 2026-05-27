@@ -1,6 +1,6 @@
 const { Soundfont2Sampler } = require('smplr');
 const { SoundFont2 } = require('soundfont2');
-import { voicePath } from '../MenuFX.js';
+import { voicePath } from '../menus.js';
 export { initVoice, sing }
 var sampler
 

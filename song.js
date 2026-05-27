@@ -1,7 +1,7 @@
 export { songSetup, handleNote, handleBeat, handleHold, beatLength, music, musicstart, noteStartingPosition, controller };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./utils/modals.js";
 import { avg, median } from "./index.js"
-import { loadAlbumMenu } from "./MenuFX.js";
+import { loadAlbumMenu } from "./menus.js";
 import { visualizeAudio } from "./style/musicFX/audioFX.js";
 const { animate } = require('animejs');
 import { sing, initVoice } from "./utils/soundfonts.js"
@@ -384,7 +384,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
   controller = new AbortController()
   const { signal } = controller
 
-  fetch("markup/song.html")
+  fetch("pages/song.html")
     .then((response) => response.text())
     .then((html) => {
       document.getElementById("allthestuff").innerHTML = html;
