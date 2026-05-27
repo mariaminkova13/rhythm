@@ -1,4 +1,4 @@
-export { songSetup, handleNote, handleBeat, handleHold, note, beatLength, music, musicstart, noteStartingPosition };
+export { songSetup, handleNote, handleBeat, handleHold, note, beatLength, music, musicstart, noteStartingPosition, controller };
 import { unpause, pause, countdown, paused, showDeathMsg } from "./utils/modals.js";
 import { avg, median } from "./index.js"
 import { loadAlbumMenu } from "./MenuFX.js";
@@ -49,7 +49,7 @@ var deleteBelow, hitlinePos
 const missSound = new Audio("assets/sfx/miss.mp3"),
   offbeatSound = new Audio("assets/sfx/offbeat.wav");
 
-let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, Rjump, Ljump, music;
+let Slane, Dlane, Flane, spacelane, Jlane, Klane, Llane, Rjump, Ljump, music, controller;
 let musicstart = false
 
 var orchestrator
@@ -74,7 +74,6 @@ async function createNotes(data) {
 
 function handleBeat(beat, beatIndex) {
   let distanceMoved = 0;
-  let noteDelayDoneTriggered = false
 
   const beatNumber = document.createElement('beatnumber')
   beatNumber.textContent = beatIndex + 1
@@ -157,9 +156,8 @@ function handleBeat(beat, beatIndex) {
     distanceMoved = adjustedPosition - startPosition;
     beat.style.top = adjustedPosition + "px";
 
-    if (timer.getElapsed() >= beatLength && noteDelayDoneTriggered == false) {
+    if (timer.getElapsed() >= beatLength) {
       beat.dispatchEvent(new CustomEvent('noteDelayDone', { detail: { distance: distanceMoved } }));
-      noteDelayDoneTriggered = true
     }
 
     if (beatBottom + ((noteStepSize / (1000 / fps)) * (lightduration * peakOffset)) >= hitlinePos) {
@@ -383,7 +381,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
   musicstart = false;
   hp = 100;
 
-  const controller = new AbortController()
+  controller = new AbortController()
   const { signal } = controller
 
   fetch("markup/song.html")

@@ -37,14 +37,3 @@ two(2):
 #   #   J:
 #   #   K:
 #   #   L:
-three(3):
-  voice: assets/soundfonts/yuri.sf2
-  miss-sprite:
-  sprites:
-    S:
-    D:
-    F:
-    space:
-    J:
-    K:
-    L:

@@ -4,7 +4,6 @@ import { muffleAudio } from "./style/musicFX/audioFX.js";
 import { initParticles } from "./style/dust.js";
 import { parseSplashTexts } from "./utils/parser.js"
 export { initializeTileEffects, loadStartPage, loadAlbumMenu, voicePath };
-import { text } from "./style/particle-letter.js";
 const yaml = require("yaml");
 const SegmentDispay = require("fun-7-segment");
 const { addCorners, Flat, Squircle } = require('@monokai/monoco')

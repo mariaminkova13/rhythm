@@ -1,5 +1,5 @@
 export { parseNotemap, parseSplashTexts, readNotemap }
-import { handleBeat, noteStartingPosition, handleNote, handleHold } from "../song.js";
+import { handleBeat, noteStartingPosition, handleNote, handleHold, controller } from "../song.js";
 
 async function parseNotemap(filePath) {
      try {
@@ -52,11 +52,12 @@ async function parseNotemap(filePath) {
 }
 
 async function readNotemap(data, linesCounter, laneList) {
+     const { signal } = controller
      var chart = []
      for (const line of data.body) {
           chart.push(line.split(" "))
      }
-     //console.log(chart)
+
      for (let j = 0; j < chart.length; j++) {
           const newBeat = document.createElement("beat");
           handleBeat(newBeat, linesCounter);
@@ -71,8 +72,6 @@ async function readNotemap(data, linesCounter, laneList) {
                          if (lineParsed[i].includes("(") && lineParsed[i].includes(")")) {
                               if (chart[j + 1][i].includes("H" == false)) { console.warn('syntax error'); return }
                               newNote.setAttribute('pitch', lineParsed[i].replace("H", "").replace("(", "").replace(")", ""))
-                              laneList[i].appendChild(newNote);
-                              handleNote(newNote);
                               const holdBody = document.createElement("holdBody")
                               newNote.id = `${j}:${i}`
                               newNote.setAttribute('holdStartOf', holdBody)
@@ -83,22 +82,22 @@ async function readNotemap(data, linesCounter, laneList) {
                               if (chart[j - 1][i].includes("H") == false) { console.warn('hold note starts should contain parentheses'); return }
                               let prevHoldBody = findPrevHoldBody(laneList[i])
                               newNote.setAttribute('holdendof', prevHoldBody)
-                              laneList[i].appendChild(newNote);
-                              handleNote(newNote);
                               prevHoldBody.dispatchEvent(new CustomEvent('holdEnd', { detail: { element: newNote } }));
                          }
                     }
                     else {
                          newNote.setAttribute('pitch', lineParsed[i])
-                         laneList[i].appendChild(newNote);
-                         handleNote(newNote);
                     }
+                    laneList[i].appendChild(newNote);
+                    handleNote(newNote);
+                    newNote.id = `${j}:${i}`
                }
           }
 
           // Wait for the first note in this line to complete its delay before creating the next line
           await new Promise(resolve => {
-               newBeat.addEventListener('noteDelayDone', resolve, { once: true });
+               newBeat.addEventListener('noteDelayDone', resolve, { signal });
+               console.log('hhhh')
           });
 
           linesCounter++;
