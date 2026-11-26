@@ -13,6 +13,10 @@ const scrambleSpd = 70
 
 //TODO cooldown for music switch
 
+const songAudioPath = "./assets/songAudio/"
+const notemapsPath = "./data/notemaps/"
+const coversPath = "./assets/covers/"
+
 async function loadAlbumMenu() {
   var response = await fetch("pages/albumsMenu.html");
   allthestuff.innerHTML = await response.text();
@@ -31,7 +35,9 @@ async function loadAlbumMenu() {
     albumtile.classList.add("tile")
     const thisTile = tileContainer.appendChild(albumtile)
     thisTile.setAttribute("id", albumName)
-    thisTile.setAttribute("data-image", parsedYaml[albumName]['cover-image'])
+    //console.log(coversPath + parsedYaml[albumName]['cover-image'])
+    thisTile.setAttribute("data-image", coversPath + parsedYaml[albumName]['cover-image'])
+    console.log(thisTile.getAttribute('data-image'))
 
     const title = document.createElement('h1')
     title.innerText = albumName
@@ -145,7 +151,7 @@ function initializeTileEffects() {
     let albumName = tile.getAttribute('id')
     document.getElementById('startButton').onclick = async function () {
       audio.pause();
-      await songSetup(parsedYaml[albumName]['notemap'], parsedYaml[albumName]['audio'], 'true')
+      await songSetup(notemapsPath + parsedYaml[albumName]['notemap'], songAudioPath + parsedYaml[albumName]['audio'], 'true')
     }
     animate(document.getElementById('songArtist'), {
       innerHTML: scrambleText({
@@ -154,7 +160,7 @@ function initializeTileEffects() {
       })
     });
 
-    document.getElementById('songCover').style.backgroundImage = `url('${parsedYaml[albumName]['cover-image']}')`
+    document.getElementById('songCover').style.backgroundImage = `url('${coversPath}${parsedYaml[albumName]['cover-image']}')`
     //TODO transition
     addCorners(document.getElementById('songCover'), {
       smoothing: 1,
@@ -177,7 +183,7 @@ function initializeTileEffects() {
       })
     });
     audio?.pause()
-    audio = new Audio(parsedYaml[albumName]['audio']);
+    audio = new Audio(songAudioPath + parsedYaml[albumName]['audio']);
     audio.addEventListener("loadedmetadata", () => {
       animate(document.getElementById('songLength'), {
         innerHTML: scrambleText({
@@ -196,7 +202,7 @@ async function loadStartPage() {
   initParticles();
   const lobbymusic = new Audio(lobbysongs[Math.floor(Math.random() * lobbysongs.length)])
   lobbymusic.play()
-  // muffleAudio(lobbymusic)
+  muffleAudio(lobbymusic)
 
   const texture = document.getElementById('texture-canvas')
   function updatebg(e) {

@@ -1,5 +1,6 @@
 export { muffleAudio, visualizeAudio }
 import { chorusEffect } from './chorus.js'
+import { addReverb } from './reverb.js';
 
 async function muffleAudio(audio) {
      const ctx = new AudioContext();
@@ -7,26 +8,40 @@ async function muffleAudio(audio) {
 
      const lowpass = ctx.createBiquadFilter();
      lowpass.type = "highshelf";
-     lowpass.frequency.value = 1200;
-     lowpass.gain.value = 0.2;
+     lowpass.frequency.value = 500;
+     lowpass.gain.value = -20;
 
-     const bassBoost = ctx.createBiquadFilter();
-     bassBoost.type = "lowshelf";
-     bassBoost.frequency.value = 165;
-     bassBoost.gain.value = 2;
+     // const quiet = ctx.createGain();
+     // quiet.gain.value = -10;
 
-     const quiet = ctx.createGain();
-     quiet.gain.value = 0.7;
+     // await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
+     // const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
 
-     await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
-     const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
+     const reverb = addReverb(ctx)
 
-     src.connect(bassBoost).connect(lowpass).connect(quiet).connect(crusher).connect(ctx.destination);
+     // src.connect(bassBoost).connect(lowpass).connect(quiet).connect(crusher).connect(ctx.destination);
+     src.connect(lowpass).connect(reverb.input).connect(ctx.destination);
 }
+
+// async function bassBoost(audio){
+//      const ctx = new AudioContext();
+//      const src = ctx.createMediaElementSource(audio);
+//      const bassBoost = ctx.createBiquadFilter();
+//      bassBoost.type = "lowshelf";
+//      bassBoost.frequency.value = 175;
+//      bassBoost.gain.value = 25;
+//      src.connect(bassBoost).connect(ctx.destination)
+// }
 
 async function visualizeAudio(audio) {
      const ctx = new AudioContext();
      const src = ctx.createMediaElementSource(audio);
+
+     const bassBoost = ctx.createBiquadFilter();
+     bassBoost.type = "lowshelf";
+     bassBoost.frequency.value = 175;
+     bassBoost.gain.value = 25;
+     src.connect(bassBoost).connect(ctx.destination)
 
      // await ctx.audioWorklet.addModule('style/musicFX/chorus.js');
      // const chorus = new AudioWorkletNode(ctx, "chorus-processor")
