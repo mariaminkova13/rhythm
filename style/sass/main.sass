@@ -1,0 +1,384 @@
+@use 'menu'
+@use 'song'
+@use 'startpage'
+    
+@font-face
+  font-family: chicago
+  src: url('./fonts/ChicagoFLF.ttf')
+
+@font-face
+  font-family: segment
+  src: url('./fonts/digital-7 (mono).ttf')
+
+@font-face
+  font-family: arya
+  src: url('./fonts/Arya-Regular.ttf')
+
+@font-face
+  font-family: prosto
+  src: url('./fonts/Prosto.ttf')
+
+@font-face
+  font-family: aero
+  src: url('./fonts/Aero.ttf')
+  font-weight: 400
+
+@font-face
+  font-family: ocrb
+  src: url('./fonts/OCR-B.ttf')
+
+@font-face
+  font-family: grenze
+  src: url(' ./fonts/Grenze-VariableFont_wght.ttf')
+
+@font-face
+  font-family: blackbone
+  src: url('./fonts/BlackbonesDEMORegular.otf')
+
+\:root
+  --bottompadding:10vh
+  --barwidth:10px
+  --tickwidth:18px
+  --tickgap:calc(var(--tickwidth) * 1.5)
+  --hpwidth:20px
+  --heartsize:calc(var(--hpwidth) + 20px)
+  --pulsespeed:1.5s
+  --transitionspeed:0.15s
+  --beatlength:0.5s
+  --ticktransitionspeed:calc(var(--beatlength) / 4)
+  --cursor:none
+  --fontsize:18px
+  --bodyfont:arya, verdana
+  --headfont:chicago, monospace
+  --radius:3px
+  --bgcolor:rgb(100, 100, 100)
+  --color1:rgb(0, 0, 255)
+  --color2:red
+  --trackcolor:rgba(255, 255, 255, 0.5)
+  --beatcolor:white
+  --hpcolor:darkolivegreen
+  --textcolor:white
+  --tickcolor:var(--color2)
+  --bordercolor:var(--color2)
+  --notecolor:wheat
+  --pulselightcolor:darkslategrey
+
+body
+  align-items: center
+  text-align: justify
+  margin: 0
+  min-height: 100vh
+  line-height: 0.9
+  font-size: var(--fontsize)
+  overflow: hidden
+  cursor: var(--cursor)
+  font-family: var(--bodyfont)
+  background-color: var(--bgcolor)
+  color: var(--textcolor)
+  user-select: none
+  display: flex
+  flex-direction: column
+
+#appContainer
+  position: absolute
+  width: 100%
+  bottom: 0
+  border: 2px var(--bordercolor)
+  box-sizing: border-box
+
+canvas, #allthestuff, #loading-screen
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  display: block
+  pointer-events: none
+  mix-blend-mode: normal
+  overflow: hidden
+
+#allthestuff, #loading-screen, #jpg-canvas
+  z-index: 10000000
+
+#vig-canvas
+  z-index: 100000000000000000
+
+#titlebar
+  width: 100%
+  height: 30px
+  background: var(--bordercolor)
+  -webkit-app-region: drag
+  z-index: 1000000000
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+/* #titlebar:active {
+ *    cursor: grabbing !important;
+ *}
+
+controlButtonDiv
+  display: flex
+  flex-direction: row
+  align-items: center
+  transition: var(--transitionspeed) all
+  cursor: default
+  box-sizing: border-box
+  opacity: 1
+  background: var(--bordercolor)
+  height: 100%
+  margin-right: 2px
+  z-index: 10000000000000000
+
+windowControlButton
+  height: 100%
+  width: 4ch
+  cursor: pointer
+  app-region: no-drag
+  text-align: center
+  display: flex
+  align-items: center
+  justify-content: center
+  color: black
+
+#windowTitle
+  margin-left: 2ch
+  font-family: var(--headfont)
+
+windowControlButton:hover
+  background-color: rgba(255, 255, 255, 0.5)
+
+#characterSelection
+  flex-direction: row
+  display: flex
+  pointer-events: all
+
+@keyframes tonext
+  75%
+    left: 0
+
+  95%
+    left: 100%
+
+  98%
+    left: 100%
+
+  99%
+    left: 0
+
+@keyframes tostart
+  75%
+    left: 0
+
+  95%
+    left: -300%
+
+  98%
+    left: -300%
+
+  99%
+    left: 0
+
+@keyframes snap
+  96%
+    scroll-snap-align: center
+
+  97%
+    scroll-snap-align: none
+
+  99%
+    scroll-snap-align: none
+
+  100%
+    scroll-snap-align: center
+
+carousel
+  >
+    ol, li
+      list-style: none
+      margin: 0
+      padding: 0
+
+  position: relative
+  padding-top: 75%
+  perspective: 100px
+  height: 100%
+  pointer-events: all
+
+dome
+  width: 80%
+  aspect-ratio: 5/7
+  position: absolute
+  top: 25%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+  &::before
+    background: blueviolet
+    width: 100%
+    position: absolute
+    content: ''
+
+  &::after
+    background: blueviolet
+    width: 100%
+    position: absolute
+    content: ''
+    bottom: 0
+    height: 50%
+
+  &::before
+    top: 0
+    height: 50%
+    border-radius: 100% 100% 0 0
+
+.carousel__viewport
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  display: flex
+  overflow-x: scroll
+  counter-reset: item
+  scroll-behavior: smooth
+  scroll-snap-type: x mandatory
+
+.carousel__slide
+  position: relative
+  flex: 0 0 100%
+  width: 100%
+  background-color: #f99
+  counter-increment: item
+  opacity: 0.3
+
+  &:before
+    content: counter(item)
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate3d(-50%, -40%, 70px)
+    color: #fff
+    font-size: 2em
+
+  &:last-child .carousel__snapper
+    animation-name: tostart, snap
+
+.carousel
+  &:hover .carousel__snapper, &:focus-within .carousel__snapper
+    animation-name: none
+
+.carousel__slide h1
+  top: 1lh
+  position: absolute
+  width: 100%
+
+carousel
+  &::before, &::after
+    position: absolute
+    top: 0
+    margin-top: 37.5%
+    width: 4rem
+    height: 4rem
+    transform: translateY(-50%)
+    border-radius: var(--radius)
+
+.carousel__prev, .carousel__next
+  position: absolute
+  top: 0
+  margin-top: 37.5%
+  width: 4rem
+  height: 4rem
+  transform: translateY(-50%)
+  border-radius: var(--radius)
+
+carousel::before, .carousel__prev
+  left: 1rem
+
+carousel::after, .carousel__next
+  right: 1rem
+
+carousel
+  &::before, &::after
+    content: ''
+    z-index: 1
+    background-size: 1.5rem 1.5rem
+    background-repeat: no-repeat
+    background-position: center center
+    font-size: 2.5rem
+    line-height: 4rem
+    text-align: center
+    pointer-events: none
+
+  &::before
+    content: "<"
+
+  &::after
+    content: ">"
+
+.portrait
+  height: 50px
+  width: 50px
+  background-color: red
+  border: 1px solid black
+  cursor: pointer
+  pointer-events: all
+
+  &[selected]
+    background-color: blue
+
+#loading-screen
+  background: black
+  z-index: 99999999999
+
+//3.5s infinite ease-in-out forwards;
+@keyframes shimmy    
+  50%
+    background-position: 50vw 0
+
+@keyframes wave
+  50%
+    top: 120px
+
+@keyframes whirl
+  0%
+    transform: rotate(0deg) translate(-50px) rotate(0deg)
+
+  100%
+    transform: rotate(360deg) translate(-50px) rotate(-360deg)
+
+button
+  width: 20ch
+  font-family: var(--bodyfont)
+  margin: 0 auto
+  font-size: calc(var(--fontsize) * 2)
+  cursor: pointer
+  pointer-events: auto
+
+h1
+  font-family: var(--headfont)
+  text-align: center
+  font-size: calc(var(--fontsize) * 3)
+  margin: 0
+
+modal
+  height: 50%
+  width: 50%
+  top: 50%
+  left: 50%
+  position: fixed
+  transform: translate(-50%, -50%)
+  z-index: 69
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  outline: 5px solid var(--color1)
+  outline-offset: -10px
+  border: 3px solid var(--color1)
+  background-color: wheat
+
+modal img
+  width: 100%
+  height: auto
+  display: block

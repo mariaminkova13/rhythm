@@ -1,0 +1,421 @@
+#wave-canvas
+  opacity: 0.1
+
+note, tick
+  display: block
+  border-radius: var(--radius)
+  height: 5px
+  width: var(--tickwidth)
+
+note
+  transform: translateX(-50%)
+  z-index: 10
+  opacity: 100%
+  top: 0px
+  position: absolute
+  background: var(--notecolor)
+  z-index: 50
+
+  &[aria-active=false]
+    opacity: 0
+    animation: redden 0.1s ease-out
+    background: red
+
+holdBody[aria-active=false]
+    opacity: 0
+    animation: redden 0.1s ease-out
+    background: red
+
+note
+  &.perc
+    /*https://github.com/taigrr/spank
+     *https://github.com/mithun-srinivasan/spank-for-windows adjust sensitivity
+    width: 30px
+    height: 10px
+    mask-image: url('assets/icons/x.svg')
+    mask-repeat: no-repeat
+    mask-position: center
+    mask-size: 100% 100%
+
+  &[holdendof], &[holdStartOf]
+    background: pink
+
+holdBody
+    background: pink
+    opacity: 0.5
+    width: calc(var(--tickwidth) * 0.5)
+    height: 0
+    display: block
+    position: absolute
+    transform: translateX(-50%)
+    z-index: 50
+    top: 0px
+
+@keyframes redden
+  0%
+    background: var(--notecolor)
+    opacity: 1
+
+  100%
+    background: red
+    opacity: 0.1
+
+sidecolumn
+    height: 100%
+    flex: 1
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: spacebetween
+    position: relative
+
+lettergrade
+    font-size: calc(var(--fontsize) * 10)
+    width: 1ch
+    height: 150px
+    position: relative
+    text-align: center
+    font-family: var(--headfont)
+
+plusminus
+    font-size: 70px
+    content: '+'
+    position: absolute
+    top: 0
+    right: 0
+    transform: translateX(-1ch)
+    font-family: var(--headfont)
+
+scorebar
+    display: block
+    margin-right: 30px
+    right: 0
+    position: absolute
+    width: 2ch
+    background: green
+    height: 70%
+    bottom: var(--bottompadding)
+
+songname
+    width: 100%
+    margin: 50px
+    text-align: center
+
+#infobox
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+  display: flex
+  align-items: center
+  height: fit-content
+
+#scorebox
+  display: flex
+  align-items: center
+  flex-direction: column
+
+accuracy
+  display: block
+  text-align: center
+  height: 1lh
+
+notecontainer
+  position: relative
+  height: 100%
+  width: 100%
+  background-color: rgba(112, 128, 144, 0.5)
+
+hitline
+  height: 1px
+  background-color: var(--tickcolor)
+  width: 100%
+  position: absolute
+  z-index: 60
+  justify-content: space-between
+  display: flex
+  flex-direction: row
+  bottom: 0
+  box-sizing: border-box
+
+  /* gap: var(--tickgap);
+  /* padding: 0 var(--tickgap) 0 var(--tickgap);
+
+pulselight
+  position: absolute
+  display: block
+  height: 100%
+  width: 20px
+  z-index: -10
+  opacity: 0
+
+#pulselightR
+  background: linear-gradient(to right, var(--pulselightcolor), transparent)
+  right: -20px
+
+#pulselightL
+  background: linear-gradient(to left, var(--pulselightcolor), transparent)
+  left: -20px
+
+/* 
+ *hitline[litup='on'].hitlinelight {
+ *    background: linear-gradient(to top, var(--color1), transparent);
+ *    opacity: 0.3
+ *}
+ *
+ *hitline[litup='strong'].hitlinelight {
+ *    box-shadow: 0px -20px 25px -20px;
+ *    opacity: 0.5
+ *}
+
+beat
+  background: var(--beatcolor)
+  height: 1px
+  width: 100%
+  position: absolute
+  opacity: 0.3
+  display: flex
+  align-items: center
+
+beatnumber
+  right: -100%
+  color: var(--beatcolor)
+  font-size: small
+  position: relative
+  margin-left: 5px
+  opacity: 1
+
+ticksection
+  display: flex
+  width: calc(var(--tickwidth) * 5)
+
+  /* gap: calc(var(--tickwidth) * 0.2);
+  justify-content: space-between
+  align-items: center
+
+tick
+  position: relative
+  z-index: -2
+
+  /* border: 1px solid var(--tickcolor);
+  box-sizing: border-box
+  margin: 0 auto
+  transition: var(--ticktransitionspeed) all
+
+  &[aria-pressed="true"]
+    background-color: magenta
+    background-blend-mode: difference
+
+@mixin track-bg($color)
+  background: linear-gradient(to bottom, $color 75%, transparent)
+
+#Slane > track, #Flane > track, #Jlane > track, #Llane > track
+  @include track-bg(var(--trackcolor))
+
+#Dlane > track, #Klane > track
+  @include track-bg(goldenrod)
+
+#spacelane > track
+  @include track-bg(papayawhip)
+
+track
+  position: absolute
+  left: 50%
+  transform: translateY(var(--bottompadding))
+  bottom: 0
+  width: 1px
+  height: 100vh
+  z-index: -3
+
+songprogress
+  top: 0
+  left: 0
+  height: var(--barwidth)
+  background-color: yellow
+  position: absolute
+  opacity: 0.75
+  z-index: 999
+  border-bottom-right-radius: var(--radius)
+  transition: top var(--transitionspeed) ease
+
+gutter
+  bottom: 0
+  width: 100%
+  height: var(--bottompadding)
+  position: relative
+  display: flex
+  align-items: center
+  z-index: 4
+  order: 2
+
+hpbar
+  height: var(--hpwidth)
+  box-sizing: border-box
+  width: 80%
+  position: absolute
+  display: flex
+  z-index: 2
+  background-color: var(--hpcolor)
+  border-bottom-right-radius: var(--radius)
+  border-top-right-radius: var(--radius)
+  margin-right: 15%
+  margin-left: calc(15% + calc(var(--heartsize)/2))
+  align-items: center
+  bottom: var(--bottompadding)
+  outline: 1px solid black
+
+  &::after
+    content: ''
+    position: absolute
+    height: 100%
+    left: 0
+    top: 0
+    width: var(--hp)
+    max-width: 100%
+    z-index: 1
+    transition: width var(--transitionspeed) ease
+    opacity: 1
+    background-color: var(--hpcolor)
+    background: forestgreen
+
+#heart
+  content: ''
+  display: flex
+  position: absolute
+  aspect-ratio: 1 / 1
+  height: var(--heartsize)
+  z-index: 3
+  animation: pulse var(--pulsespeed) ease-in-out infinite
+  justify-content: center
+  align-items: center
+  font-size: small
+  background-image: url('./icons/heart.svg')
+  background-repeat: no-repeat
+  background-size: 100% 100%
+  left: calc(var(--heartsize) / -2)
+
+countdownnumber
+  display: flex
+  align-items: center
+  justify-content: center
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  font-size: 200px
+  z-index: 100
+  font-family: var(--headfont)
+  border: 4px solid var(--textcolor)
+  border-radius: 50%
+  width: 100%
+  aspect-ratio: 1 / 1
+  background-color: var(--bgcolor)
+  overflow: hidden
+  text-align: center
+
+countdowncircle
+  border-radius: 50%
+  aspect-ratio: 1 / 1
+  width: 50vh
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  overflow: hidden
+  z-index: 100000000000
+  border: 5px solid var(--textcolor)
+
+  svg
+    width: 100%
+    height: 100%
+    position: absolute
+    top: 0
+    left: 0
+    clip-path: circle(50% at 50% 50%)
+
+#quitButton, #restartButton
+  aspect-ratio: 1 / 1
+  width: 80px
+  border: none
+  mask-repeat: no-repeat
+  mask-position: center
+  mask-size: cover
+  background: var(--textcolor)
+  transition: var(--transitionspeed) all
+
+#quitButton:hover, #restartButton:hover
+  transform: scale(1.1)
+
+#pausemodal, #deathmsg
+  visibility: hidden
+
+#pausemodal
+  background: none
+  outline: none
+  border: none
+  width: 100%
+  height: 100%
+  backdrop-filter: blur(3px) brightness(0.5)
+  position: absolute
+
+#comboCounterContainer
+  display: flex
+  flex-direction: column
+  align-content: center
+  position: absolute
+  width: 100%
+
+#comboCounter
+  text-transform: uppercase
+  text-align: center
+  font-weight: bold
+  height: 1lh
+  font-size: calc(var(--fontsize) * 2)
+  z-index: 10
+  margin-top: 2lh
+
+  /* animation: slidedown 0.1s ease;
+
+#counterAfter, #hitcomment
+  text-transform: lowercase
+  font-size: var(--fontsize)
+  text-align: center
+
+@keyframes slidedown
+  0%
+    transform: translateY(-20px)
+    opacity: 0
+
+  100%
+    transform: none
+    opacity: 1
+
+@keyframes pulse
+  0%,
+  100%
+    transform: scale(1)
+    filter: brightness(0.9)
+
+  10%
+    transform: scale(1.15)
+    filter: brightness(1.4)
+
+  25%
+    filter: brightness(1)
+
+blurring
+    backdrop-filter: blur(8px)
+    z-index: 68
+    background-color: rgba(0, 0, 0, 0.2)
+
+flexcolumn
+    flex: 1
+    display: flex
+    align-items: center
+
+#timestamp
+  transition: var(--transitionspeed)
+  position: absolute
+  display: block
+  left: 1ch
+  top: var(--barwidth)
+  z-index: 70
