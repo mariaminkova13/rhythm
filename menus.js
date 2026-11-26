@@ -35,9 +35,7 @@ async function loadAlbumMenu() {
     albumtile.classList.add("tile")
     const thisTile = tileContainer.appendChild(albumtile)
     thisTile.setAttribute("id", albumName)
-    //console.log(coversPath + parsedYaml[albumName]['cover-image'])
     thisTile.setAttribute("data-image", coversPath + parsedYaml[albumName]['cover-image'])
-    console.log(thisTile.getAttribute('data-image'))
 
     const title = document.createElement('h1')
     title.innerText = albumName

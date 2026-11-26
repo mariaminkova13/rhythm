@@ -11,9 +11,6 @@ async function muffleAudio(audio) {
      lowpass.frequency.value = 500;
      lowpass.gain.value = -20;
 
-     // const quiet = ctx.createGain();
-     // quiet.gain.value = -10;
-
      // await ctx.audioWorklet.addModule("style/musicFX/bitcrusher.js");
      // const crusher = new AudioWorkletNode(ctx, "bitcrusher-processor", {});
 

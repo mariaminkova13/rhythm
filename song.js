@@ -187,6 +187,39 @@ function handleBeat(beat, beatIndex) {
 }
 //TODO add transition time for ticks if low bpm
 
+function showMissText() {
+  const text = document.createElement('span')
+  text.classList.add("missText")
+  text.innerText = "miss!"
+  text.style.transform = `rotate(${randomInRange(-45, 45)}deg)`
+
+  if (Math.round(Math.random()) == 1) {
+    text.style.left = `${randomInRange(10, 25)}%`
+    console.log('left')
+  }
+  else {
+    text.style.right = `${randomInRange(10, 25)}%`
+    console.log('right')
+  }
+
+  text.style.top = `${randomInRange(10, 90)}%`
+  document.getElementById('game-wrapper').appendChild(text)
+
+  const duration = 700
+
+  text.animate(
+    [{ opacity: 0 }], { duration: duration, easing: "ease-in" }
+  )
+
+  setTimeout(() => {
+    text.remove()
+  }, duration);
+}
+
+function randomInRange(min, max) {
+  return Math.random() * (max - min) + min
+}
+
 function handleNote(noteElement) {
   let position, distanceMoved = 0
   noteElement.setAttribute("aria-active", "true");
@@ -216,6 +249,7 @@ function handleNote(noteElement) {
       window.dispatchEvent(new Event('vignetteRed'))
       updatehp();
       combo = 0
+      showMissText()
       earlyOrLate = "late.";
       updateCombo()
       noteElement.setAttribute('aria-active', false)
@@ -538,6 +572,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
           }
           missCount++;
           updateCombo('miss')
+          showMissText()
         }
       } else {
         console.log("no note on screen");
@@ -546,6 +581,7 @@ async function songSetup(mapFilePath, musicFilePath, AdaptiveNoteSpeedPreference
         combo = 0
         window.dispatchEvent(new Event('vignetteRed'))
         updateCombo()
+        showMissText()
       }
       if (hitResult) {
         if (hitResult.rawDistance > 0) {
